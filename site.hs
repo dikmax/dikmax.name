@@ -52,7 +52,7 @@ main = hakyll $ do
             >>= withItemBody
               (unixFilter "lessc" ["--yui-compress","-O2", "--include-path=less","-"])
 
-    tags <- buildTags "posts/*" (\tag -> fromFilePath $ "tag/" ++ tag ++ "/index.html")
+    tags <- buildTagsWith getTags' "posts/*" (\tag -> fromFilePath $ "tag/" ++ tag ++ "/index.html")
 
     -- Posts pages
 
@@ -62,7 +62,7 @@ main = hakyll $ do
         compile $ do
             identifier <- getUnderlying
             title <- getMetadataField identifier "title"
-            tags <- getTags identifier
+            tags <- getTags' identifier
             description <- getMetadataField identifier "description"
             item <- pandocCompiler' >>= saveSnapshot "content"
             let images = map (fromMaybe "") $ filter isJust $ map imagesMap $ TS.parseTags $ itemBody item
@@ -254,6 +254,15 @@ archiveRules = do
             return $ formatTime timeLocale' "%e" utc
 
 
+getTags' :: MonadMetadata m => Identifier -> m [String]
+getTags' identifier = do
+    metadata <- getMetadata identifier
+    return $ maybe [] (map trim . splitAll "," . unwrap) $ M.lookup "tags" metadata
+    where
+      unwrap str
+        | str == "\"" = str
+        | head str == '"' && last str == '"' = tail $ init str
+        | otherwise = str
 
 --
 -- Metadata processing
@@ -321,7 +330,7 @@ tagsContext :: Context a
 tagsContext = field "tags" convertTags
     where
         convertTags item = do
-            tags <- getTags $ itemIdentifier item
+            tags <- getTags' $ itemIdentifier item
             return $ concat $ map (\tag -> "<a href=\"/tag/" ++ tag ++ "/\" class=\"label label-default\">" ++ tag ++ "</a> ") tags
 
 timeLocale :: TimeLocale
