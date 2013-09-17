@@ -1,0 +1,9 @@
+prose:
+  siteurl: "http://dikmax.name"
+  metadata:
+    posts:
+      - name: "tags"
+        field:
+          element: "text"
+          label: "Permalink"
+          value: ""
