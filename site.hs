@@ -11,7 +11,7 @@ import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import           Data.Time.Clock (UTCTime)
 import           Data.Time.Format (formatTime, parseTime)
-import           Hakyll hiding (getItemUTC, dateFieldWith)
+import           Hakyll hiding (getItemUTC, dateFieldWith, getTags, buildPaginateWith, paginateContext, pandocCompiler)
 import           System.FilePath (takeBaseName, takeFileName, replaceFileName, replaceExtension)
 import           System.Locale
 import           Text.HTML.TagSoup (Tag(..))
@@ -25,34 +25,11 @@ import           XmlHtmlWriter
 --------------------------------------------------------------------------------
 main :: IO ()
 main = hakyll $ do
-    match "fonts/*" $ do
-        route   idRoute
-        compile copyFileCompiler
+    staticFilesRules
 
-    match "images/*" $ do
-        route   idRoute
-        compile copyFileCompiler
+    lessCompilerRules
 
-    match "js/*" $ do
-        route   idRoute
-        compile copyFileCompiler
-
-    match "favicon.ico" $ do
-        route   idRoute
-        compile copyFileCompiler
-
-    match "less/*.less" $ do
-        compile getResourceBody
-
-    d <- makePatternDependency "less/**"
-    rulesExtraDependencies [d] $ create ["css/style.css"] $ do
-        route idRoute
-        compile $ loadBody "less/style.less"
-            >>= makeItem
-            >>= withItemBody
-              (unixFilter "lessc" ["--yui-compress","-O2", "--include-path=less","-"])
-
-    tags <- buildTagsWith getTags' "posts/*" (\tag -> fromFilePath $ "tag/" ++ tag ++ "/index.html")
+    tags <- buildTagsWith getTags "posts/*" (\tag -> fromFilePath $ "tag/" ++ tag ++ "/index.html")
 
     -- Posts pages
 
@@ -62,9 +39,9 @@ main = hakyll $ do
         compile $ do
             identifier <- getUnderlying
             title <- getMetadataField identifier "title"
-            tags <- getTags' identifier
+            tags <- getTags identifier
             description <- getMetadataField identifier "description"
-            item <- pandocCompiler' >>= saveSnapshot "content"
+            item <- pandocCompiler >>= saveSnapshot "content"
             let images = map (fromMaybe "") $ filter isJust $ map imagesMap $ TS.parseTags $ itemBody item
             time <- getItemUTC defaultTimeLocale identifier
             loadAndApplyTemplate "templates/_post.html" postCtx item
@@ -76,7 +53,16 @@ main = hakyll $ do
                     , metaType = FacebookArticle time tags images
                     })
 
-    -- Tags pages
+    -- Tags pagesmatch "less/*.less" $ do
+        compile getResourceBody
+
+    d <- makePatternDependency "less/**"
+    rulesExtraDependencies [d] $ create ["css/style.css"] $ do
+        route idRoute
+        compile $ loadBody "less/style.less"
+            >>= makeItem
+            >>= withItemBody
+              (unixFilter "lessc" ["--yui-compress","-O2", "--include-path=less","-"])
 
     create ["tags/index.html"] $ do
         route idRoute
@@ -97,14 +83,14 @@ main = hakyll $ do
                 >>= loadAndApplyTemplate "templates/default.html" ctx
 
     tagsRules tags $ \tag identifiers -> do
-        paginate <- buildPaginateWith' 5 (getTagIdent tag) identifiers
+        paginate <- buildPaginateWith 5 (getTagIdentifier tag) identifiers
         paginateRules paginate $ \page ids -> do
             route addIndexRoute
             compile $ do
                 posts <- recentFirst =<< loadAllSnapshots ids "content"
                 let postsCtx =
                         listField "posts" postCtx (return posts) `mappend`
-                        paginateContext' paginate `mappend`
+                        paginateContext paginate `mappend`
                         pageCtx (defaultMetadata
                             { metaTitle =
                                 if page == 1
@@ -128,10 +114,10 @@ main = hakyll $ do
 
     match "index.md" $ do
         compile $ do
-            pandocCompiler'
+            pandocCompiler
                 >>= loadAndApplyTemplate "templates/_post-without-footer.html" postCtx
 
-    paginate <- buildPaginateWith' 5 getPageIdent ("posts/*")
+    paginate <- buildPaginateWith 5 getPageIdentifier ("posts/*")
     paginateRules paginate $ \page ids -> do
         route addIndexRoute
         if page == 1
@@ -141,7 +127,7 @@ main = hakyll $ do
                 let postsCtx =
                         constField "body" topPost `mappend`
                         listField "posts" postCtx (return posts) `mappend`
-                        paginateContext' paginate `mappend`
+                        paginateContext paginate `mappend`
                         pageCtx (defaultMetadata
                             { metaDescription = "Мой персональный блог. "
                                 ++ "Я рассказываю о программировании и иногда о своей жизни."
@@ -168,7 +154,7 @@ main = hakyll $ do
             identifier <- getUnderlying
             title <- getMetadataField identifier "title"
             description <- getMetadataField identifier "description"
-            pandocCompiler'
+            pandocCompiler
                 >>= loadAndApplyTemplate "templates/_post-without-footer.html" postCtx
                 >>= loadAndApplyTemplate "templates/default.html" (pageCtx (defaultMetadata
                     { metaTitle = title
@@ -176,17 +162,14 @@ main = hakyll $ do
                     , metaUrl = '/' : (identifierToUrl $ toFilePath identifier)
                     }))
 
-    -- Render RSS feed
-    create ["rss"] $ do
-        route idRoute
-        compile $ do
-            loadAllSnapshots "posts/*" "content"
-                >>= fmap (take 10) . recentFirst
-                >>= renderRss feedConfiguration feedCtx
+    -- RSS
+    feedRules
 
     match "templates/*" $ compile templateCompiler
 
 
+--------------------------------------------------------------------------------
+-- Archive
 --------------------------------------------------------------------------------
 
 archiveRules :: Rules ()
@@ -239,7 +222,6 @@ archiveRules = do
                             })
                 makeItem ""
                     >>= loadAndApplyTemplate "templates/archive.html" archiveCtx
-
     where
         yearsMap i = do
             utc <- getItemUTC defaultTimeLocale i
@@ -253,22 +235,80 @@ archiveRules = do
             utc <- getItemUTC defaultTimeLocale $ itemIdentifier i
             return $ formatTime timeLocale' "%e" utc
 
+--------------------------------------------------------------------------------
+-- RSS feed
+--------------------------------------------------------------------------------
+
+feedConfiguration :: FeedConfiguration
+feedConfiguration = FeedConfiguration
+    { feedTitle = "[dikmax's blog]"
+    , feedDescription = "Мой персональный блог"
+    , feedAuthorName = "Максим Дикун"
+    , feedAuthorEmail = "me@dikmax.name"
+    , feedRoot = "http://dikmax.name"
+    }
+
+feedCtx :: Context String
+feedCtx = bodyField "description" `mappend` defaultContext
+
+feedRules :: Rules ()
+feedRules =
+    create ["rss"] $ do
+        route idRoute
+        compile $ do
+            loadAllSnapshots "posts/*" "content"
+                >>= fmap (take 10) . recentFirst
+                >>= renderRss feedConfiguration feedCtx
 
 
-getTags' :: MonadMetadata m => Identifier -> m [String]
-getTags' identifier = do
+--------------------------------------------------------------------------------
+-- Static files
+--------------------------------------------------------------------------------
+
+staticFilesRules :: Rules ()
+staticFilesRules = do
+    match "fonts/*" $ do
+        route   idRoute
+        compile copyFileCompiler
+
+    match "images/*" $ do
+        route   idRoute
+        compile copyFileCompiler
+
+    match "js/*" $ do
+        route   idRoute
+        compile copyFileCompiler
+
+    match "favicon.ico" $ do
+        route   idRoute
+        compile copyFileCompiler
+
+lessCompilerRules :: Rules ()
+lessCompilerRules = do
+    match "less/*.less" $ do
+        compile getResourceBody
+
+    d <- makePatternDependency "less/**"
+    rulesExtraDependencies [d] $ create ["css/style.css"] $ do
+        route idRoute
+        compile $ loadBody "less/style.less"
+            >>= makeItem
+            >>= withItemBody
+              (unixFilter "lessc" ["--yui-compress","-O2", "--include-path=less","-"])
+
+--------------------------------------------------------------------------------
+-- Tags
+--------------------------------------------------------------------------------
+
+getTags :: MonadMetadata m => Identifier -> m [String]
+getTags identifier = do
     metadata <- getMetadata identifier
     return $ maybe [] (map trim . splitAll "," . unwrap) $ M.lookup "tags" metadata
 
 
-unwrap str -- TODO decode escaped chars
-    | str == "\"" = str
-    | head str == '"' && last str == '"' = tail $ init str
-    | otherwise = str
-
---
--- Metadata processing
---
+--------------------------------------------------------------------------------
+-- Html metadata
+--------------------------------------------------------------------------------
 
 data FacebookType = FacebookBlog
     | FacebookArticle UTCTime [String] [String] -- Published, keywords, images
@@ -292,18 +332,142 @@ defaultMetadata = PageMetadata
     , metaType = FacebookNothing
     }
 
-feedConfiguration :: FeedConfiguration
-feedConfiguration = FeedConfiguration
-    { feedTitle = "[dikmax's blog]"
-    , feedDescription = "Мой персональный блог"
-    , feedAuthorName = "Максим Дикун"
-    , feedAuthorEmail = "me@dikmax.name"
-    , feedRoot = "http://dikmax.name"
-    }
 
-feedCtx = bodyField "description" `mappend` defaultContext
+--------------------------------------------------------------------------------
+-- Replacement of Hakyll functions
+--------------------------------------------------------------------------------
 
--- Replate newlines with spaces
+buildPaginateWith :: MonadMetadata m
+                  => Int
+                  -> (PageNumber -> Identifier)
+                  -> Pattern
+                  -> m Paginate
+buildPaginateWith n makeId pattern = do
+    -- TODO filter unpublished
+
+    metadata <- getAllMetadata pattern
+    let idents         = fst $ unzip $ sortBy compareFn metadata
+        pages          = flip unfoldr idents $ \xs ->
+            if null xs then Nothing else Just (splitAt n xs)
+        nPages         = length pages
+        paginatePages' = zip [1..] pages
+        pagPlaces'     =
+            [(ident, idx) | (idx,ids) <- paginatePages', ident <- ids] ++
+            [(makeId i, i) | i <- [1 .. nPages]]
+
+    return $ Paginate (M.fromList paginatePages') (M.fromList pagPlaces') makeId
+        (PatternDependency pattern idents)
+
+    where
+        compareFn :: (a, Metadata) -> (a, Metadata) -> Ordering
+        compareFn (_, a) (_, b)
+            | M.lookup "date" a == Nothing && M.lookup "date" b == Nothing = EQ
+            | M.lookup "date" a == Nothing = GT
+            | M.lookup "date" b == Nothing = LT
+            | otherwise = compare (unwrap $ b M.! "date") (unwrap $ a M.! "date")
+
+-- | Takes first, current, last page and produces index of next page
+type RelPage = PageNumber -> PageNumber -> PageNumber -> Maybe PageNumber
+
+paginateField :: Paginate -> String -> RelPage -> Context a
+paginateField pag fieldName relPage = field fieldName $ \item ->
+    let identifier = itemIdentifier item
+    in case M.lookup identifier (paginatePlaces pag) of
+        Nothing -> fail $ printf
+            "Hakyll.Web.Paginate: there is no page %s in paginator map."
+            (show identifier)
+        Just pos -> case relPage 1 pos nPages of
+            Nothing   -> fail "Hakyll.Web.Paginate: No page here."
+            Just pos' -> do
+                let nextId = paginateMakeId pag pos'
+                mroute <- getRoute nextId
+                case mroute of
+                    Nothing -> fail $ printf
+                        "Hakyll.Web.Paginate: unable to get route for %s."
+                        (show nextId)
+                    Just rt -> return $ removeIndex $ toUrl rt
+  where
+    nPages = M.size (paginatePages pag)
+    removeIndex url
+        | "index.html" `isSuffixOf` url = take (length url - 10) url
+        | otherwise = url
+
+paginateContext :: Paginate -> Context a
+paginateContext pag = mconcat
+    [ paginateField pag "firstPage"
+        (\f c _ -> if c <= f then Nothing else Just f)
+    , paginateField pag "previousPage"
+        (\f c _ -> if c <= f then Nothing else Just (c - 1))
+    , paginateField pag "nextPage"
+        (\_ c l -> if c >= l then Nothing else Just (c + 1))
+    , paginateField pag "lastPage"
+        (\_ c l -> if c >= l then Nothing else Just l)
+    ]
+
+getItemUTC :: MonadMetadata m
+           => TimeLocale        -- ^ Output time locale
+           -> Identifier        -- ^ Input page
+           -> m UTCTime         -- ^ Parsed UTCTime
+getItemUTC locale id' = do
+    metadata <- getMetadata id'
+    let tryField k fmt = fmap unwrap (M.lookup k metadata) >>= parseTime' fmt
+        fn             = takeFileName $ toFilePath id'
+
+    maybe empty' return $ msum $
+        [tryField "published" fmt | fmt <- formats] ++
+        [tryField "date"      fmt | fmt <- formats] ++
+        [parseTime' "%Y-%m-%d" $ intercalate "-" $ take 3 $ splitAll "-" fn]
+  where
+    empty'     = fail $ "Hakyll.Web.Template.Context.getItemUTC: " ++
+        "could not parse time for " ++ show id'
+    parseTime' = parseTime locale
+    formats    =
+        [ "%a, %d %b %Y %H:%M:%S %Z"
+        , "%Y-%m-%dT%H:%M:%S%Z"
+        , "%Y-%m-%d %H:%M:%S%Z"
+        , "%Y-%m-%dT%H:%M%Z"
+        , "%Y-%m-%d %H:%M%Z"
+        , "%Y-%m-%d"
+        , "%B %e, %Y %l:%M %p"
+        , "%B %e, %Y"
+        , "%b %d, %Y"
+        ]
+
+
+dateFieldWith :: TimeLocale  -- ^ Output time locale
+              -> String      -- ^ Destination key
+              -> String      -- ^ Format to use on the date
+              -> Context a   -- ^ Resulting context
+dateFieldWith locale key format = field key $ \i -> do
+    time <- getItemUTC locale $ itemIdentifier i
+    return $ formatTime locale format time
+
+pandocCompiler :: Compiler (Item String)
+pandocCompiler = do
+    post <- getResourceBody
+    makeItem $ T.unpack $ T.decodeUtf8 $ toByteString $ renderHtmlFragment UTF8 $ writeXmlHtml defaultXmlHtmlWriterOptions
+        { idPrefix = "" --postUrl post
+        , debugOutput = False
+        }
+        (readMarkdown readerOptions $ itemBody post)
+
+readerOptions :: ReaderOptions
+readerOptions = def
+  { readerSmart = True
+  , readerParseRaw = True
+  }
+
+--------------------------------------------------------------------------------
+-- Utility functions
+--------------------------------------------------------------------------------
+
+unwrap :: String -> String
+unwrap str -- TODO decode escaped chars
+    | str == "\"" = str
+    | head str == '"' && last str == '"' = tail $ init str
+    | otherwise = str
+
+-- Replace newlines with spaces
 transformDescription :: String -> String
 transformDescription = map (\ch -> if ch == '\n' then ' ' else ch)
 
@@ -313,26 +477,63 @@ cutDescription d
     | length d > 512 = reverse (dropWhile isSpace $ dropWhile (not . isSpace) $ reverse $ take 512 d) ++ "..."
     | otherwise = d
 
-getTagIdent :: String -> PageNumber -> Identifier
-getTagIdent tag pageNum
+getTagIdentifier :: String -> PageNumber -> Identifier
+getTagIdentifier tag pageNum
     | pageNum == 1 = fromFilePath $ "tag/" ++ tag ++ "/"
     | otherwise = fromFilePath $ "tag/" ++ tag ++ "/page/" ++ (show pageNum) ++ "/"
 
-getPageIdent :: PageNumber -> Identifier
-getPageIdent pageNum
+getPageIdentifier :: PageNumber -> Identifier
+getPageIdentifier pageNum
     | pageNum == 1 = fromFilePath $ ""
     | otherwise = fromFilePath $ "page/" ++ (show pageNum) ++ "/"
 
+addIndexRoute :: Routes
 addIndexRoute = customRoute (\id ->
     if toFilePath id == ""
         then "index.html"
         else (toFilePath id) ++ "/index.html")
 
+-- | Transforms 'something/something.md' into 'something/something/index.html'
+-- and 'something/YYYY-MM-DD-something.md' into 'something/something/index.html'
+removeExtension :: Routes
+removeExtension = customRoute $ removeExtension' . toFilePath
+
+removeExtension' :: String -> String
+removeExtension' filepath = subRegex (mkRegex "^(.*)\\.md$")
+                                        (subRegex (mkRegex "/[0-9]{4}-[0-9]{2}-[0-9]{2}-(.*)\\.md$") filepath "/\\1/index.html")
+                                        "\\1/index.html"
+
+identifierToUrl :: String -> String
+identifierToUrl filepath = subRegex (mkRegex "^(.*)\\.md$")
+                                        (subRegex (mkRegex "/[0-9]{4}-[0-9]{2}-[0-9]{2}-(.*)\\.md$") filepath "/\\1/")
+                                        "\\1/"
+
+countText :: Int -> String -> String -> String -> String
+countText count one two many
+    | count `mod` 100 `div` 10 == 1 =
+        (show count) ++ " " ++ many
+    | count `mod` 10 == 1 =
+        (show count) ++ " " ++ one
+    | count `mod` 10 == 2 || count `mod` 10 == 3 || count `mod` 10 == 4 =
+        (show count) ++ " " ++ two
+    | otherwise =
+        (show count) ++ " " ++ many
+
+
+getWeight :: Int -> Int -> Int -> Int
+getWeight minCount maxCount count =
+    round ((5 * ((fromIntegral count :: Double) - fromIntegral minCount) +
+        fromIntegral maxCount - fromIntegral minCount) /
+        (fromIntegral maxCount - fromIntegral minCount))
+
+
+----
+
 tagsContext :: Context a
 tagsContext = field "tags" convertTags
     where
         convertTags item = do
-            tags <- getTags' $ itemIdentifier item
+            tags <- getTags $ itemIdentifier item
             return $ concat $ map (\tag -> "<a href=\"/tag/" ++ tag ++ "/\" class=\"label label-default\">" ++ tag ++ "</a> ") tags
 
 timeLocale :: TimeLocale
@@ -380,35 +581,6 @@ timeLocale' = timeLocale
     ]
   }
 
-getItemUTC :: MonadMetadata m
-           => TimeLocale        -- ^ Output time locale
-           -> Identifier        -- ^ Input page
-           -> m UTCTime         -- ^ Parsed UTCTime
-getItemUTC locale id' = do
-    metadata <- getMetadata id'
-    let tryField k fmt = fmap unwrap (M.lookup k metadata) >>= parseTime' fmt
-        fn             = takeFileName $ toFilePath id'
-
-    maybe empty' return $ msum $
-        [tryField "published" fmt | fmt <- formats] ++
-        [tryField "date"      fmt | fmt <- formats] ++
-        [parseTime' "%Y-%m-%d" $ intercalate "-" $ take 3 $ splitAll "-" fn]
-  where
-    empty'     = fail $ "Hakyll.Web.Template.Context.getItemUTC: " ++
-        "could not parse time for " ++ show id'
-    parseTime' = parseTime locale
-    formats    =
-        [ "%a, %d %b %Y %H:%M:%S %Z"
-        , "%Y-%m-%dT%H:%M:%S%Z"
-        , "%Y-%m-%d %H:%M:%S%Z"
-        , "%Y-%m-%dT%H:%M%Z"
-        , "%Y-%m-%d %H:%M%Z"
-        , "%Y-%m-%d"
-        , "%B %e, %Y %l:%M %p"
-        , "%B %e, %Y"
-        , "%b %d, %Y"
-        ]
-
 postCtx :: Context String
 postCtx =
     dateFieldWith timeLocale "date" "%A, %e %B %Y, %R" `mappend`
@@ -445,132 +617,12 @@ isPublished identifier = do
     published <- getMetadataField identifier "published"
     return (published /= Just "false")
 
--- | Transforms 'something/something.md' into 'something/something/index.html'
--- and 'something/YYYY-MM-DD-something.md' into 'something/something/index.html'
-removeExtension :: Routes
-removeExtension = customRoute $ removeExtension' . toFilePath
-
-removeExtension' :: String -> String
-removeExtension' filepath = subRegex (mkRegex "^(.*)\\.md$")
-                                        (subRegex (mkRegex "/[0-9]{4}-[0-9]{2}-[0-9]{2}-(.*)\\.md$") filepath "/\\1/index.html")
-                                        "\\1/index.html"
-
-identifierToUrl :: String -> String
-identifierToUrl filepath = subRegex (mkRegex "^(.*)\\.md$")
-                                        (subRegex (mkRegex "/[0-9]{4}-[0-9]{2}-[0-9]{2}-(.*)\\.md$") filepath "/\\1/")
-                                        "\\1/"
-
-countText :: Int -> String -> String -> String -> String
-countText count one two many
-    | count `mod` 100 `div` 10 == 1 =
-        (show count) ++ " " ++ many
-    | count `mod` 10 == 1 =
-        (show count) ++ " " ++ one
-    | count `mod` 10 == 2 || count `mod` 10 == 3 || count `mod` 10 == 4 =
-        (show count) ++ " " ++ two
-    | otherwise =
-        (show count) ++ " " ++ many
-
-getWeight :: Int -> Int -> Int -> Int
-getWeight minCount maxCount count =
-    round ((5 * ((fromIntegral count :: Double) - fromIntegral minCount) +
-        fromIntegral maxCount - fromIntegral minCount) /
-        (fromIntegral maxCount - fromIntegral minCount))
 
 
--- Updated versions of library functions
-
-buildPaginateWith' :: MonadMetadata m
-                  => Int
-                  -> (PageNumber -> Identifier)
-                  -> Pattern
-                  -> m Paginate
-buildPaginateWith' n makeId pattern = do
-    -- TODO filter unpublished
-
-    metadata <- getAllMetadata pattern
-    let idents         = fst $ unzip $ sortBy compareFn metadata
-        pages          = flip unfoldr idents $ \xs ->
-            if null xs then Nothing else Just (splitAt n xs)
-        nPages         = length pages
-        paginatePages' = zip [1..] pages
-        pagPlaces'     =
-            [(ident, idx) | (idx,ids) <- paginatePages', ident <- ids] ++
-            [(makeId i, i) | i <- [1 .. nPages]]
-
-    return $ Paginate (M.fromList paginatePages') (M.fromList pagPlaces') makeId
-        (PatternDependency pattern idents)
-
-    where
-        compareFn :: (a, Metadata) -> (a, Metadata) -> Ordering
-        compareFn (_, a) (_, b)
-            | M.lookup "date" a == Nothing && M.lookup "date" b == Nothing = EQ
-            | M.lookup "date" a == Nothing = GT
-            | M.lookup "date" b == Nothing = LT
-            | otherwise = compare (unwrap $ b M.! "date") (unwrap $ a M.! "date")
 
 --------------------------------------------------------------------------------
--- | Takes first, current, last page and produces index of next page
-type RelPage = PageNumber -> PageNumber -> PageNumber -> Maybe PageNumber
 
-paginateField :: Paginate -> String -> RelPage -> Context a
-paginateField pag fieldName relPage = field fieldName $ \item ->
-    let identifier = itemIdentifier item
-    in case M.lookup identifier (paginatePlaces pag) of
-        Nothing -> fail $ printf
-            "Hakyll.Web.Paginate: there is no page %s in paginator map."
-            (show identifier)
-        Just pos -> case relPage 1 pos nPages of
-            Nothing   -> fail "Hakyll.Web.Paginate: No page here."
-            Just pos' -> do
-                let nextId = paginateMakeId pag pos'
-                mroute <- getRoute nextId
-                case mroute of
-                    Nothing -> fail $ printf
-                        "Hakyll.Web.Paginate: unable to get route for %s."
-                        (show nextId)
-                    Just rt -> return $ removeIndex $ toUrl rt
-  where
-    nPages = M.size (paginatePages pag)
-    removeIndex url
-        | "index.html" `isSuffixOf` url = take (length url - 10) url
-        | otherwise = url
-
-paginateContext' :: Paginate -> Context a
-paginateContext' pag = mconcat
-    [ paginateField pag "firstPage"
-        (\f c _ -> if c <= f then Nothing else Just f)
-    , paginateField pag "previousPage"
-        (\f c _ -> if c <= f then Nothing else Just (c - 1))
-    , paginateField pag "nextPage"
-        (\_ c l -> if c >= l then Nothing else Just (c + 1))
-    , paginateField pag "lastPage"
-        (\_ c l -> if c >= l then Nothing else Just l)
-    ]
-
-pandocCompiler' :: Compiler (Item String)
-pandocCompiler' = do
-    post <- getResourceBody
-    makeItem $ T.unpack $ T.decodeUtf8 $ toByteString $ renderHtmlFragment UTF8 $ writeXmlHtml defaultXmlHtmlWriterOptions
-        { idPrefix = "" --postUrl post
-        , debugOutput = False
-        }
-        (readMarkdown readerOptions $ itemBody post)
-
-readerOptions :: ReaderOptions
-readerOptions = def
-  { readerSmart = True
-  , readerParseRaw = True
-  }
 
 imagesMap :: Tag String -> Maybe String
 imagesMap (TagOpen "img" attrs) = fmap snd $ find (\attr -> fst attr == "src") attrs
 imagesMap _ = Nothing
-
-dateFieldWith :: TimeLocale  -- ^ Output time locale
-              -> String      -- ^ Destination key
-              -> String      -- ^ Format to use on the date
-              -> Context a   -- ^ Resulting context
-dateFieldWith locale key format = field key $ \i -> do
-    time <- getItemUTC locale $ itemIdentifier i
-    return $ formatTime locale format time
