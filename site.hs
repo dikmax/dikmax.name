@@ -258,11 +258,12 @@ getTags' :: MonadMetadata m => Identifier -> m [String]
 getTags' identifier = do
     metadata <- getMetadata identifier
     return $ maybe [] (map trim . splitAll "," . unwrap) $ M.lookup "tags" metadata
-    where
-      unwrap str
-        | str == "\"" = str
-        | head str == '"' && last str == '"' = tail $ init str
-        | otherwise = str
+
+
+unwrap str -- TODO decode escaped chars
+    | str == "\"" = str
+    | head str == '"' && last str == '"' = tail $ init str
+    | otherwise = str
 
 --
 -- Metadata processing

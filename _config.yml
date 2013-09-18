@@ -5,5 +5,10 @@ prose:
       - name: "tags"
         field:
           element: "text"
-          label: "Permalink"
+          label: "Tags"
           value: ""
+      - name: "date"
+        field:
+          element: "text"
+          date: "Date"
+          value: CURRENT_DATETIME
