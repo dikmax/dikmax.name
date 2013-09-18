@@ -479,7 +479,7 @@ buildPaginateWith' n makeId pattern = do
             | M.lookup "date" a == Nothing && M.lookup "date" b == Nothing = EQ
             | M.lookup "date" a == Nothing = GT
             | M.lookup "date" b == Nothing = LT
-            | otherwise = compare (b M.! "date") (a M.! "date")
+            | otherwise = compare (unwrap $ b M.! "date") (unwrap $ a M.! "date")
 
 --------------------------------------------------------------------------------
 -- | Takes first, current, last page and produces index of next page
