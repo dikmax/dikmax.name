@@ -26,143 +26,12 @@ import           XmlHtmlWriter
 main :: IO ()
 main = hakyll $ do
     staticFilesRules
-
     lessCompilerRules
-
-    tags <- buildTagsWith getTags "posts/*" (\tag -> fromFilePath $ "tag/" ++ tag ++ "/index.html")
-
-    -- Posts pages
-
-    match "posts/*" $ do
-        route $ removeExtension
-
-        compile $ do
-            identifier <- getUnderlying
-            title <- getMetadataField identifier "title"
-            tags <- getTags identifier
-            description <- getMetadataField identifier "description"
-            item <- pandocCompiler >>= saveSnapshot "content"
-            let images = map (fromMaybe "") $ filter isJust $ map imagesMap $ TS.parseTags $ itemBody item
-            time <- getItemUTC defaultTimeLocale identifier
-            loadAndApplyTemplate "templates/_post.html" postCtx item
-                >>= loadAndApplyTemplate "templates/default.html" (pageCtx $ defaultMetadata
-                    { metaTitle = title
-                    , metaUrl = '/' : (identifierToUrl $ toFilePath identifier)
-                    , metaKeywords = tags
-                    , metaDescription = fromMaybe (cutDescription $ transformDescription $ escapeHtml $ TS.innerText $ TS.parseTags $ itemBody item) description
-                    , metaType = FacebookArticle time tags images
-                    })
-
-    -- Tags pagesmatch "less/*.less" $ do
-        compile getResourceBody
-
-    d <- makePatternDependency "less/**"
-    rulesExtraDependencies [d] $ create ["css/style.css"] $ do
-        route idRoute
-        compile $ loadBody "less/style.less"
-            >>= makeItem
-            >>= withItemBody
-              (unixFilter "lessc" ["--yui-compress","-O2", "--include-path=less","-"])
-
-    create ["tags/index.html"] $ do
-        route idRoute
-        compile $ do
-            t <- renderTags
-                (\tag url count minCount maxCount ->
-                    "<a href=\"/tag/" ++ tag ++ "/\" title=\"" ++ (countText count "пост" "поста" "постов") ++
-                    "\" class=\"weight-" ++ (show $ getWeight minCount maxCount count) ++ "\">" ++ tag ++ "</a>")
-                (intercalate " ") tags
-            let ctx = pageCtx (defaultMetadata
-                    { metaTitle = Just "Темы"
-                    , metaDescription = "Полный список тем (тегов) на сайте"
-                    , metaUrl = "/tags/"
-                    })
-            makeItem t
-                >>= loadAndApplyTemplate "templates/_tags-wrapper.html" ctx
-                >>= loadAndApplyTemplate "templates/_post-without-footer.html" ctx
-                >>= loadAndApplyTemplate "templates/default.html" ctx
-
-    tagsRules tags $ \tag identifiers -> do
-        paginate <- buildPaginateWith 5 (getTagIdentifier tag) identifiers
-        paginateRules paginate $ \page ids -> do
-            route addIndexRoute
-            compile $ do
-                posts <- recentFirst =<< loadAllSnapshots ids "content"
-                let postsCtx =
-                        listField "posts" postCtx (return posts) `mappend`
-                        paginateContext paginate `mappend`
-                        pageCtx (defaultMetadata
-                            { metaTitle =
-                                if page == 1
-                                    then Just $ "\"" ++ tag ++ "\""
-                                    else Just $ "\"" ++ tag ++ "\", " ++ (show page) ++ "-я страница"
-                            , metaDescription =
-                                if page == 1
-                                    then "Мой персональный блог, записи с тегом \"" ++ tag ++ "\"."
-                                    else "Мой персональный блог, записи с тегом \"" ++ tag ++ "\" с "
-                                        ++ (show ((page - 1) * 5 + 1)) ++ " по " ++ (show (page * 5)) ++ "."
-                            , metaUrl =
-                                if page == 1
-                                    then "/tag/" ++ tag ++ "/"
-                                    else "/tag/" ++ tag ++ "/page/" ++ (show page) ++ "/"
-                            })
-
-                makeItem ""
-                    >>= loadAndApplyTemplate "templates/list.html" postsCtx
-
+    postsRules
+    tagsPagesRules
     archiveRules
-
-    match "index.md" $ do
-        compile $ do
-            pandocCompiler
-                >>= loadAndApplyTemplate "templates/_post-without-footer.html" postCtx
-
-    paginate <- buildPaginateWith 5 getPageIdentifier ("posts/*")
-    paginateRules paginate $ \page ids -> do
-        route addIndexRoute
-        if page == 1
-            then compile $ do
-                posts <- recentFirst =<< loadAllSnapshots ids "content"
-                topPost <- loadBody "index.md"
-                let postsCtx =
-                        constField "body" topPost `mappend`
-                        listField "posts" postCtx (return posts) `mappend`
-                        paginateContext paginate `mappend`
-                        pageCtx (defaultMetadata
-                            { metaDescription = "Мой персональный блог. "
-                                ++ "Я рассказываю о программировании и иногда о своей жизни."
-                            })
-                makeItem ""
-                    >>= loadAndApplyTemplate "templates/index.html" postsCtx
-            else compile $ do
-                posts <- recentFirst =<< loadAllSnapshots ids "content"
-                let postsCtx =
-                        listField "posts" postCtx (return posts) `mappend`
-                        paginateContext paginate `mappend`
-                        pageCtx (defaultMetadata
-                            { metaTitle = Just $ (show page) ++ "-я страница"
-                            , metaDescription = "Мой персональный блог, записи с " ++ (show ((page - 1) * 5 + 1))
-                                ++ " по " ++ (show (page * 5)) ++ "."
-                            , metaUrl = "/page/" ++ (show page) ++ "/"
-                            })
-                makeItem ""
-                    >>= loadAndApplyTemplate "templates/list.html" postsCtx
-
-    match (fromList ["about.md", "shoutbox.md"]) $ do
-        route $ removeExtension
-        compile $ do
-            identifier <- getUnderlying
-            title <- getMetadataField identifier "title"
-            description <- getMetadataField identifier "description"
-            pandocCompiler
-                >>= loadAndApplyTemplate "templates/_post-without-footer.html" postCtx
-                >>= loadAndApplyTemplate "templates/default.html" (pageCtx (defaultMetadata
-                    { metaTitle = title
-                    , metaDescription = fromMaybe "" description
-                    , metaUrl = '/' : (identifierToUrl $ toFilePath identifier)
-                    }))
-
-    -- RSS
+    indexPagesRules
+    staticPagesRules
     feedRules
 
     match "templates/*" $ compile templateCompiler
@@ -283,6 +152,10 @@ staticFilesRules = do
         route   idRoute
         compile copyFileCompiler
 
+--------------------------------------------------------------------------------
+-- LESS files
+--------------------------------------------------------------------------------
+
 lessCompilerRules :: Rules ()
 lessCompilerRules = do
     match "less/*.less" $ do
@@ -297,14 +170,151 @@ lessCompilerRules = do
               (unixFilter "lessc" ["--yui-compress","-O2", "--include-path=less","-"])
 
 --------------------------------------------------------------------------------
+-- Posts
+--------------------------------------------------------------------------------
+
+postsRules :: Rules ()
+postsRules = do
+    match "posts/*" $ do
+        route $ removeExtension
+
+        compile $ do
+            identifier <- getUnderlying
+            title <- getMetadataField identifier "title"
+            tags <- getTags identifier
+            description <- getMetadataField identifier "description"
+            item <- pandocCompiler >>= saveSnapshot "content"
+            let images = map (fromMaybe "") $ filter isJust $ map imagesMap $ TS.parseTags $ itemBody item
+            time <- getItemUTC defaultTimeLocale identifier
+            loadAndApplyTemplate "templates/_post.html" postCtx item
+                >>= loadAndApplyTemplate "templates/default.html" (pageCtx $ defaultMetadata
+                    { metaTitle = title
+                    , metaUrl = '/' : (identifierToUrl $ toFilePath identifier)
+                    , metaKeywords = tags
+                    , metaDescription = fromMaybe (cutDescription $ transformDescription $ escapeHtml $ TS.innerText $ TS.parseTags $ itemBody item) description
+                    , metaType = FacebookArticle time tags images
+                    })
+
+--------------------------------------------------------------------------------
+-- Index pages
+--------------------------------------------------------------------------------
+
+indexPagesRules :: Rules ()
+indexPagesRules = do
+    match "index.md" $ do
+        compile $ do
+            pandocCompiler
+                >>= loadAndApplyTemplate "templates/_post-without-footer.html" postCtx
+
+    paginate <- buildPaginateWith 5 getPageIdentifier ("posts/*")
+    paginateRules paginate $ \page ids -> do
+        route addIndexRoute
+        if page == 1
+            then compile $ do
+                posts <- recentFirst =<< loadAllSnapshots ids "content"
+                topPost <- loadBody "index.md"
+                let postsCtx =
+                        constField "body" topPost `mappend`
+                        listField "posts" postCtx (return posts) `mappend`
+                        paginateContext paginate `mappend`
+                        pageCtx (defaultMetadata
+                            { metaDescription = "Мой персональный блог. "
+                                ++ "Я рассказываю о программировании и иногда о своей жизни."
+                            })
+                makeItem ""
+                    >>= loadAndApplyTemplate "templates/index.html" postsCtx
+            else compile $ do
+                posts <- recentFirst =<< loadAllSnapshots ids "content"
+                let postsCtx =
+                        listField "posts" postCtx (return posts) `mappend`
+                        paginateContext paginate `mappend`
+                        pageCtx (defaultMetadata
+                            { metaTitle = Just $ (show page) ++ "-я страница"
+                            , metaDescription = "Мой персональный блог, записи с " ++ (show ((page - 1) * 5 + 1))
+                                ++ " по " ++ (show (page * 5)) ++ "."
+                            , metaUrl = "/page/" ++ (show page) ++ "/"
+                            })
+                makeItem ""
+                    >>= loadAndApplyTemplate "templates/list.html" postsCtx
+
+--------------------------------------------------------------------------------
 -- Tags
 --------------------------------------------------------------------------------
+
+tagsPagesRules :: Rules ()
+tagsPagesRules = do
+    tags <- buildTagsWith getTags "posts/*" (\tag -> fromFilePath $ "tag/" ++ tag ++ "/index.html")
+    create ["tags/index.html"] $ do
+        route idRoute
+        compile $ do
+            t <- renderTags
+                (\tag url count minCount maxCount ->
+                    "<a href=\"/tag/" ++ tag ++ "/\" title=\"" ++ (countText count "пост" "поста" "постов") ++
+                    "\" class=\"weight-" ++ (show $ getWeight minCount maxCount count) ++ "\">" ++ tag ++ "</a>")
+                (intercalate " ") tags
+            let ctx = pageCtx (defaultMetadata
+                    { metaTitle = Just "Темы"
+                    , metaDescription = "Полный список тем (тегов) на сайте"
+                    , metaUrl = "/tags/"
+                    })
+            makeItem t
+                >>= loadAndApplyTemplate "templates/_tags-wrapper.html" ctx
+                >>= loadAndApplyTemplate "templates/_post-without-footer.html" ctx
+                >>= loadAndApplyTemplate "templates/default.html" ctx
+
+    tagsRules tags $ \tag identifiers -> do
+        paginate <- buildPaginateWith 5 (getTagIdentifier tag) identifiers
+        paginateRules paginate $ \page ids -> do
+            route addIndexRoute
+            compile $ do
+                posts <- recentFirst =<< loadAllSnapshots ids "content"
+                let postsCtx =
+                        listField "posts" postCtx (return posts) `mappend`
+                        paginateContext paginate `mappend`
+                        pageCtx (defaultMetadata
+                            { metaTitle =
+                                if page == 1
+                                    then Just $ "\"" ++ tag ++ "\""
+                                    else Just $ "\"" ++ tag ++ "\", " ++ (show page) ++ "-я страница"
+                            , metaDescription =
+                                if page == 1
+                                    then "Мой персональный блог, записи с тегом \"" ++ tag ++ "\"."
+                                    else "Мой персональный блог, записи с тегом \"" ++ tag ++ "\" с "
+                                        ++ (show ((page - 1) * 5 + 1)) ++ " по " ++ (show (page * 5)) ++ "."
+                            , metaUrl =
+                                if page == 1
+                                    then "/tag/" ++ tag ++ "/"
+                                    else "/tag/" ++ tag ++ "/page/" ++ (show page) ++ "/"
+                            })
+
+                makeItem ""
+                    >>= loadAndApplyTemplate "templates/list.html" postsCtx
+
 
 getTags :: MonadMetadata m => Identifier -> m [String]
 getTags identifier = do
     metadata <- getMetadata identifier
     return $ maybe [] (map trim . splitAll "," . unwrap) $ M.lookup "tags" metadata
 
+--------------------------------------------------------------------------------
+-- Static pages
+--------------------------------------------------------------------------------
+
+staticPagesRules :: Rules ()
+staticPagesRules = do
+    match (fromList ["about.md", "shoutbox.md"]) $ do
+        route $ removeExtension
+        compile $ do
+            identifier <- getUnderlying
+            title <- getMetadataField identifier "title"
+            description <- getMetadataField identifier "description"
+            pandocCompiler
+                >>= loadAndApplyTemplate "templates/_post-without-footer.html" postCtx
+                >>= loadAndApplyTemplate "templates/default.html" (pageCtx (defaultMetadata
+                    { metaTitle = title
+                    , metaDescription = fromMaybe "" description
+                    , metaUrl = '/' : (identifierToUrl $ toFilePath identifier)
+                    }))
 
 --------------------------------------------------------------------------------
 -- Html metadata
