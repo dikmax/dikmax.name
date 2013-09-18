@@ -1,7 +1,7 @@
 --------------------------------------------------------------------------------
 {-# LANGUAGE OverloadedStrings #-}
 import           Blaze.ByteString.Builder (toByteString)
-import           Control.Monad (forM_, filterM)
+import           Control.Monad (forM_, filterM, msum)
 import           Data.Char
 import           Data.List (sortBy, intercalate, unfoldr, isSuffixOf, find, groupBy)
 import qualified Data.Map as M
@@ -10,9 +10,9 @@ import           Data.Monoid (mappend, mconcat)
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import           Data.Time.Clock (UTCTime)
-import           Data.Time.Format (formatTime)
-import           Hakyll
--- import           System.FilePath (takeBaseName, takeFileName, replaceFileName, replaceExtension)
+import           Data.Time.Format (formatTime, parseTime)
+import           Hakyll hiding (getItemUTC, dateFieldWith)
+import           System.FilePath (takeBaseName, takeFileName, replaceFileName, replaceExtension)
 import           System.Locale
 import           Text.HTML.TagSoup (Tag(..))
 import qualified Text.HTML.TagSoup as TS
@@ -380,6 +380,34 @@ timeLocale' = timeLocale
     ]
   }
 
+getItemUTC :: MonadMetadata m
+           => TimeLocale        -- ^ Output time locale
+           -> Identifier        -- ^ Input page
+           -> m UTCTime         -- ^ Parsed UTCTime
+getItemUTC locale id' = do
+    metadata <- getMetadata id'
+    let tryField k fmt = fmap unwrap (M.lookup k metadata) >>= parseTime' fmt
+        fn             = takeFileName $ toFilePath id'
+
+    maybe empty' return $ msum $
+        [tryField "published" fmt | fmt <- formats] ++
+        [tryField "date"      fmt | fmt <- formats] ++
+        [parseTime' "%Y-%m-%d" $ intercalate "-" $ take 3 $ splitAll "-" fn]
+  where
+    empty'     = fail $ "Hakyll.Web.Template.Context.getItemUTC: " ++
+        "could not parse time for " ++ show id'
+    parseTime' = parseTime locale
+    formats    =
+        [ "%a, %d %b %Y %H:%M:%S %Z"
+        , "%Y-%m-%dT%H:%M:%S%Z"
+        , "%Y-%m-%d %H:%M:%S%Z"
+        , "%Y-%m-%dT%H:%M%Z"
+        , "%Y-%m-%d %H:%M%Z"
+        , "%Y-%m-%d"
+        , "%B %e, %Y %l:%M %p"
+        , "%B %e, %Y"
+        , "%b %d, %Y"
+        ]
 
 postCtx :: Context String
 postCtx =
@@ -538,3 +566,11 @@ readerOptions = def
 imagesMap :: Tag String -> Maybe String
 imagesMap (TagOpen "img" attrs) = fmap snd $ find (\attr -> fst attr == "src") attrs
 imagesMap _ = Nothing
+
+dateFieldWith :: TimeLocale  -- ^ Output time locale
+              -> String      -- ^ Destination key
+              -> String      -- ^ Format to use on the date
+              -> Context a   -- ^ Resulting context
+dateFieldWith locale key format = field key $ \i -> do
+    time <- getItemUTC locale $ itemIdentifier i
+    return $ formatTime locale format time
