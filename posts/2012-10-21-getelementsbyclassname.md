@@ -1,7 +1,8 @@
 ---
-title: getElementsByClassName в IE
-date: 2012-10-21T22:19:27+03:00
-tags: javascript, vanillajs, кроссбраузерность, программирование
+title: "getElementsByClassName в IE"
+date: "2012-10-21T22:19:27+03:00"
+published: true
+tags: "javascript, vanillajs, кроссбраузерность, программирование"
 ---
 
 А вы знаете, что в Internet Explorer вплоть до 8-го у `document` нет метода `getElementsByClassName`? А следовательно, все ваши верстки, основанные только на классах, будут сильно проигрывать в производительности. Все фреймворки эмулируют метод вызовом `getElementsByTagName('*')` с дальнейшей ручной фильтрацией.

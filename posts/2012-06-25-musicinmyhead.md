@@ -1,7 +1,8 @@
 ---
-title: Музыка в моей голове
-date: 2012-06-25T13:57:35+03:00
-tags: музыка
+title: "Музыка в моей голове"
+date: "2012-06-25T13:57:35+03:00"
+published: true
+tags: "музыка"
 ---
 
 <audio controls="controls" preload="none">

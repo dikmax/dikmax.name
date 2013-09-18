@@ -1,7 +1,8 @@
 ---
-title: История любовных баллад
-date: 2012-07-31T10:44:15+03:00
-tags: youtube, видео, музыка
+title: "История любовных баллад"
+date: "2012-07-31T10:44:15+03:00"
+published: true
+tags: "youtube, видео, музыка"
 ---
 
 ![](http://www.youtube.com/watch?v=-TeIm9CeCE0)

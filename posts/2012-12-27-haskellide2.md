@@ -1,7 +1,8 @@
 ---
-title: Haskell IDE 2
-date: 2012-12-27T18:31:45+03:00
-tags: haskell, ide, jetbrains, phpstorm, программирование
+title: "Haskell IDE 2"
+date: "2012-12-27T18:31:45+03:00"
+published: true
+tags: "haskell, ide, jetbrains, phpstorm, программирование"
 ---
 
 Прошло уже довольно много времени с [прошлого обзора IDE для Haskell](/post/haskellide). Поэтому я решил рассказать, на каком варианте я в итоге остановился. Встречаем [PhpStorm](http://www.jetbrains.com/phpstorm/)! Казалось бы, причем тут специализированная среда разработки для PHP к Haskell. Но тому есть несколько причин. 

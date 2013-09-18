@@ -1,7 +1,8 @@
 ---
-title: Source map
-date: 2012-09-24T22:52:42+03:00
-tags: closure compiler, css, google chrome, javascript, программирование
+title: "Source map"
+date: "2012-09-24T22:52:42+03:00"
+published: true
+tags: "closure compiler, css, google chrome, javascript, программирование"
 ---
 
 Итак, у вас очень много JavaScript-кода. А значит, вы его сжимаете перед тем, как отдавать клиенту. Наверняка даже используете [YUI Compressor](http://yuilibrary.com/projects/yuicompressor/) или [Google Closure Compiler](https://developers.google.com/closure/compiler/). А может, вы пишете свой client-side код на чем-нибудь модном: на [Dart](http://dartlang.org/) или [CoffeeScript](http://coffeescript.org/)? В любом случае вы наверняка сталкивались с проблемой отладки и поиска ошибки в браузере. Попробуй угадать, почему в 3-й строчке на 100501 позиции значение переменной  `aAz` вдруг стало `undefined`. А ведь до компиляции скрипта все работало как надо! Я в таких случаях начинаю добавлять в код много инструкций `console.log`, чтобы хоть как-то проследить процесс выполнения кода.

@@ -1,7 +1,8 @@
 ---
-title: Twitter Bootstrap 2.1
-date: 2012-08-21T22:52:00+03:00
-tags: блог
+title: "Twitter Bootstrap 2.1"
+date: "2012-08-21T22:52:00+03:00"
+published: true
+tags: "блог"
 ---
 
 Вышел новый [Twitter Bootstrap](http://twitter.github.com/bootstrap/). И мой блог успешно на него мигрировал, попутно прихватив с собой обновленный [jQuery 1.8.0](http://jquery.com/). Соответственно обновилось все, что было из Bootstrap позимствованно. Верхняя панель стала еще прекраснее!

@@ -1,7 +1,8 @@
 ---
-title: RIP Google Reader
-date: 2013-07-02T21:54:39+03:00
-tags: feedly, google reader, rss, блог, лытдыбр
+title: "RIP Google Reader"
+date: "2013-07-02T21:54:39+03:00"
+published: true
+tags: "feedly, google reader, rss, блог, лытдыбр"
 ---
 
 ![Памятник Google Reader](http://a51056ce8d9b948fb69e-8de36eb37b2366f5a76a776c3dee0b32.r42.cf1.rackcdn.com/rip-google-reader.jpg)

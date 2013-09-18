@@ -1,7 +1,8 @@
 ---
-title: Haskell IDE
-date: 2012-06-21T23:40:11+03:00
-tags: eclipse, haskell, ide, intellij idea, leksah, sublime text, программирование
+title: "Haskell IDE"
+date: "2012-06-21T23:40:11+03:00"
+published: true
+tags: "eclipse, haskell, ide, intellij idea, leksah, sublime text, программирование"
 ---
 
 Продолжаю попытки найти оптимальную IDE для программирования на Haskell. На повестке дня следующие кандидаты: [IDEA Haskell или ideah](http://code.google.com/p/ideah/), [IDEA Custom File Type](http://blogs.jetbrains.com/idea/2010/09/custom-file-types-in-intellij-idea/), [Sublime Text 2](http://www.sublimetext.com/2), [Leksah](http://leksah.org/), [EclipseFP](http://eclipsefp.github.com/).

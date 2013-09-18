@@ -1,7 +1,8 @@
 ---
-title: Subversion и хранение ревизий
-date: 2013-01-19T23:02:01+03:00
-tags: subversion, svn, работа
+title: "Subversion и хранение ревизий"
+date: "2013-01-19T23:02:01+03:00"
+published: true
+tags: "subversion, svn, работа"
 ---
 
 ![](http://a51056ce8d9b948fb69e-8de36eb37b2366f5a76a776c3dee0b32.r42.cf1.rackcdn.com/subversion_logo.png "Subversion logo")

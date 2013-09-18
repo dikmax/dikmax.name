@@ -1,7 +1,8 @@
 ---
-title: Выполнение пользовательского кода в nodejs
-date: 2012-10-29T15:47:08+03:00
-tags: javascript, nodejs, безопасность, программирование, работа
+title: "Выполнение пользовательского кода в nodejs"
+date: "2012-10-29T15:47:08+03:00"
+published: true
+tags: "javascript, nodejs, безопасность, программирование, работа"
 ---
 
 Мне тут по долгу службы пришлось столкнуться с [node.js](http://nodejs.org/). Это такой серверный JavaScript, если что. И в его основе лежит [V8](http://code.google.com/p/v8/) - JS-движок от Google, который стоит в Google Chrome.

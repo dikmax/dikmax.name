@@ -1,8 +1,7 @@
 ---
-title: Последние
-date: 2012-10-24T09:28:55+03:00
+title: "Последние"
+date: "2012-10-24T09:28:55+03:00"
 published: false
-special: true
 ---
 
 * 8 августа 2013 [Elysium](http://www.imdb.com/title/tt1535108/ "http://f148a8e42cf0aa2b632f-bcabde943c9dbba845b7ab1e26b4ef29.r37.cf1.rackcdn.com/Elysium.jpg") (8/10)

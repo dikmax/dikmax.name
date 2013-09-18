@@ -1,7 +1,8 @@
 ---
-title: AngularJS и параметры контроллеров
-date: 2013-03-30T21:53:51+03:00
-tags: angularjs, javascript, программирование
+title: "AngularJS и параметры контроллеров"
+date: "2013-03-30T21:53:51+03:00"
+published: true
+tags: "angularjs, javascript, программирование"
 ---
 
 Те люди, которые работают с [AngularJS](http://angularjs.org/), знают про директиву [ngController](http://docs.angularjs.org/api/ng.directive:ngController). В нее передается функция, описывающая поведение блока с директивой. И тут начинается магия! Если наша функция выглядит так: 

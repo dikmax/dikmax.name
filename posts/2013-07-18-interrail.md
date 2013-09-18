@@ -1,7 +1,8 @@
 ---
-title: InterRail
-date: 2013-07-18T11:57:31+03:00
-tags: вопрос, лытдыбр, отпуск, путешествие
+title: "InterRail"
+date: "2013-07-18T11:57:31+03:00"
+published: true
+tags: "вопрос, лытдыбр, отпуск, путешествие"
 ---
 
 [![](http://a51056ce8d9b948fb69e-8de36eb37b2366f5a76a776c3dee0b32.r42.cf1.rackcdn.com/logo-interrail.png "InterRail logo")](http://www.interrail.eu/)

@@ -1,7 +1,8 @@
 ---
-title: Видео с Frontend Dev Conf '13
-date: 2013-05-11T23:10:42+03:00
-tags: frontend dev conf, видео. javascript, конференция, ооп
+title: "Видео с Frontend Dev Conf '13"
+date: "2013-05-11T23:10:42+03:00"
+published: true
+tags: "frontend dev conf, javascript, видео, конференция, ооп"
 ---
 
 ![](http://a51056ce8d9b948fb69e-8de36eb37b2366f5a76a776c3dee0b32.r42.cf1.rackcdn.com/frontenddevconf.png "Frontend DEV Conf '13")

@@ -1,7 +1,8 @@
 ---
-title: Lonely Planet
-date: 2013-07-16T00:19:25+03:00
-tags: лытдыбр, отпуск, путешествие
+title: "Lonely Planet"
+date: "2013-07-16T00:19:25+03:00"
+published: true
+tags: "лытдыбр, отпуск, путешествие"
 ---
 
 До отпуска осталось чуть меньше месяца, и подготовка поездке идет полным ходом. Даже купил у [Lonely Planet](http://www.lonelyplanet.com/) их [путеводитель по Eвропе](http://shop.lonelyplanet.com/europe/europe-on-a-shoestring-travel-guide-7/). 

@@ -1,7 +1,8 @@
 ---
-title: Frontend DEV Conf '13
-date: 2013-02-22T16:31:42+03:00
-tags: frontend dev conf, javascript, конференция
+title: "Frontend DEV Conf '13"
+date: "2013-02-22T16:31:42+03:00"
+published: true
+tags: "frontend dev conf, javascript, конференция"
 ---
 
 [![](http://a51056ce8d9b948fb69e-8de36eb37b2366f5a76a776c3dee0b32.r42.cf1.rackcdn.com/frontenddevconf.png "Frontend DEV Conf '13")](http://www.frontendconf.by)

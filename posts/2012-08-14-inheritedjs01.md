@@ -1,7 +1,8 @@
 ---
-title: inherited.js v0.1
-date: 2012-08-14T22:50:37+03:00
-tags: inheritedjs, javascript, программирование
+title: "inherited.js v0.1"
+date: "2012-08-14T22:50:37+03:00"
+published: true
+tags: "inheritedjs, javascript, программирование"
 ---
 
 Как я и обещал, выкладываю в общий доступ библиотеку для создания классов в JavaScript. Исходный код можно [посмотреть на Github](https://github.com/dikmax/inheritedjs). 

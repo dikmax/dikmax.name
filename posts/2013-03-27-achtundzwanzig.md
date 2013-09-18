@@ -1,7 +1,8 @@
 ---
-title: Achtundzwanzig
-date: 2013-03-27T10:07:32+03:00
-tags: лытдыбр
+title: "Achtundzwanzig"
+date: "2013-03-27T10:07:32+03:00"
+published: true
+tags: "лытдыбр"
 ---
 
 28 — это четное натуральное число между 27 и 29. Это также составное число, и его собственные делители --- 1, 2, 4, 7 и 14. А еще это второе совершенное число (оно равно сумме своих собственных делителей). Кроме того, это [счастливое число](http://en.wikipedia.org/wiki/Happy_number), [треугольное число](http://en.wikipedia.org/wiki/Triangular_number), [шестиугольное число](http://en.wikipedia.org/wiki/Hexagonal_number) и [центрированное девятиугольное число](http://en.wikipedia.org/wiki/Centered_nonagonal_number). Оно входит в [последовательность Падована](http://en.wikipedia.org/wiki/Padovan_sequence).

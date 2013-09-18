@@ -1,7 +1,8 @@
 ---
-title: Branch prediction
-date: 2012-10-13T12:29:51+03:00
-tags: javascript, программирование, производительность
+title: "Branch prediction"
+date: "2012-10-13T12:29:51+03:00"
+published: true
+tags: "javascript, программирование, производительность"
 ---
 
 Есть такая вещь в современных и не очень процессорах, называется [предсказатель переходов](http://ru.wikipedia.org/wiki/%D0%9F%D1%80%D0%B5%D0%B4%D1%81%D0%BA%D0%B0%D0%B7%D0%B0%D1%82%D0%B5%D0%BB%D1%8C_%D0%BF%D0%B5%D1%80%D0%B5%D1%85%D0%BE%D0%B4%D0%BE%D0%B2) ([branch predictor](http://en.wikipedia.org/wiki/Branch_predictor)). Он позволяет значительно увеличить скорость работы процессора. Недавно мне [Антон](http://itground.by) прислал ссылку на обсуждение предсказателя переходов на Stack Overflow. И там есть [очень хорошее объяснение](http://stackoverflow.com/a/11227902/682727), обязательно посмотрите.

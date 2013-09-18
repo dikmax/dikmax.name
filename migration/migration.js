@@ -24,11 +24,11 @@ connection.connect(function(err) {
     rows.forEach(function (row) {
       var date = moment(row.date);
       var content = '---\n' +
-          'title: ' + row.title + '\n' +
-          'date: ' + date.format() + '\n' +
-          (row.published ? '' : 'published: false\n') +
-          (row.special ? 'special: true\n' : '') +
-          (row.tags ? 'tags: ' + row.tags + '\n' : '') +
+          'title: ' + JSON.stringify(row.title) + '\n' +
+          'date: ' + JSON.stringify(date.format()) + '\n' +
+          'published: ' + JSON.stringify(!!row.published) + '\n' +
+          // (row.special ? 'special: true\n' : '') +
+          (row.tags ? 'tags: ' + JSON.stringify(row.tags) + '\n' : '') +
           '---\n\n' +
           row.text;
 
