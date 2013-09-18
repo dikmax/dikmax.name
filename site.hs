@@ -254,6 +254,7 @@ archiveRules = do
             return $ formatTime timeLocale' "%e" utc
 
 
+
 getTags' :: MonadMetadata m => Identifier -> m [String]
 getTags' identifier = do
     metadata <- getMetadata identifier
@@ -384,6 +385,9 @@ postCtx :: Context String
 postCtx =
     dateFieldWith timeLocale "date" "%A, %e %B %Y, %R" `mappend`
     field "url" (return . identifierToUrl . toFilePath . itemIdentifier) `mappend`
+    field "title" (\i -> do
+      metadata <- getMetadata $ itemIdentifier i
+      return $ maybe "" (unwrap) $ M.lookup "title" metadata) `mappend`
     tagsContext `mappend`
     defaultContext
 
