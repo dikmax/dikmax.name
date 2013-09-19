@@ -204,7 +204,7 @@ indexPagesRules = do
     match "index.md" $ do
         compile $ do
             pandocCompiler
-                >>= loadAndApplyTemplate "templates/_post-without-footer.html" postCtx
+                >>= loadAndApplyTemplate "templates/_post-index.html" postCtx
 
     paginate <- buildPaginateWith 5 getPageIdentifier ("posts/*")
     paginateRules paginate $ \page ids -> do
