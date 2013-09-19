@@ -308,8 +308,8 @@ staticPagesRules =
             pandocCompiler
                 >>= loadAndApplyTemplate "templates/_post-without-footer.html" postCtx
                 >>= loadAndApplyTemplate "templates/default.html" (pageCtx (defaultMetadata
-                    { metaTitle = title
-                    , metaDescription = fromMaybe "" description
+                    { metaTitle = fmap unwrap title
+                    , metaDescription = unwrap $ fromMaybe "" description
                     , metaUrl = '/' : identifierToUrl (toFilePath identifier)
                     }))
 
@@ -470,7 +470,7 @@ readerOptions = def
 
 unwrap :: String -> String
 unwrap str -- TODO decode escaped chars
-    | str == "\"" = str
+    | str == "\"" || str == "" = str
     | head str == '"' && last str == '"' = tail $ init str
     | otherwise = str
 
