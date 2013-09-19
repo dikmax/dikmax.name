@@ -188,7 +188,7 @@ postsRules =
             let images = map (fromMaybe "") $ filter isJust $ map imagesMap $ TS.parseTags $ itemBody item
             time <- getItemUTC defaultTimeLocale identifier
             loadAndApplyTemplate "templates/_post.html" postCtx item
-                >>= loadAndApplyTemplate "templates/post.html" (postCtx `mappend` pageCtx (defaultMetadata
+                >>= loadAndApplyTemplate "templates/default.html" (postCtx `mappend` pageCtx (defaultMetadata
                     { metaTitle = fmap unwrap title
                     , metaUrl = '/' : identifierToUrl (toFilePath identifier)
                     , metaKeywords = tags
