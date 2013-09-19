@@ -188,13 +188,14 @@ postsRules =
             let images = map (fromMaybe "") $ filter isJust $ map imagesMap $ TS.parseTags $ itemBody item
             time <- getItemUTC defaultTimeLocale identifier
             loadAndApplyTemplate "templates/_post.html" postCtx item
-                >>= loadAndApplyTemplate "templates/default.html" (pageCtx $ defaultMetadata
-                    { metaTitle = title
+                >>= loadAndApplyTemplate "templates/post.html" (postCtx `mappend` pageCtx (defaultMetadata
+                    { metaTitle = fmap unwrap title
                     , metaUrl = '/' : identifierToUrl (toFilePath identifier)
                     , metaKeywords = tags
-                    , metaDescription = fromMaybe (cutDescription $ transformDescription $ escapeHtml $ TS.innerText $ TS.parseTags $ itemBody item) description
+                    , metaDescription = maybe (cutDescription $ transformDescription $ escapeHtml $ TS.innerText $ TS.parseTags $
+                        itemBody item) unwrap description
                     , metaType = FacebookArticle time tags images
-                    })
+                    }))
 
 --------------------------------------------------------------------------------
 -- Index pages
@@ -597,7 +598,7 @@ postCtx =
     field "disqus" (return . identifierToDisqus . toFilePath . itemIdentifier) `mappend`
     field "title" (\i -> do
       metadata <- getMetadata $ itemIdentifier i
-      return $ maybe "" unwrap $ M.lookup "title" metadata) `mappend`
+      return $ escapeHtml $ maybe "" unwrap $ M.lookup "title" metadata) `mappend`
     tagsContext `mappend`
     defaultContext
 
