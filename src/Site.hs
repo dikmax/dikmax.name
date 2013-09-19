@@ -44,7 +44,7 @@ main = hakyll $ do
 
 archiveRules :: Rules ()
 archiveRules = do
-    ids <- getMatches "posts/*"
+    ids <- getMatches "posts/**"
     years <- mapM yearsMap ids
     let ym = sortBy (\a b -> compare (fst b) (fst a)) $ yearsMap1 years
         firstYear = fst $ head ym
@@ -126,7 +126,7 @@ feedRules =
     create ["feed.rss"] $ do
         route idRoute
         compile $
-            loadAllSnapshots "posts/*" "content"
+            loadAllSnapshots "posts/**" "content"
                 >>= fmap (take 10) . recentFirst
                 >>= renderRss feedConfiguration feedCtx
 
@@ -176,7 +176,7 @@ lessCompilerRules = do
 
 postsRules :: Rules ()
 postsRules =
-    match "posts/*" $ do
+    match "posts/**" $ do
         route removeExtension
 
         compile $ do
@@ -207,7 +207,7 @@ indexPagesRules = do
         compile $
             pandocCompiler
 
-    paginate <- buildPaginateWith 5 getPageIdentifier "posts/*"
+    paginate <- buildPaginateWith 5 getPageIdentifier "posts/**"
     paginateRules paginate $ \page ids -> do
         route addIndexRoute
         compile $ if page == 1
@@ -244,7 +244,7 @@ indexPagesRules = do
 
 tagsPagesRules :: Rules ()
 tagsPagesRules = do
-    tags <- buildTagsWith getTags "posts/*" (\tag -> fromFilePath $ "tag/" ++ tag ++ "/index.html")
+    tags <- buildTagsWith getTags "posts/**" (\tag -> fromFilePath $ "tag/" ++ tag ++ "/index.html")
     create ["tags/index.html"] $ do
         route idRoute
         compile $ do
