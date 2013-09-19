@@ -122,7 +122,7 @@ feedCtx = bodyField "description" `mappend` defaultContext
 
 feedRules :: Rules ()
 feedRules =
-    create ["rss"] $ do
+    create ["feed.rss"] $ do
         route idRoute
         compile $ do
             loadAllSnapshots "posts/*" "content"
