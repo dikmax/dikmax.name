@@ -11,8 +11,8 @@ Build-type:          Simple
 Cabal-version:       >=1.2
 
 Executable dikmax-name
-  hs-source-dirs: .
-  main-is: site.hs
+  hs-source-dirs: src
+  main-is: Site.hs
 
   Build-depends:
     base >= 4 && < 5,
@@ -31,7 +31,7 @@ Executable dikmax-name
 
 Executable server
   hs-source-dirs: src
-  main-is: Main.hs
+  main-is: Server.hs
 
   Build-depends:
     attoparsec                == 0.10.*,
