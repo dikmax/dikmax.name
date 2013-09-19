@@ -215,7 +215,7 @@ indexPagesRules = do
                 topPost <- loadBody "index.md"
                 let postsCtx =
                         constField "body" topPost `mappend`
-                        listField "posts" postCtx (return posts) `mappend`
+                        listField "posts" postWithCommentsCtx (return posts) `mappend`
                         paginateContext paginate `mappend`
                         pageCtx (defaultMetadata
                             { metaDescription = "Мой персональный блог. "
@@ -226,7 +226,7 @@ indexPagesRules = do
             else do
                 posts <- recentFirst =<< loadAllSnapshots ids "content"
                 let postsCtx =
-                        listField "posts" postCtx (return posts) `mappend`
+                        listField "posts" postWithCommentsCtx (return posts) `mappend`
                         paginateContext paginate `mappend`
                         pageCtx (defaultMetadata
                             { metaTitle = Just $ show page ++ "-я страница"
@@ -269,7 +269,7 @@ tagsPagesRules = do
             compile $ do
                 posts <- recentFirst =<< loadAllSnapshots ids "content"
                 let postsCtx =
-                        listField "posts" postCtx (return posts) `mappend`
+                        listField "posts" postWithCommentsCtx (return posts) `mappend`
                         paginateContext paginate `mappend`
                         pageCtx (defaultMetadata
                             { metaTitle = Just $ "\"" ++ tag ++
@@ -514,6 +514,9 @@ identifierToUrl filepath = subRegex (mkRegex "^(.*)\\.md$")
                                         (subRegex (mkRegex "/[0-9]{4}-[0-9]{2}-[0-9]{2}-(.*)\\.md$") filepath "/\\1/")
                                         "\\1/"
 
+identifierToDisqus :: String -> String
+identifierToDisqus filepath = subRegex (mkRegex "^posts/[0-9]{4}-[0-9]{2}-[0-9]{2}-(.*)\\.md$") filepath  "\\1"
+
 countText :: Int -> String -> String -> String -> String
 countText count one two many
     | count `mod` 100 `div` 10 == 1 =
@@ -591,11 +594,17 @@ postCtx :: Context String
 postCtx =
     dateFieldWith timeLocale "date" "%A, %e %B %Y, %R" `mappend`
     field "url" (return . identifierToUrl . toFilePath . itemIdentifier) `mappend`
+    field "disqus" (return . identifierToDisqus . toFilePath . itemIdentifier) `mappend`
     field "title" (\i -> do
       metadata <- getMetadata $ itemIdentifier i
       return $ maybe "" unwrap $ M.lookup "title" metadata) `mappend`
     tagsContext `mappend`
     defaultContext
+
+postWithCommentsCtx :: Context String
+postWithCommentsCtx =
+    constField "comments" "" `mappend`
+    postCtx
 
 pageCtx :: PageMetadata -> Context String
 pageCtx (PageMetadata title url description keywords fType)=
