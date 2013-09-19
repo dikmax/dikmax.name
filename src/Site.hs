@@ -3,6 +3,7 @@
 import           Blaze.ByteString.Builder (toByteString)
 import           Control.Monad (forM_, filterM, msum)
 import           Data.Char
+import           Data.Function (on)
 import           Data.List (sortBy, intercalate, unfoldr, isSuffixOf, find, groupBy)
 import qualified Data.Map as M
 import           Data.Maybe
@@ -58,13 +59,13 @@ archiveRules = do
             route idRoute
             compile $ do
                 posts <- recentFirst =<< loadAllSnapshots (fromList list) "content"
-                months <- mapM (monthsMap) posts
+                months <- mapM monthsMap posts
                 let yearCtx =
                         field "active" (\i -> if itemBody i == year then return "active" else fail "") `mappend`
-                        field "href" (\i -> return $ fp' $ itemBody i) `mappend`
+                        field "href" (return . fp' . itemBody) `mappend`
                         bodyField "year"
 
-                    mm = groupBy (\a b -> fst a == fst b) months
+                    mm = groupBy ((==) `on` fst) months
 
                     postsList i = do
                         tpl <- loadBody "templates/_post-archive.html"
@@ -82,7 +83,7 @@ archiveRules = do
                         bodyField "month"
 
                     archiveCtx =
-                        listField "years" yearCtx (mapM (\k -> makeItem $ fst k) ym) `mappend`
+                        listField "years" yearCtx (mapM (makeItem . fst) ym) `mappend`
                         listField "months" monthsCtx (mapM (makeItem . fst . head) mm) `mappend`
                         pageCtx (defaultMetadata
                             { metaTitle = Just "Архив"
@@ -124,7 +125,7 @@ feedRules :: Rules ()
 feedRules =
     create ["feed.rss"] $ do
         route idRoute
-        compile $ do
+        compile $
             loadAllSnapshots "posts/*" "content"
                 >>= fmap (take 10) . recentFirst
                 >>= renderRss feedConfiguration feedCtx
@@ -158,7 +159,7 @@ staticFilesRules = do
 
 lessCompilerRules :: Rules ()
 lessCompilerRules = do
-    match "less/*.less" $ do
+    match "less/*.less" $
         compile getResourceBody
 
     d <- makePatternDependency "less/**"
@@ -174,9 +175,9 @@ lessCompilerRules = do
 --------------------------------------------------------------------------------
 
 postsRules :: Rules ()
-postsRules = do
+postsRules =
     match "posts/*" $ do
-        route $ removeExtension
+        route removeExtension
 
         compile $ do
             identifier <- getUnderlying
@@ -189,7 +190,7 @@ postsRules = do
             loadAndApplyTemplate "templates/_post.html" postCtx item
                 >>= loadAndApplyTemplate "templates/default.html" (pageCtx $ defaultMetadata
                     { metaTitle = title
-                    , metaUrl = '/' : (identifierToUrl $ toFilePath identifier)
+                    , metaUrl = '/' : identifierToUrl (toFilePath identifier)
                     , metaKeywords = tags
                     , metaDescription = fromMaybe (cutDescription $ transformDescription $ escapeHtml $ TS.innerText $ TS.parseTags $ itemBody item) description
                     , metaType = FacebookArticle time tags images
@@ -201,16 +202,16 @@ postsRules = do
 
 indexPagesRules :: Rules ()
 indexPagesRules = do
-    match "index.md" $ do
-        compile $ do
+    match "index.md" $
+        compile $
             pandocCompiler
                 >>= loadAndApplyTemplate "templates/_post-index.html" postCtx
 
-    paginate <- buildPaginateWith 5 getPageIdentifier ("posts/*")
+    paginate <- buildPaginateWith 5 getPageIdentifier "posts/*"
     paginateRules paginate $ \page ids -> do
         route addIndexRoute
-        if page == 1
-            then compile $ do
+        compile $ if page == 1
+            then do
                 posts <- recentFirst =<< loadAllSnapshots ids "content"
                 topPost <- loadBody "index.md"
                 let postsCtx =
@@ -222,17 +223,17 @@ indexPagesRules = do
                                 ++ "Я рассказываю о программировании и иногда о своей жизни."
                             })
                 makeItem ""
-                    >>= loadAndApplyTemplate "templates/index.html" postsCtx
-            else compile $ do
+                    >>= loadAndApplyTemplate "templates/list.html" postsCtx
+            else do
                 posts <- recentFirst =<< loadAllSnapshots ids "content"
                 let postsCtx =
                         listField "posts" postCtx (return posts) `mappend`
                         paginateContext paginate `mappend`
                         pageCtx (defaultMetadata
-                            { metaTitle = Just $ (show page) ++ "-я страница"
-                            , metaDescription = "Мой персональный блог, записи с " ++ (show ((page - 1) * 5 + 1))
-                                ++ " по " ++ (show (page * 5)) ++ "."
-                            , metaUrl = "/page/" ++ (show page) ++ "/"
+                            { metaTitle = Just $ show page ++ "-я страница"
+                            , metaDescription = "Мой персональный блог, записи с " ++ show ((page - 1) * 5 + 1)
+                                ++ " по " ++ show (page * 5) ++ "."
+                            , metaUrl = "/page/" ++ show page ++ "/"
                             })
                 makeItem ""
                     >>= loadAndApplyTemplate "templates/list.html" postsCtx
@@ -249,9 +250,9 @@ tagsPagesRules = do
         compile $ do
             t <- renderTags
                 (\tag url count minCount maxCount ->
-                    "<a href=\"/tag/" ++ tag ++ "/\" title=\"" ++ (countText count "пост" "поста" "постов") ++
-                    "\" class=\"weight-" ++ (show $ getWeight minCount maxCount count) ++ "\">" ++ tag ++ "</a>")
-                (intercalate " ") tags
+                    "<a href=\"/tag/" ++ tag ++ "/\" title=\"" ++ countText count "пост" "поста" "постов" ++
+                    "\" class=\"weight-" ++ show (getWeight minCount maxCount count) ++ "\">" ++ tag ++ "</a>")
+                unwords tags
             let ctx = pageCtx (defaultMetadata
                     { metaTitle = Just "Темы"
                     , metaDescription = "Полный список тем (тегов) на сайте"
@@ -272,19 +273,15 @@ tagsPagesRules = do
                         listField "posts" postCtx (return posts) `mappend`
                         paginateContext paginate `mappend`
                         pageCtx (defaultMetadata
-                            { metaTitle =
-                                if page == 1
-                                    then Just $ "\"" ++ tag ++ "\""
-                                    else Just $ "\"" ++ tag ++ "\", " ++ (show page) ++ "-я страница"
-                            , metaDescription =
-                                if page == 1
-                                    then "Мой персональный блог, записи с тегом \"" ++ tag ++ "\"."
-                                    else "Мой персональный блог, записи с тегом \"" ++ tag ++ "\" с "
-                                        ++ (show ((page - 1) * 5 + 1)) ++ " по " ++ (show (page * 5)) ++ "."
-                            , metaUrl =
-                                if page == 1
-                                    then "/tag/" ++ tag ++ "/"
-                                    else "/tag/" ++ tag ++ "/page/" ++ (show page) ++ "/"
+                            { metaTitle = Just $ "\"" ++ tag ++
+                                (if page == 1 then "\""
+                                    else "\", " ++ show page ++ "-я страница")
+                            , metaDescription = "Мой персональный блог, записи с тегом \"" ++ tag ++
+                                (if page == 1 then "\"."
+                                    else "\" с " ++ show ((page - 1) * 5 + 1) ++ " по " ++ show (page * 5) ++ ".")
+                            , metaUrl = "/tag/" ++ tag ++
+                                (if page == 1 then "/"
+                                    else "/page/" ++ show page ++ "/")
                             })
 
                 makeItem ""
@@ -301,9 +298,9 @@ getTags identifier = do
 --------------------------------------------------------------------------------
 
 staticPagesRules :: Rules ()
-staticPagesRules = do
+staticPagesRules =
     match (fromList ["about.md", "shoutbox.md"]) $ do
-        route $ removeExtension
+        route removeExtension
         compile $ do
             identifier <- getUnderlying
             title <- getMetadataField identifier "title"
@@ -313,7 +310,7 @@ staticPagesRules = do
                 >>= loadAndApplyTemplate "templates/default.html" (pageCtx (defaultMetadata
                     { metaTitle = title
                     , metaDescription = fromMaybe "" description
-                    , metaUrl = '/' : (identifierToUrl $ toFilePath identifier)
+                    , metaUrl = '/' : identifierToUrl (toFilePath identifier)
                     }))
 
 --------------------------------------------------------------------------------
@@ -371,9 +368,9 @@ buildPaginateWith n makeId pattern = do
     where
         compareFn :: (a, Metadata) -> (a, Metadata) -> Ordering
         compareFn (_, a) (_, b)
-            | M.lookup "date" a == Nothing && M.lookup "date" b == Nothing = EQ
-            | M.lookup "date" a == Nothing = GT
-            | M.lookup "date" b == Nothing = LT
+            | isNothing (M.lookup "date" a) && isNothing (M.lookup "date" b) = EQ
+            | isNothing (M.lookup "date" a) = GT
+            | isNothing (M.lookup "date" b) = LT
             | otherwise = compare (unwrap $ b M.! "date") (unwrap $ a M.! "date")
 
 -- | Takes first, current, last page and produces index of next page
@@ -490,18 +487,18 @@ cutDescription d
 getTagIdentifier :: String -> PageNumber -> Identifier
 getTagIdentifier tag pageNum
     | pageNum == 1 = fromFilePath $ "tag/" ++ tag ++ "/"
-    | otherwise = fromFilePath $ "tag/" ++ tag ++ "/page/" ++ (show pageNum) ++ "/"
+    | otherwise = fromFilePath $ "tag/" ++ tag ++ "/page/" ++ show pageNum ++ "/"
 
 getPageIdentifier :: PageNumber -> Identifier
 getPageIdentifier pageNum
-    | pageNum == 1 = fromFilePath $ ""
-    | otherwise = fromFilePath $ "page/" ++ (show pageNum) ++ "/"
+    | pageNum == 1 = fromFilePath ""
+    | otherwise = fromFilePath $ "page/" ++ show pageNum ++ "/"
 
 addIndexRoute :: Routes
 addIndexRoute = customRoute (\id ->
     if toFilePath id == ""
         then "index.html"
-        else (toFilePath id) ++ "/index.html")
+        else toFilePath id ++ "/index.html")
 
 -- | Transforms 'something/something.md' into 'something/something/index.html'
 -- and 'something/YYYY-MM-DD-something.md' into 'something/something/index.html'
@@ -521,13 +518,13 @@ identifierToUrl filepath = subRegex (mkRegex "^(.*)\\.md$")
 countText :: Int -> String -> String -> String -> String
 countText count one two many
     | count `mod` 100 `div` 10 == 1 =
-        (show count) ++ " " ++ many
+        show count ++ " " ++ many
     | count `mod` 10 == 1 =
-        (show count) ++ " " ++ one
-    | count `mod` 10 == 2 || count `mod` 10 == 3 || count `mod` 10 == 4 =
-        (show count) ++ " " ++ two
+        show count ++ " " ++ one
+    | (count `mod` 10) `elem` [2, 3, 4] =
+        show count ++ " " ++ two
     | otherwise =
-        (show count) ++ " " ++ many
+        show count ++ " " ++ many
 
 
 getWeight :: Int -> Int -> Int -> Int
@@ -544,7 +541,7 @@ tagsContext = field "tags" convertTags
     where
         convertTags item = do
             tags <- getTags $ itemIdentifier item
-            return $ concat $ map (\tag -> "<a href=\"/tag/" ++ tag ++ "/\" class=\"label label-default\">" ++ tag ++ "</a> ") tags
+            return $ concatMap (\tag -> "<a href=\"/tag/" ++ tag ++ "/\" class=\"label label-default\">" ++ tag ++ "</a> ") tags
 
 timeLocale :: TimeLocale
 timeLocale = defaultTimeLocale
@@ -597,7 +594,7 @@ postCtx =
     field "url" (return . identifierToUrl . toFilePath . itemIdentifier) `mappend`
     field "title" (\i -> do
       metadata <- getMetadata $ itemIdentifier i
-      return $ maybe "" (unwrap) $ M.lookup "title" metadata) `mappend`
+      return $ maybe "" unwrap $ M.lookup "title" metadata) `mappend`
     tagsContext `mappend`
     defaultContext
 
@@ -617,8 +614,8 @@ pageCtx (PageMetadata title url description keywords fType)=
         facebookFields (FacebookArticle published keywords images) =
                 constField "meta.facebook.article" "" `mappend`
                 constField "meta.facebook.published" (formatTime defaultTimeLocale "%Y-%m-%dT%H:%M:%SZ" published) `mappend`
-                listField "meta.facebook.tags" defaultContext (mapM (\k -> makeItem k) keywords) `mappend`
-                listField "meta.facebook.images" defaultContext (mapM (\k -> makeItem k) images)
+                listField "meta.facebook.tags" defaultContext (mapM makeItem keywords) `mappend`
+                listField "meta.facebook.images" defaultContext (mapM makeItem images)
         -- TODO Facebook profile
         facebookFields _ = constField "meta.facebook.nothing" ""
 
