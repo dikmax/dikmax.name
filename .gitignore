@@ -4,3 +4,4 @@ migration/node_modules
 site
 site.hi
 site.o
+log/*.log

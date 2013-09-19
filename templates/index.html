@@ -1,13 +1,16 @@
 <!DOCTYPE html>
 <html>
 $partial("templates/_head.html")$
-<body>
+<body class="index-page">
 $partial("templates/_topbar.html")$
 
+<div class="jumbotron">
+    <div class="container">
+        $body$
+    </div>
+</div>
 <div class="container">
     <div class="panel-group">
-        $body$
-
         $for(posts)$
             $partial("templates/_post-list.html")$
         $endfor$

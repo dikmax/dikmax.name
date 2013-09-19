@@ -205,7 +205,6 @@ indexPagesRules = do
     match "index.md" $
         compile $
             pandocCompiler
-                >>= loadAndApplyTemplate "templates/_post-index.html" postCtx
 
     paginate <- buildPaginateWith 5 getPageIdentifier "posts/*"
     paginateRules paginate $ \page ids -> do
@@ -223,7 +222,7 @@ indexPagesRules = do
                                 ++ "Я рассказываю о программировании и иногда о своей жизни."
                             })
                 makeItem ""
-                    >>= loadAndApplyTemplate "templates/list.html" postsCtx
+                    >>= loadAndApplyTemplate "templates/index.html" postsCtx
             else do
                 posts <- recentFirst =<< loadAllSnapshots ids "content"
                 let postsCtx =
