@@ -298,8 +298,8 @@ getTags identifier = do
 --------------------------------------------------------------------------------
 
 staticPagesRules :: Rules ()
-staticPagesRules =
-    match (fromList ["about.md", "shoutbox.md"]) $ do
+staticPagesRules = do
+    match "about.md" $ do
         route removeExtension
         compile $ do
             identifier <- getUnderlying
@@ -307,6 +307,20 @@ staticPagesRules =
             description <- getMetadataField identifier "description"
             pandocCompiler
                 >>= loadAndApplyTemplate "templates/_post-without-footer.html" postCtx
+                >>= loadAndApplyTemplate "templates/default.html" (pageCtx (defaultMetadata
+                    { metaTitle = fmap unwrap title
+                    , metaDescription = unwrap $ fromMaybe "" description
+                    , metaUrl = '/' : identifierToUrl (toFilePath identifier)
+                    }))
+
+    match "shoutbox.md" $ do
+        route removeExtension
+        compile $ do
+            identifier <- getUnderlying
+            title <- getMetadataField identifier "title"
+            description <- getMetadataField identifier "description"
+            pandocCompiler
+                >>= loadAndApplyTemplate "templates/_post-shoutbox.html" (constField "disqus" "shoutbox" `mappend` postCtx)
                 >>= loadAndApplyTemplate "templates/default.html" (pageCtx (defaultMetadata
                     { metaTitle = fmap unwrap title
                     , metaDescription = unwrap $ fromMaybe "" description
