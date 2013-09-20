@@ -608,6 +608,7 @@ timeLocale' = timeLocale
 postCtx :: Context String
 postCtx =
     dateFieldWith timeLocale "date" "%A, %e %B %Y, %R" `mappend`
+    dateFieldWith defaultTimeLocale "post-date" "%Y-%m-%dT%H:%M:%S%z" `mappend`
     field "url" (return . identifierToUrl . toFilePath . itemIdentifier) `mappend`
     field "disqus" (return . identifierToDisqus . toFilePath . itemIdentifier) `mappend`
     field "title" (\i -> do
