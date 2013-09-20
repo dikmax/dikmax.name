@@ -5,7 +5,8 @@ published: true
 tags: "музыка"
 ---
 
-Ну и заодно тест только что дописанного функционала. Теперь можно вставлять произвольный HTML в markdown. А песня действительно клевая.
+Ну и заодно тест только что дописанного функционала. Теперь можно вставлять произвольный HTML в markdown. А песня
+действительно клевая.
 
 <object width="550" height="42">
 <param name="movie" value="http://embed.prostopleer.com/track?id=B2nerzB41qsfB8ca" />

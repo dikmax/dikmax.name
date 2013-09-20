@@ -5,4 +5,4 @@ published: true
 tags: "instagram, фотки"
 ---
 
-![Долгая дорога на работу](http://c358655.r55.cf1.rackcdn.com/instagram_waytooffice.jpg "Долгая дорога на работу")
+![Долгая дорога на работу](/images/photos/instagram/way-to-office.jpg "Долгая дорога на работу")

@@ -5,4 +5,4 @@ published: true
 tags: "фотки"
 ---
 
-![](http://c358655.r55.cf1.rackcdn.com/devconf.jpg)
+![Это я](/images/photos/devconf.jpg "Это я")
