@@ -45,7 +45,8 @@ main = hakyll $ do
 archiveRules :: Rules ()
 archiveRules = do
     ids <- getMatches "posts/**"
-    years <- mapM yearsMap ids
+    filteredIds <- filterM isPublished ids
+    years <- mapM yearsMap filteredIds
     let ym = sortBy (\a b -> compare (fst b) (fst a)) $ yearsMap1 years
         firstYear = fst $ head ym
         fp year
@@ -208,7 +209,8 @@ indexPagesRules = do
             pandocCompiler
 
     paginate <- buildPaginateWith 5 getPageIdentifier "posts/**"
-    paginateRules paginate $ \page ids -> do
+    d <- makePatternDependency "posts/**"
+    rulesExtraDependencies [d] $ paginateRules paginate $ \page ids -> do
         route addIndexRoute
         compile $ if page == 1
             then do
@@ -244,8 +246,11 @@ indexPagesRules = do
 
 tagsPagesRules :: Rules ()
 tagsPagesRules = do
-    tags <- buildTagsWith getTags "posts/**" (\tag -> fromFilePath $ "tag/" ++ tag ++ "/index.html")
-    create ["tags/index.html"] $ do
+    metadata <- getAllMetadata "posts/**"
+    let idents = fst $ unzip $ filter filterFn metadata
+    tags <- buildTagsWith getTags (fromList idents) (\tag -> fromFilePath $ "tag/" ++ tag ++ "/index.html")
+    d <- makePatternDependency "posts/**"
+    rulesExtraDependencies [d] $ create ["tags/index.html"] $ do
         route idRoute
         compile $ do
             t <- renderTags
@@ -263,7 +268,7 @@ tagsPagesRules = do
                 >>= loadAndApplyTemplate "templates/_post-without-footer.html" ctx
                 >>= loadAndApplyTemplate "templates/default.html" ctx
 
-    tagsRules tags $ \tag identifiers -> do
+    rulesExtraDependencies [d] $ tagsRules tags $ \tag identifiers -> do
         paginate <- buildPaginateWith 5 (getTagIdentifier tag) identifiers
         paginateRules paginate $ \page ids -> do
             route addIndexRoute
@@ -286,6 +291,11 @@ tagsPagesRules = do
 
                 makeItem ""
                     >>= loadAndApplyTemplate "templates/list.html" postsCtx
+    where
+        filterFn :: (a, Metadata) -> Bool
+        filterFn (_, metadata)
+            | M.lookup "published" metadata == Just "false" = False
+            | otherwise = True
 
 
 getTags :: MonadMetadata m => Identifier -> m [String]
@@ -364,10 +374,8 @@ buildPaginateWith :: MonadMetadata m
                   -> Pattern
                   -> m Paginate
 buildPaginateWith n makeId pattern = do
-    -- TODO filter unpublished
-
     metadata <- getAllMetadata pattern
-    let idents         = fst $ unzip $ sortBy compareFn metadata
+    let idents         = fst $ unzip $ sortBy compareFn $ filter filterFn metadata
         pages          = flip unfoldr idents $ \xs ->
             if null xs then Nothing else Just (splitAt n xs)
         nPages         = length pages
@@ -386,6 +394,11 @@ buildPaginateWith n makeId pattern = do
             | isNothing (M.lookup "date" a) = GT
             | isNothing (M.lookup "date" b) = LT
             | otherwise = compare (unwrap $ b M.! "date") (unwrap $ a M.! "date")
+        filterFn :: (a, Metadata) -> Bool
+        filterFn (_, metadata)
+            | M.lookup "published" metadata == Just "false" = False
+            | otherwise = True
+
 
 -- | Takes first, current, last page and produces index of next page
 type RelPage = PageNumber -> PageNumber -> PageNumber -> Maybe PageNumber
