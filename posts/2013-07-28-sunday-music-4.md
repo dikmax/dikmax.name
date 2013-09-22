@@ -5,6 +5,7 @@ published: true
 tags: "youtube, видео, музыка, музыка по воскресеньям"
 ---
 
-Я думаю, самое время разбавить рубрику кельтской музыкой. Встречайте, канадский скрипач Ashley MacIsaac, играющий в жанре Celtic Fusion. 
+Я думаю, самое время разбавить рубрику кельтской музыкой. Встречайте, канадский скрипач Ashley MacIsaac,
+играющий в жанре Celtic Fusion.
 
-![Ashley MacIsaac — Sleepy Maggie](http://www.youtube.com/watch?v=WRdiNcz3PXA)
+![Ashley MacIsaac --- Sleepy Maggie](http://www.youtube.com/watch?v=WRdiNcz3PXA)

@@ -5,4 +5,4 @@ published: true
 tags: "абсент, кулинария, морожка, фотки"
 ---
 
-![](http://c358655.r55.cf1.rackcdn.com/absinthicecream.jpg)
+![Морожка с абсентом](/images/photos/absinth-icecream.jpg "Морожка с абсентом")

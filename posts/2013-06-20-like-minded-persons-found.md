@@ -5,4 +5,6 @@ published: true
 tags: "лытдыбр, централизованное тестирование"
 ---
 
-Онлайнер [решил последовать](http://dengi.onliner.by/2013/06/20/ct-po-matematike) за моим [призывом пойти на ЦТ](http://dikmax.name/post/centralized-testing-registration). И отправил туда девочку-гуманитария. Еще некоторое количество таких же “just for fun” тестируемых было замечено в комментариях.
+Онлайнер [решил последовать](http://dengi.onliner.by/2013/06/20/ct-po-matematike) за моим
+[призывом пойти на ЦТ](http://dikmax.name/post/centralized-testing-registration). И отправил туда девочку-гуманитария.
+Еще некоторое количество таких же “just for fun” тестируемых было замечено в комментариях.

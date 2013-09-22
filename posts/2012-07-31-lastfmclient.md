@@ -5,15 +5,21 @@ published: true
 tags: "last.fm, linux, инструкция, музыка"
 ---
 
-Здравствуйте, мои маленькие друзья. Сегодня мы будем настраивать [официальный клиент](http://www.last.fm/download) [Last.fm](http://www.last.fm/), чтобы он заиграл нам бесплатное персональное радио. И все это будет происходить в расово-верной операционной системе Linux, в ее наиболее популярной реинкарнации Ubuntu или Kubuntu. Я думаю, что любой Debian-based дистрибутив тоже подойдет.
+Здравствуйте, мои маленькие друзья. Сегодня мы будем настраивать [официальный клиент](http://www.last.fm/download)
+[Last.fm](http://www.last.fm/), чтобы он заиграл нам бесплатное персональное радио. И все это будет происходить в
+расово-верной операционной системе Linux, в ее наиболее популярной реинкарнации Ubuntu или Kubuntu. Я думаю, что любой
+Debian-based дистрибутив тоже подойдет.
 
-Итак, во первых нам нужен сам официальный клиент для Last.fm. Открываем Software Center или консоль, кому что удобнее. Я выбираю второй способ. И устанавливаем пакет lastfm:
+Итак, во первых нам нужен сам официальный клиент для Last.fm. Открываем Software Center или консоль, кому что удобнее.
+Я выбираю второй способ. И устанавливаем пакет lastfm:
 
 ~~~~~bash
 $ sudo apt-get install lastfm
 ~~~~~
 
-Затем нам нужен hex-редактор файлов. Я как приверженец KDE поставил себе [Okteta](http://www.kde.org/applications/utilities/okteta/). Для адептов Ubuntu скорее подойдет [GHex](https://live.gnome.org/Ghex/).
+Затем нам нужен hex-редактор файлов. Я как приверженец KDE поставил себе
+[Okteta](http://www.kde.org/applications/utilities/okteta/). Для адептов Ubuntu скорее подойдет
+[GHex](https://live.gnome.org/Ghex/).
 
 ~~~~~bash
 $ sudo apt-get install okteta
@@ -27,24 +33,27 @@ $ sudo okteta
 
 Запустили? Тогда открываем файл `/usr/lib/lastfm/libLastFmTools.so.1.0.0`.
 
-![](http://c358655.r55.cf1.rackcdn.com/lastfm1.png)
+![Hex-редактор](/images/screenshots/lastfm1.png "Hex-редактор")
 
-Ищем строку api_key:
+Ищем строку `api_key`:
 
-![](http://c358655.r55.cf1.rackcdn.com/lastfm2.png)
+![Поиск](/images/screenshots/lastfm2.png "Поиск")
 
 Вот она:
 
-![](http://c358655.r55.cf1.rackcdn.com/lastfm3.png)
+![Строка](/images/screenshots/lastfm3.png "Строка")
 
 И, наконец, заменяем первый символ `a` (код 61) на символ с кодом 00.
 
-![](http://c358655.r55.cf1.rackcdn.com/lastfm4.png)
+![Замена](/images/screenshots/lastfm4.png "Замена")
 
-Сохраняем файл, закрываем редактор. Теперь клиент lastfm готов к использованию. Запускаем, вводим логин и пароль и наслаждаемся прекрасной музыкой!
+Сохраняем файл, закрываем редактор. Теперь клиент lastfm готов к использованию. Запускаем, вводим логин и пароль и
+наслаждаемся прекрасной музыкой!
 
-![](http://c358655.r55.cf1.rackcdn.com/lastfm5.png)
+![Результат](/images/screenshots/lastfm5.png "Результат")
 
 P.S. Идея инструкции была позаимствована с [хабра](http://habrahabr.ru/post/145318/).
 
-**UPD**. [Готовый шелл-скрипт](http://dikmax.name/post/lastfmclient2).
+**UPD**. [Готовый шелл-скрипт](/post/lastfmclient2).
+
+**UPD2**. Этот способ больше не работает.

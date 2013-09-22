@@ -7,9 +7,10 @@ tags: "youtube, видео, музыка, музыка по воскресень
 
 Музыка по воскресеньям возвращается! Сегодня мы будем слушать, как красиво звучит ирландский язык.
 
-![TG Lurgan — Amhrán na gCupán (When I'm gone as Gaeilge)](http://www.youtube.com/watch?v=Hz63M3v11nE)
+![TG Lurgan --- Amhrán na gCupán (When I'm gone as Gaeilge)](http://www.youtube.com/watch?v=Hz63M3v11nE)
 
-У этих ребят довольно много песен, переведенных на ирландский, достаточно посмотреть на их [канал на YouTube](http://www.youtube.com/user/tglurgan/featured).
+У этих ребят довольно много песен, переведенных на ирландский, достаточно посмотреть на их
+[канал на YouTube](http://www.youtube.com/user/tglurgan/featured).
 
 А вот и оригинал “When I’m gone” на английском.
 

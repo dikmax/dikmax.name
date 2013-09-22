@@ -7,7 +7,7 @@ tags: "ирландские танцы, фотки"
 
 Не думаю, что я сподоблюсь купить эти фотки в лучшем качестве, поэтому предлагаю вам насладиться чудесным копирайтом.
 
-![](http://a51056ce8d9b948fb69e-8de36eb37b2366f5a76a776c3dee0b32.r42.cf1.rackcdn.com/moscowfeis1.jpg)
-![](http://a51056ce8d9b948fb69e-8de36eb37b2366f5a76a776c3dee0b32.r42.cf1.rackcdn.com/moscowfeis2.jpg)
+![Hop](/images/photos/moscow-feis-1.jpg "Hop")
+![Hop-back](/images/photos/moscow-feis-2.jpg "Hop-back")
 
 Там были еще фотки в жесткой обуви, но их я решил не выкладывать по причине своей криворукости.

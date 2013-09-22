@@ -7,6 +7,6 @@ tags: "instagram, блог, конкурс, фотки"
 
 Еще раз мои поздравления!
 
-![](http://a51056ce8d9b948fb69e-8de36eb37b2366f5a76a776c3dee0b32.r42.cf1.rackcdn.com/instagram_prize2.jpg)
+![Приз в руках у победителя](/images/photos/instagram/prize-2.jpg "Приз в руках у победителя")
 
-![](http://a51056ce8d9b948fb69e-8de36eb37b2366f5a76a776c3dee0b32.r42.cf1.rackcdn.com/instagram_prize3.jpg)
+![Первое применения приза](/images/photos/instagram/prize-3.jpg "Первое применения приза")

@@ -5,4 +5,4 @@ published: true
 tags: "brainbench, тест, фотки"
 ---
 
-![Кусок офисной стены](http://a51056ce8d9b948fb69e-8de36eb37b2366f5a76a776c3dee0b32.r42.cf1.rackcdn.com/certificates.jpg)
+![Кусок офисной стены](/images/photos/certificates.jpg "Кусок офисной стены")

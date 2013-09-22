@@ -5,4 +5,4 @@ published: true
 tags: "фотки"
 ---
 
-![Были обнаружены случайно по дороге домой](http://c358655.r55.cf1.rackcdn.com/mushrooms.jpg)
+![Были обнаружены случайно по дороге домой](/images/photos/mushrooms.jpg "Грибочки")

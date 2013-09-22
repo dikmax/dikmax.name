@@ -5,4 +5,4 @@ published: true
 tags: "instagram, блог, фотки"
 ---
 
-![Две последовательные поездки. Вот счастье-то!](http://a51056ce8d9b948fb69e-8de36eb37b2366f5a76a776c3dee0b32.r42.cf1.rackcdn.com/instragram_happiness.jpg "Две последовательные поездки")
+![Две последовательные поездки. Вот счастье-то!](/images/photos/instagram/happiness.jpg "Две последовательные поездки")

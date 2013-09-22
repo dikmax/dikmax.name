@@ -5,6 +5,8 @@ published: true
 tags: "youtube, видео, музыка, музыка по воскресеньям"
 ---
 
-Сегодня в нашей свежесозданной воскресной рубрике отличный парень из загадочной Японии --- Ishihara Takamasa, более известный как [Miyavi](http://en.wikipedia.org/wiki/Miyavi). Пусть его музыка поднимет вам настроение и добавит энергии. Are you ready to rock? 
+Сегодня в нашей свежесозданной воскресной рубрике отличный парень из загадочной Японии\ --- Ishihara Takamasa,
+более известный как [Miyavi](http://en.wikipedia.org/wiki/Miyavi). Пусть его музыка поднимет вам настроение
+и добавит энергии. Are you ready to rock?
 
-![](http://www.youtube.com/watch?v=mkjSDDH2nog)
+![Miyavi --- Are you ready to rock?](http://www.youtube.com/watch?v=mkjSDDH2nog)
