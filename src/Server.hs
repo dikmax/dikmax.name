@@ -15,6 +15,8 @@ main = quickHttpServe site
 
 site :: Snap ()
 site = path "github-webhook" githubWebhook <|>
+    path "rss" (redirect "feed.rss") <|>
+    path "rss/" (redirect "feed.rss") <|>
     serveDirectory "_site"
 
 githubWebhook :: Snap ()
