@@ -44,7 +44,7 @@ main = hakyll $ do
 
 archiveRules :: Rules ()
 archiveRules = do
-    ids <- getMatches "posts/**"
+    ids <- getMatches "post/**"
     filteredIds <- filterM isPublished ids
     years <- mapM yearsMap filteredIds
     let ym = sortBy (\a b -> compare (fst b) (fst a)) $ yearsMap1 years
@@ -127,7 +127,7 @@ feedRules =
     create ["feed.rss"] $ do
         route idRoute
         compile $
-            loadAllSnapshots "posts/**" "content"
+            loadAllSnapshots "post/**" "content"
                 >>= fmap (take 10) . recentFirst
                 >>= renderRss feedConfiguration feedCtx
 
@@ -177,7 +177,7 @@ lessCompilerRules = do
 
 postsRules :: Rules ()
 postsRules =
-    match "posts/**" $ do
+    match "post/**" $ do
         route removeExtension
 
         compile $ do
@@ -208,8 +208,8 @@ indexPagesRules = do
         compile $
             pandocCompiler
 
-    paginate <- buildPaginateWith 5 getPageIdentifier "posts/**"
-    d <- makePatternDependency "posts/**"
+    paginate <- buildPaginateWith 5 getPageIdentifier "post/**"
+    d <- makePatternDependency "post/**"
     rulesExtraDependencies [d] $ paginateRules paginate $ \page ids -> do
         route addIndexRoute
         compile $ if page == 1
@@ -246,10 +246,10 @@ indexPagesRules = do
 
 tagsPagesRules :: Rules ()
 tagsPagesRules = do
-    metadata <- getAllMetadata "posts/**"
+    metadata <- getAllMetadata "post/**"
     let idents = fst $ unzip $ filter filterFn metadata
     tags <- buildTagsWith getTags (fromList idents) (\tag -> fromFilePath $ "tag/" ++ tag ++ "/index.html")
-    d <- makePatternDependency "posts/**"
+    d <- makePatternDependency "post/**"
     rulesExtraDependencies [d] $ create ["tags/index.html"] $ do
         route idRoute
         compile $ do
@@ -543,7 +543,7 @@ identifierToUrl filepath = subRegex (mkRegex "^(.*)\\.md$")
                                         "\\1/"
 
 identifierToDisqus :: String -> String
-identifierToDisqus filepath = subRegex (mkRegex "^posts/[0-9]{4}-[0-9]{2}-[0-9]{2}-(.*)\\.md$") filepath  "\\1"
+identifierToDisqus filepath = subRegex (mkRegex "^post/[0-9]{4}-[0-9]{2}-[0-9]{2}-(.*)\\.md$") filepath  "\\1"
 
 countText :: Int -> String -> String -> String -> String
 countText count one two many
