@@ -6,7 +6,7 @@ tags: "css, google closure, javascript, блог"
 ---
 
 Блог подвергся тотальной оптимизации. Теперь все должно работать еще быстрее и еще лучше. Теперь на каждой странице
-осталось только по одному js и css файлу, конечно, если не считать сторонние сервисы&nbsp;--- [Disqus](http://disqus.com/)
+осталось только по одному js и css файлу, конечно, если не считать сторонние сервисы\ --- [Disqus](http://disqus.com/)
 и [Google Analytics](http://www.google.com/analytics/). И вообще везде царствует гармония и фен-шуй.
 
 Весь javascript был переписан с использованием [Google Closurе](https://developers.google.com/closure/). Попутно в него
