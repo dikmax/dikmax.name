@@ -6,6 +6,6 @@ echo "Extracting..."
 tar -xvf dikmax-name.tar.lzma
 rm dikmax-name.tar.lzma
 echo "Restarting server..."
-./dikmax-name rebuild
+# ./dikmax-name rebuild
 killall server
 nohup ./server &
