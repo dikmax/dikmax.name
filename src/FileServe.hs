@@ -3,7 +3,8 @@
 -- | Contains web handlers to serve files from a directory.
 module FileServe
 (
-  serveDirectory
+  serveDirectory,
+  serveFile
 ) where
 
 ------------------------------------------------------------------------------

@@ -17,7 +17,9 @@ site :: Snap ()
 site = path "github-webhook" githubWebhook <|>
     path "rss" (redirect "feed.rss") <|>
     path "rss/" (redirect "feed.rss") <|>
-    serveDirectory "_site"
+    serveDirectory "_site" <|>
+    notFoundHandler
+
 
 githubWebhook :: Snap ()
 githubWebhook = do
@@ -28,3 +30,7 @@ githubWebhook = do
       output <- liftIO $ readProcess "./update.sh" [] ""
       writeBS $ BS.pack output
     else writeBS "Fail"
+
+notFoundHandler = do
+  modifyResponse $ setResponseCode 404
+  sendFile "_site/404/index.html"

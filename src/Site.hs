@@ -309,7 +309,7 @@ getTags identifier = do
 
 staticPagesRules :: Rules ()
 staticPagesRules = do
-    match "about.md" $ do
+    match (fromList ["about.md", "404.md"]) $ do
         route removeExtension
         compile $ do
             identifier <- getUnderlying
