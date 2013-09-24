@@ -145,10 +145,18 @@ defaultDirectoryConfig :: MonadSnap m => DirectoryConfig m
 defaultDirectoryConfig = DirectoryConfig {
     indexFiles = ["index.html", "index.htm"],
     indexGenerator = const pass,
-    dynamicHandlers = Map.empty,
+    dynamicHandlers = Map.fromList[
+      ( ".html", serveHtml)
+    ],
     mimeTypes = defaultMimeTypes,
     preServeHook = const $ return ()
     }
+    where
+        serveHtml file = do
+            modifyResponse $ setHeader "Cache-Control" "no-cache, no-store, must-revalidate"
+                           . setHeader "Pragma" "no-cache"
+                           . setHeader "Expires" "0"
+            serveFileAs "text/html; charset=utf-8" file
 
 ------------------------------------------------------------------------------
 -- | Serves static files from a directory using the default configuration
