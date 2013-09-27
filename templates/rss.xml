@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+    <channel>
+        <title>[dikmax's blog]</title>
+        <description>Мой персональный блог</description>
+        <link>http://dikmax.name/</link>
+        <language>ru</language>
+        <lastBuildDate>$build-date$</lastBuildDate>
+        <pubDate>$pub-date$</pubDate>
+        <ttl>180</ttl>
+        <atom:link href="http://dikmax.name/feed.rss" rel="self" type="application/rss+xml" />
+
+        $for(posts)$
+        <item>
+            <title>$title$</title>
+            <description>$description$</description>
+            <link>http://dikmax.name/$url$</link>
+            <comments>http://dikmax.name/$url$#disqus_thread</comments>
+            <guid>http://dikmax.name/$url$</guid>
+            <pubDate>$pub-date$</pubDate>
+        </item>
+        $endfor$
+    </channel>
+</rss>

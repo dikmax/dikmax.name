@@ -10,7 +10,7 @@ import           Data.Maybe
 import           Data.Monoid (mappend, mconcat)
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
-import           Data.Time.Clock (UTCTime)
+import           Data.Time.Clock (UTCTime, getCurrentTime)
 import           Data.Time.Format (formatTime, parseTime)
 import           Hakyll hiding (getItemUTC, dateFieldWith, getTags, buildPaginateWith, paginateContext, pandocCompiler)
 import           System.FilePath (takeBaseName, takeFileName, replaceFileName, replaceExtension)
@@ -110,27 +110,30 @@ archiveRules = do
 -- RSS feed
 --------------------------------------------------------------------------------
 
-feedConfiguration :: FeedConfiguration
-feedConfiguration = FeedConfiguration
-    { feedTitle = "[dikmax's blog]"
-    , feedDescription = "Мой персональный блог"
-    , feedAuthorName = "Максим Дикун"
-    , feedAuthorEmail = "me@dikmax.name"
-    , feedRoot = "http://dikmax.name"
-    }
+feedPostCtx :: Context String
+feedPostCtx =
+    dateFieldWith defaultTimeLocale "pub-date" "%a, %d %b %Y %H:%M:%S GMT" `mappend`
+    field "url" (return . identifierToUrl . toFilePath . itemIdentifier) `mappend`
+    field "description" (return . escapeHtml . itemBody) `mappend`
+    field "title" (\i -> do
+      metadata <- getMetadata $ itemIdentifier i
+      return $ escapeHtml $ maybe "" unwrap $ M.lookup "title" metadata) `mappend`
+    defaultContext
 
-feedCtx :: Context String
-feedCtx = bodyField "description" `mappend` defaultContext
-
-feedRules :: Rules ()
 feedRules =
     create ["feed.rss"] $ do
         route idRoute
-        compile $
-            loadAllSnapshots "post/**" "content"
-                >>= fmap (take 10) . recentFirst
-                >>= renderRss feedConfiguration feedCtx
-
+        compile $ do
+            posts <- fmap (take 10) . recentFirst =<<
+                loadAllSnapshots "post/**" "content"
+            time <- unsafeCompiler $ getCurrentTime
+            lastItemTime <- getItemUTC defaultTimeLocale $ itemIdentifier $ head posts
+            let postsCtx =
+                    listField "posts" feedPostCtx (return posts) `mappend`
+                    constField "build-date" (formatTime defaultTimeLocale "%a, %d %b %Y %H:%M:%S GMT" time) `mappend`
+                    constField "pub-date" (formatTime defaultTimeLocale "%a, %d %b %Y %H:%M:%S GMT" lastItemTime)
+            makeItem ""
+                >>= loadAndApplyTemplate "templates/rss.xml" postsCtx
 
 --------------------------------------------------------------------------------
 -- Static files

@@ -18,7 +18,7 @@ import qualified Data.ByteString.UTF8 as U
 import           Data.List
 import           Data.HashMap.Strict (HashMap)
 import qualified Data.HashMap.Strict as Map
-import           Data.Maybe (fromMaybe, isNothing)
+import           Data.Maybe (fromMaybe)
 import           System.Directory
 import           System.FilePath
 ------------------------------------------------------------------------------

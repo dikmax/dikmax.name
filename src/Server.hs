@@ -31,6 +31,7 @@ githubWebhook = do
       writeBS $ BS.pack output
     else writeBS "Fail"
 
+notFoundHandler :: Snap ()
 notFoundHandler = do
   modifyResponse $ setResponseCode 404
   sendFile "_site/404/index.html"
