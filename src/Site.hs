@@ -106,6 +106,30 @@ archiveRules = do
             utc <- getItemUTC defaultTimeLocale $ itemIdentifier i
             return $ formatTime timeLocale' "%e" utc
 
+isPublished :: (MonadMetadata m) => Identifier -> m Bool
+isPublished identifier = do
+    published <- getMetadataField identifier "published"
+    return (published /= Just "false")
+
+timeLocale' :: TimeLocale
+timeLocale' = timeLocale
+  { months =
+    [ ("Январь", "янв")
+    , ("Февраль", "фев")
+    , ("Март", "мар")
+    , ("Апрель", "апр")
+    , ("Май", "май")
+    , ("Июнь", "июн")
+    , ("Июль", "июл")
+    , ("Август", "авг")
+    , ("Сентябрь", "сен")
+    , ("Октябрь", "окт")
+    , ("Ноябрь", "ноя")
+    , ("Декабрь", "дек")
+    ]
+  }
+
+
 --------------------------------------------------------------------------------
 -- RSS feed
 --------------------------------------------------------------------------------
@@ -200,6 +224,10 @@ postsRules =
                         itemBody item) unwrap description
                     , metaType = FacebookArticle time tags images
                     }))
+
+imagesMap :: Tag String -> Maybe String
+imagesMap (TagOpen "img" attrs) = fmap snd $ find (\attr -> fst attr == "src") attrs
+imagesMap _ = Nothing
 
 --------------------------------------------------------------------------------
 -- Index pages
@@ -339,6 +367,82 @@ staticPagesRules = do
                     , metaDescription = unwrap $ fromMaybe "" description
                     , metaUrl = '/' : identifierToUrl (toFilePath identifier)
                     }))
+
+--------------------------------------------------------------------------------
+-- Contexts
+--------------------------------------------------------------------------------
+
+timeLocale :: TimeLocale
+timeLocale = defaultTimeLocale
+  { wDays =
+    [ ("Воскресенье", "вс")
+    , ("Понедельник", "пн")
+    , ("Вторник", "вт")
+    , ("Среда", "ср")
+    , ("Четверг", "чт")
+    , ("Пятница", "пт")
+    , ("Суббота", "сб")
+    ]
+  , months =
+    [ ("января", "янв")
+    , ("февраля", "фев")
+    , ("марта", "мар")
+    , ("апреля", "апр")
+    , ("мая", "май")
+    , ("июня", "июн")
+    , ("июля", "июл")
+    , ("августа", "авг")
+    , ("сентября", "сен")
+    , ("октября", "окт")
+    , ("ноября", "ноя")
+    , ("декабря", "дек")
+    ]
+  }
+
+tagsContext :: Context a
+tagsContext = field "tags" convertTags
+    where
+        convertTags item = do
+            tags <- getTags $ itemIdentifier item
+            return $ concatMap (\tag -> "<a href=\"/tag/" ++ tag ++ "/\" class=\"label label-default\">" ++ tag ++ "</a> ") tags
+
+postCtx :: Context String
+postCtx =
+    dateFieldWith timeLocale "date" "%A, %e %B %Y, %R" `mappend`
+    dateFieldWith defaultTimeLocale "post-date" "%Y-%m-%dT%H:%M:%S%z" `mappend`
+    field "url" (return . identifierToUrl . toFilePath . itemIdentifier) `mappend`
+    field "disqus" (return . identifierToDisqus . toFilePath . itemIdentifier) `mappend`
+    field "title" (\i -> do
+      metadata <- getMetadata $ itemIdentifier i
+      return $ escapeHtml $ maybe "" unwrap $ M.lookup "title" metadata) `mappend`
+    tagsContext `mappend`
+    defaultContext
+
+postWithCommentsCtx :: Context String
+postWithCommentsCtx =
+    constField "comments" "" `mappend`
+    postCtx
+
+pageCtx :: PageMetadata -> Context String
+pageCtx (PageMetadata title url description keywords fType)=
+    constField "meta.title" (escapeHtml $ metaTitle title) `mappend`
+    constField "meta.url" (escapeHtml $ "http://dikmax.name" ++ url) `mappend`
+    constField "meta.description" (escapeHtml description) `mappend`
+    constField "meta.keywords" (escapeHtml $ intercalate ", " keywords) `mappend`
+    constField "meta.dc.subject" (escapeHtml $ intercalate "; " keywords) `mappend`
+    facebookFields fType `mappend`
+    defaultContext
+    where
+        metaTitle Nothing = "[dikmax's blog]"
+        metaTitle (Just title) = title ++ " :: [dikmax's blog]"
+
+        facebookFields (FacebookArticle published keywords images) =
+                constField "meta.facebook.article" "" `mappend`
+                constField "meta.facebook.published" (formatTime defaultTimeLocale "%Y-%m-%dT%H:%M:%SZ" published) `mappend`
+                listField "meta.facebook.tags" defaultContext (mapM makeItem keywords) `mappend`
+                listField "meta.facebook.images" defaultContext (mapM makeItem images)
+        -- TODO Facebook profile
+        facebookFields _ = constField "meta.facebook.nothing" ""
 
 --------------------------------------------------------------------------------
 -- Html metadata
@@ -566,110 +670,3 @@ getWeight minCount maxCount count =
         fromIntegral maxCount - fromIntegral minCount) /
         (fromIntegral maxCount - fromIntegral minCount))
 
-
-----
-
-tagsContext :: Context a
-tagsContext = field "tags" convertTags
-    where
-        convertTags item = do
-            tags <- getTags $ itemIdentifier item
-            return $ concatMap (\tag -> "<a href=\"/tag/" ++ tag ++ "/\" class=\"label label-default\">" ++ tag ++ "</a> ") tags
-
-timeLocale :: TimeLocale
-timeLocale = defaultTimeLocale
-  { wDays =
-    [ ("Воскресенье", "вс")
-    , ("Понедельник", "пн")
-    , ("Вторник", "вт")
-    , ("Среда", "ср")
-    , ("Четверг", "чт")
-    , ("Пятница", "пт")
-    , ("Суббота", "сб")
-    ]
-  , months =
-    [ ("января", "янв")
-    , ("февраля", "фев")
-    , ("марта", "мар")
-    , ("апреля", "апр")
-    , ("мая", "май")
-    , ("июня", "июн")
-    , ("июля", "июл")
-    , ("августа", "авг")
-    , ("сентября", "сен")
-    , ("октября", "окт")
-    , ("ноября", "ноя")
-    , ("декабря", "дек")
-    ]
-  }
-
-timeLocale' :: TimeLocale
-timeLocale' = timeLocale
-  { months =
-    [ ("Январь", "янв")
-    , ("Февраль", "фев")
-    , ("Март", "мар")
-    , ("Апрель", "апр")
-    , ("Май", "май")
-    , ("Июнь", "июн")
-    , ("Июль", "июл")
-    , ("Август", "авг")
-    , ("Сентябрь", "сен")
-    , ("Октябрь", "окт")
-    , ("Ноябрь", "ноя")
-    , ("Декабрь", "дек")
-    ]
-  }
-
-postCtx :: Context String
-postCtx =
-    dateFieldWith timeLocale "date" "%A, %e %B %Y, %R" `mappend`
-    dateFieldWith defaultTimeLocale "post-date" "%Y-%m-%dT%H:%M:%S%z" `mappend`
-    field "url" (return . identifierToUrl . toFilePath . itemIdentifier) `mappend`
-    field "disqus" (return . identifierToDisqus . toFilePath . itemIdentifier) `mappend`
-    field "title" (\i -> do
-      metadata <- getMetadata $ itemIdentifier i
-      return $ escapeHtml $ maybe "" unwrap $ M.lookup "title" metadata) `mappend`
-    tagsContext `mappend`
-    defaultContext
-
-postWithCommentsCtx :: Context String
-postWithCommentsCtx =
-    constField "comments" "" `mappend`
-    postCtx
-
-pageCtx :: PageMetadata -> Context String
-pageCtx (PageMetadata title url description keywords fType)=
-    constField "meta.title" (escapeHtml $ metaTitle title) `mappend`
-    constField "meta.url" (escapeHtml $ "http://dikmax.name" ++ url) `mappend`
-    constField "meta.description" (escapeHtml description) `mappend`
-    constField "meta.keywords" (escapeHtml $ intercalate ", " keywords) `mappend`
-    constField "meta.dc.subject" (escapeHtml $ intercalate "; " keywords) `mappend`
-    facebookFields fType `mappend`
-    defaultContext
-    where
-        metaTitle Nothing = "[dikmax's blog]"
-        metaTitle (Just title) = title ++ " :: [dikmax's blog]"
-
-        facebookFields (FacebookArticle published keywords images) =
-                constField "meta.facebook.article" "" `mappend`
-                constField "meta.facebook.published" (formatTime defaultTimeLocale "%Y-%m-%dT%H:%M:%SZ" published) `mappend`
-                listField "meta.facebook.tags" defaultContext (mapM makeItem keywords) `mappend`
-                listField "meta.facebook.images" defaultContext (mapM makeItem images)
-        -- TODO Facebook profile
-        facebookFields _ = constField "meta.facebook.nothing" ""
-
-isPublished :: (MonadMetadata m) => Identifier -> m Bool
-isPublished identifier = do
-    published <- getMetadataField identifier "published"
-    return (published /= Just "false")
-
-
-
-
---------------------------------------------------------------------------------
-
-
-imagesMap :: Tag String -> Maybe String
-imagesMap (TagOpen "img" attrs) = fmap snd $ find (\attr -> fst attr == "src") attrs
-imagesMap _ = Nothing
