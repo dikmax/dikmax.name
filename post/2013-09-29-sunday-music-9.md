@@ -1,7 +1,7 @@
 ---
 title: "Музыка по воскресеньям — 9"
 date: "2013-09-29T10:20:37+03:00"
-published: false
+published: true
 tags: "youtube, видео, музыка, музыка по воскресеньям"
 ---
 
@@ -9,7 +9,7 @@ tags: "youtube, видео, музыка, музыка по воскресень
 Скажу честно, я не большой любитель аниме, но это меня зацепило. На самом деле я сначала услышал музыку,
 а потом уже посмотрел и сам сериал. Слушаем и делимся впечатлениями:
 
-![Steve Conte --- Call Me, Call Me](ww.youtube.com/watch?v=nPbBhvv6GI8)
+![Steve Conte --- Call Me, Call Me](http://www.youtube.com/watch?v=nPbBhvv6GI8)
 
 ![Emily Bindiger --- Adieu](http://www.youtube.com/watch?v=ws8X31TTB5E)
 
