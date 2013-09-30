@@ -67,4 +67,4 @@ tags: "отпуск, путешествие, фотки"
 
 ![Тяжесть любви](/images/travel/2013-08-eurotrip/wroclaw-bridge.jpg "Тяжесть любви")
 
-[Читать дальше: Берлин](/post/eurotrip-berlin). [Вернуться к началу путешествия](/post/eurotrip-warsaw).
+[Читать дальше: Берлин](/post/eurotrip-berlin/). [Вернуться к началу путешествия](/post/eurotrip-warsaw/).

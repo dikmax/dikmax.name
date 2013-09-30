@@ -40,4 +40,4 @@ tags: "отпуск, путешествие, фотки"
 
 ![Подсолнухи](/images/travel/2013-08-eurotrip/antwerpen-sunflowers.jpg "Подсолнухи")
 
-[Читать дальше: Париж](/post/eurotrip-paris). [Вернуться к началу путешествия](/post/eurotrip-warsaw).
+[Читать дальше: Париж](/post/eurotrip-paris/). [Вернуться к началу путешествия](/post/eurotrip-warsaw/).

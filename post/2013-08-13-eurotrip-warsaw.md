@@ -33,4 +33,4 @@ tags: "отпуск, путешествие, фотки"
 
 ![Syrenka](/images/travel/2013-08-eurotrip/warsaw-mermaid.jpg "Syrenka")
 
-[Читать дальше: Краков](/post/eurotrip-krakow).
+[Читать дальше: Краков](/post/eurotrip-krakow/).
