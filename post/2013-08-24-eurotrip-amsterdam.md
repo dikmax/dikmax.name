@@ -10,41 +10,41 @@ tags: "отпуск, путешествие, фотки"
 
 Затем периодический дождик окроплял нас амстердамской водой. Так что впервые за все время нам пригодились дождевики. 
 
-![Дождевики](/images/travel/2013-08-eurotrip/amsterdam_raincoat.jpg "Дождевики")
+![Дождевики](/images/travel/2013-08-eurotrip/amsterdam-raincoat.jpg "Дождевики")
 
 Итак, Амстердам\ --- это сыр.
 
-![Сыр](/images/travel/2013-08-eurotrip/amsterdam_cheese.jpg "Сыр")
+![Сыр](/images/travel/2013-08-eurotrip/amsterdam-cheese.jpg "Сыр")
 
 Амстердам\ --- это цветы.
 
-![Цветы](/images/travel/2013-08-eurotrip/amsterdam_flowers.jpg "Цветы")
+![Цветы](/images/travel/2013-08-eurotrip/amsterdam-flowers.jpg "Цветы")
 
 Амстердам\ --- это толпы туристов и невероятные очереди в музеи. На фотографии мы стоим в конце очереди в музей
 Ван Гога, а до него метров 200, он виден в центре фотографии. Нет, мы решили не идти туда.
 
-![Очередь в музей](/images/travel/2013-08-eurotrip/amsterdam_queue.jpg "Очередь в музей")
+![Очередь в музей](/images/travel/2013-08-eurotrip/amsterdam-queue.jpg "Очередь в музей")
 
 Амстердам\ --- это вездесущий Heineken: его логотип можно увидеть практически на каждом баре. Впрочем, это и не
 удивительно, ведь здесь его родина. Как ни странно, очереди в музей-пивоварню не было, поэтому мы с удовольствием
 продегустировали свежее пиво и посмотрели, как его производят.
 
-![Дегустация Heineken](/images/travel/2013-08-eurotrip/amsterdam_heiniken.jpg "Дегустация Heineken")
+![Дегустация Heineken](/images/travel/2013-08-eurotrip/amsterdam-heineken.jpg "Дегустация Heineken")
 
 Амстердам\ --- это терпимость к сексуальным меньшинствам.
 
-![Gay and happy](/images/travel/2013-08-eurotrip/amsterdam_gay_and_happy.jpg "Gay and happy")
+![Gay and happy](/images/travel/2013-08-eurotrip/amsterdam-gay-and-happy.jpg "Gay and happy")
 
 Амстердам\ --- это секс.
 
-![Condomerie](/images/travel/2013-08-eurotrip/amsterdam_condomerie.jpg "Condomerie")
+![Condomerie](/images/travel/2013-08-eurotrip/amsterdam-condomerie.jpg "Condomerie")
 
 Кстати, улица красных фонарей на самом деле вполне себе квартал, и девочки там, вопреки всеобщему мнению, вполне молодые
 и привлекательные. Фотографий нет, так как фотографировать там нельзя.
 
 Амстердам\ --- это кофешопы, которых насчитывается около 700, и косяк, который мы не докурили.
 
-![Косяк](/images/travel/2013-08-eurotrip/amsterdam_joint.jpg "Косяк")
+![Косяк](/images/travel/2013-08-eurotrip/amsterdam-joint.jpg "Косяк")
 
 После аккуратной и упорядоченной Германии там творится настоящий хаос. Велосипеды везде! Такое ощущение, что
 велосипедов в разы больше, чем жителей.
