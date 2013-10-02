@@ -36,7 +36,7 @@ $.ajax({
 });
 ~~~~~
 
-А вот с [Google Closure Library](https://developers.google.com/closure/library/) не все так просто. Там нет никаких
+А вот с [Google Closure Library](https://developers.google.com/closure/library/) не всё так просто. Там нет никаких
 `beforeSend`, и если
 [посмотреть в документацию](http://closure-library.googlecode.com/svn/docs/class_goog_net_XhrIo.html), то нужная
 функция выглядит следующим образом:
@@ -73,7 +73,7 @@ goog.events.listen(xhrIo, [goog.net.EventType.ERROR, goog.net.EventType.ABORT], 
 xhrIo.send(url);
 ~~~~~
 
-Вот и все. Сразу оговорюсь, что все это не будет работать в Internet Explorer, т.к. там нужна
+Вот и всё. Сразу оговорюсь, что всё это не будет работать в Internet Explorer, т.к. там нужна
 [своя особая магия](http://stackoverflow.com/a/5913807/682727) для получения бинарных данных, в отличие от остальных,
 где остаток действий выглядит довольно просто:
 

@@ -84,7 +84,7 @@ RunnerClass.prototype.__proto__ = EventEmitter.prototype;
 RunnerClass.prototype.run = function (data) {
     var code = this.code;
 
-    // Объект, который представляет собой контекст this для выполняемого кода. Все, что описано тут, доступно во вложенном коде.
+    // Объект, который представляет собой контекст this для выполняемого кода. всё, что описано тут, доступно во вложенном коде.
     var context = new EventEmitter();
     context["data"] = data;
     context["libs"] = libs;

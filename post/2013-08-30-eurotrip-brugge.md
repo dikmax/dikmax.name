@@ -22,7 +22,7 @@ tags: "отпуск, путешествие, фотки"
 
 ![Каналы](/images/travel/2013-08-eurotrip/brugge-channels-2.jpg "Каналы")
 
-Или еще. 
+Или ещё.
 
 ![Каналы](/images/travel/2013-08-eurotrip/brugge-channels-3.jpg "Каналы")
 
@@ -48,7 +48,7 @@ tags: "отпуск, путешествие, фотки"
 
 ![Туристы](/images/travel/2013-08-eurotrip/brugge-tourists.jpg "Туристы")
 
-И за уединением придется уйти подальше. 
+И за уединением придётся уйти подальше.
 
 ![Улица](/images/travel/2013-08-eurotrip/brugge-street.jpg "Улица")
 

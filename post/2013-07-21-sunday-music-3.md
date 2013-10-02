@@ -15,7 +15,7 @@ Scorpions. Если нет, то вот она:
 
 ![Omega --- Gyöngyhajú lány](http://www.youtube.com/watch?v=CGt-rTDkMcM)
 
-Песня всем понравилась и была переведена на другие языки. Вот еще вариант, на этот раз на немецком:
+Песня всем понравилась и была переведена на другие языки. Вот ещё вариант, на этот раз на немецком:
 
 ![Frank Schöbel --- Schreib es mir in den Sand](http://www.youtube.com/watch?v=Vn8aYkxF_v8)
 
