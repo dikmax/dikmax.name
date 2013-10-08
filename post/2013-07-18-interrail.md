@@ -2,7 +2,7 @@
 title: "InterRail"
 date: "2013-07-18T11:57:31+03:00"
 published: true
-tags: "вопрос, лытдыбр, отпуск, путешествие"
+tags: "eurotrip, вопрос, лытдыбр, отпуск, путешествие"
 ---
 
 [![](/images/3rd-party/logo-interrail.png "InterRail logo")](http://www.interrail.eu/)
