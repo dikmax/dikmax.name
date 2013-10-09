@@ -5,7 +5,7 @@ published: true
 tags: "frontend dev conf, javascript, видео, конференция, ооп"
 ---
 
-![](/images/frontend-dev-conf.png "Frontend DEV Conf '13")
+![](/images/3rd-party/frontend-dev-conf.png "Frontend DEV Conf '13")
 
 Готово видео с моим выступлением на Frontend Dev Conf '13. Я не тешу себя мыслью, что я идеальный рассказчик:
 слишком многое хочется в этом выступлении исправить. Но значит, мне есть к чему стремиться и над чем работать.

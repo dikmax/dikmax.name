@@ -5,7 +5,7 @@ published: true
 tags: "haskell, heist, snap, блог, программирование"
 ---
 
-![](/images/snap-framework-logo-small.png "Snap Framework Logo")
+![](/images/3rd-party/snap-framework-logo-small.png "Snap Framework Logo")
 
 Пришла [хорошая новость](http://snapframework.com/blog/2012/12/10/snap-0.10-released) от бойцов команды
 Snap Framework\ --- новая версия их фреймворка. Плюс у них обновился и движок шаблонов Heist. Вернее даже не так.

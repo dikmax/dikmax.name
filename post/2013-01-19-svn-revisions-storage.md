@@ -5,7 +5,7 @@ published: true
 tags: "subversion, svn, работа"
 ---
 
-![](/images/subversion_logo.png "Subversion logo")
+![](/images/3rd-party/subversion-logo.png "Subversion logo")
 
 Многие знают, что Subversion хранит историю в виде списка разниц-дельт между различными версиями файла. Это и понятно:
 обычно изменения в файлах происходят не глобальные и небольшое описание разницы будет занимать значительно меньше места.

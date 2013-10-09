@@ -5,7 +5,7 @@ published: true
 tags: "frontend dev conf, javascript, конференция"
 ---
 
-[![](/images/frontend-dev-conf.png "Frontend DEV Conf '13")](http://www.frontendconf.by)
+[![](/images/3rd-party/frontend-dev-conf.png "Frontend DEV Conf '13")](http://www.frontendconf.by)
 
 В апреле состоится [Frontend DEV Conf ’13](http://www.frontendconf.by), на которую меня пригласили прочитать доклад.
 Я уже активно работаю над ним, чтобы многие смогли вынести для себя чего-нибудь полезное. Самое сложное\ --- это уложить
