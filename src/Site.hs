@@ -203,19 +203,28 @@ lessCompilerRules = do
 --------------------------------------------------------------------------------
 
 postsRules :: Rules ()
-postsRules =
-    match "post/**" $ do
+postsRules = do
+    match "comments/*.html" $ do
+        route idRoute
+        compile getResourceBody
+
+    -- TODO dependencies
+    d <- makePatternDependency "comments/*.html"
+    rulesExtraDependencies [d] $ match "post/**" $ do
         route removeExtension
 
         compile $ do
             identifier <- getUnderlying
+            thread <- getMetadataField identifier "thread"
+            comments <- getComments thread
             title <- getMetadataField identifier "title"
             tags <- getTags identifier
             description <- getMetadataField identifier "description"
             item <- pandocCompiler >>= saveSnapshot "content"
             let images = map (fromMaybe "") $ filter isJust $ map imagesMap $ TS.parseTags $ itemBody item
+
             time <- getItemUTC defaultTimeLocale identifier
-            loadAndApplyTemplate "templates/_post.html" postCtx item
+            loadAndApplyTemplate "templates/_post.html" (postCtx `mappend` commentsField comments) item
                 >>= loadAndApplyTemplate "templates/default.html" (postCtx `mappend` pageCtx (defaultMetadata
                     { metaTitle = fmap unwrap title
                     , metaUrl = '/' : identifierToUrl (toFilePath identifier)
@@ -225,9 +234,40 @@ postsRules =
                     , metaType = FacebookArticle time tags images
                     }))
 
+
+
 imagesMap :: Tag String -> Maybe String
 imagesMap (TagOpen "img" attrs) = fmap snd $ find (\attr -> fst attr == "src") attrs
 imagesMap _ = Nothing
+
+getComments :: Maybe String -> Compiler [Item String]
+getComments Nothing = return []
+getComments (Just thread) = do
+    ids <- getMatches "comments/*.html"
+    filteredIds <- filterM compareThread ids
+    items <- loadAll (fromList filteredIds)
+    unsafeCompiler $ print items
+    return items
+    where
+        compareThread :: (MonadMetadata m) => Identifier -> m Bool
+        compareThread identifier = do
+            thread' <- getMetadataField identifier "thread"
+            return (thread' == Just thread)
+
+
+commentsField :: [Item String] -> Context String
+commentsField items =
+    field "comments" commentsList
+
+    where
+        ctx = bodyField "body"
+
+        commentsList i = do
+            tpl <- loadBody "templates/_comment.html"
+            str <- applyTemplateList tpl ctx items
+            item <- makeItem str
+                >>= loadAndApplyTemplate "templates/_post-list-archive.html" postCtx
+            return $ itemBody item
 
 --------------------------------------------------------------------------------
 -- Index pages

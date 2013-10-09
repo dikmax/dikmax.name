@@ -3,6 +3,7 @@ title: "Snap Framework 0.10"
 date: "2012-12-11T11:42:12+03:00"
 published: true
 tags: "haskell, heist, snap, блог, программирование"
+thread: 968579799
 ---
 
 ![](/images/3rd-party/snap-framework-logo-small.png "Snap Framework Logo")

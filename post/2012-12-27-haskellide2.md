@@ -3,6 +3,7 @@ title: "Haskell IDE 2"
 date: "2012-12-27T18:31:45+03:00"
 published: true
 tags: "haskell, ide, jetbrains, phpstorm, программирование"
+thread: 993713949
 ---
 
 Прошло уже довольно много времени с [прошлого обзора IDE для Haskell](/post/haskellide/). Поэтому я решил рассказать,

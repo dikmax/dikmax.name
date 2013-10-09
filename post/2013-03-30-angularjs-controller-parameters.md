@@ -3,6 +3,7 @@ title: "AngularJS и параметры контроллеров"
 date: "2013-03-30T21:53:51+03:00"
 published: true
 tags: "angularjs, javascript, программирование"
+thread: 1175634889
 ---
 
 Те люди, которые работают с [AngularJS](http://angularjs.org/), знают про директиву

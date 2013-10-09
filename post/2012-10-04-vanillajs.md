@@ -3,6 +3,7 @@ title: "Самый быстрый JavaScript-фреймворк"
 date: "2012-10-04T22:52:01+03:00"
 published: true
 tags: "javascript, vanillajs, программирование"
+thread: 871565349
 ---
 
 Нашел еще один JavaScript-фреймворк (спасибо [Виктору](http://profiles.google.com/6alliapumob) за наводку), который на

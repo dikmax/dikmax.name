@@ -3,6 +3,7 @@ title: "inherited.js v0.1"
 date: "2012-08-14T22:50:37+03:00"
 published: true
 tags: "inheritedjs, javascript, программирование"
+thread: 805349803
 ---
 
 Как я и обещал, выкладываю в общий доступ библиотеку для создания классов в JavaScript. Исходный код можно

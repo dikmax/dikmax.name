@@ -3,6 +3,7 @@ title: "Зарядка Kindle Fire"
 date: "2012-06-27T17:11:32+03:00"
 published: true
 tags: "amazon, kindle fire, работа"
+thread: 742435138
 ---
 
 Amazon со своим Kindle Fire подкинуло разработчиками (да и всем пользователем) большую свинью. Дело в том,

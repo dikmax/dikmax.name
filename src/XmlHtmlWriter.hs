@@ -147,6 +147,9 @@ writeBlock (Header _ _ inline) = do
   return [Element "h6" [] inlines]
 writeBlock HorizontalRule = return [Element "hr" [] []]
 writeBlock (Table {}) = return [TextNode "Table not implemented"]
+writeBlock (Div attr blocks) = do
+  items <- concatBlocks blocks
+  return [Element "div" (writeAttr attr) items]
 writeBlock Null = return []
 
 processListItems :: [Node] -> [Block] -> WriterState [Node]
@@ -280,6 +283,9 @@ writeInline (Note block) = do
       ] 
       [ TextNode $ T.pack $ show noteId ]
     ]
+writeInline (Span attr inline) = do
+  inlines <- concatInlines inline
+  return [ Element "span" (writeAttr attr) inlines ]
 
 concatRawInlines :: [Inline] -> WriterState T.Text
 concatRawInlines inlines = do
@@ -359,6 +365,10 @@ writeRawInline (Note block) = do
   return 
     ("<sup id=\"node-" `T.append` idPrefix (writerOptions writerState) `T.append` T.pack (show noteId) `T.append`
       "\" class=\"note-link\">" `T.append` T.pack (show noteId) `T.append` "</sup>")
+writeRawInline (Span attr inline) = do
+  inlines <- concatRawInlines inline
+  return ("<span " `T.append` (writeRawAttr attr) `T.append` ">" `T.append` inlines `T.append` "</span>" )
+
 
 getFooter :: WriterState [Node]
 getFooter = do
