@@ -256,13 +256,13 @@ commentsField items =
     field "comments" commentsList
 
     where
-        ctx = bodyField "body"
+        ctx = bodyField "body" `mappend` metadataField
 
         commentsList i = do
             tpl <- loadBody "templates/_comment.html"
             str <- applyTemplateList tpl ctx items
             item <- makeItem str
-                >>= loadAndApplyTemplate "templates/_post-list-archive.html" postCtx
+                >>= loadAndApplyTemplate "templates/_comments-list.html" postCtx
             return $ itemBody item
 
 --------------------------------------------------------------------------------

@@ -90,13 +90,12 @@ var getNewComments = function (data) {
             var data = "---\n" +
                 "id: " + item.id + "\n" +
                 "thread: " + threadsFound[0].thread + "\n" +
-                "date: \"" + item.createdAt + "\"\n" +
-                "authorName: \"" + item.author.name + "\"\n" +
-                "authorProfile: \"" + item.author.profileUrl + "\"\n" +
-                "authorAvatar: \"" + item.author.avatar.permalink + "\"\n" +
+                "date: " + item.createdAt + "\n" +
+                "authorName: " + item.author.name + "\n" +
+                "authorProfile: " + item.author.profileUrl + "\n" +
+                "authorAvatar: " + item.author.avatar.permalink + "\n" +
                 "---\n\n" +
-                item.message + "\n";/* +
-                JSON.stringify(item, null, 2);*/
+                item.message + "\n";
 
             return Q.nfcall(fs.writeFile, commentsDir + fileName, data);
         }).fail(function (e) {
