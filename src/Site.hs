@@ -205,12 +205,9 @@ lessCompilerRules = do
 postsRules :: Rules ()
 postsRules = do
     match "comments/*.html" $ do
-        route idRoute
         compile getResourceBody
 
-    -- TODO dependencies
-    d <- makePatternDependency "comments/*.html"
-    rulesExtraDependencies [d] $ match "post/**" $ do
+    match "post/**" $ do
         route removeExtension
 
         compile $ do
@@ -246,7 +243,6 @@ getComments (Just thread) = do
     ids <- getMatches "comments/*.html"
     filteredIds <- filterM compareThread ids
     items <- loadAll (fromList filteredIds)
-    unsafeCompiler $ print items
     return items
     where
         compareThread :: (MonadMetadata m) => Identifier -> m Bool

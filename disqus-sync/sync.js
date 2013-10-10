@@ -89,7 +89,7 @@ var getNewComments = function (data) {
             var fileName = item.createdAt + "-" + threadsFound[0].slug + '-' + item.id + ".html";
             var data = "---\n" +
                 "id: " + item.id + "\n" +
-                "thread: \"" + threadsFound[0].thread + "\"\n" +
+                "thread: " + threadsFound[0].thread + "\n" +
                 "date: \"" + item.createdAt + "\"\n" +
                 "authorName: \"" + item.author.name + "\"\n" +
                 "authorProfile: \"" + item.author.profileUrl + "\"\n" +
