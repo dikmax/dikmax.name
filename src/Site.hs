@@ -13,7 +13,7 @@ import qualified Data.Text.Encoding as T
 import           Data.Time.Clock (UTCTime, getCurrentTime)
 import           Data.Time.Format (formatTime, parseTime)
 import           Hakyll hiding (getItemUTC, dateFieldWith, getTags, buildPaginateWith, paginateContext, pandocCompiler)
-import           System.FilePath (takeBaseName, takeFileName, replaceFileName, replaceExtension)
+import           System.FilePath (takeFileName)
 import           System.Locale
 import           Text.HTML.TagSoup (Tag(..))
 import qualified Text.HTML.TagSoup as TS
@@ -28,6 +28,7 @@ main :: IO ()
 main = hakyll $ do
     staticFilesRules
     lessCompilerRules
+    commentsRules
     postsRules
     tagsPagesRules
     archiveRules
@@ -101,7 +102,6 @@ archiveRules = do
         monthsMap i = do
             utc <- getItemUTC defaultTimeLocale $ itemIdentifier i
             return (formatTime timeLocale' "%B" utc, i)
-        makeItem' x = return $ Item (fromFilePath x) ""
         daysField i = do
             utc <- getItemUTC defaultTimeLocale $ itemIdentifier i
             return $ formatTime timeLocale' "%e" utc
@@ -144,6 +144,7 @@ feedPostCtx =
       return $ escapeHtml $ maybe "" unwrap $ M.lookup "title" metadata) `mappend`
     defaultContext
 
+feedRules :: Rules ()
 feedRules =
     create ["feed.rss"] $ do
         route idRoute
@@ -204,16 +205,15 @@ lessCompilerRules = do
 
 postsRules :: Rules ()
 postsRules = do
-    match "comments/*.html" $ do
-        compile getResourceBody
-
     match "post/**" $ do
         route removeExtension
 
         compile $ do
             identifier <- getUnderlying
+            -- Comments
             thread <- getMetadataField identifier "thread"
             comments <- getComments thread
+            -- Metadata
             title <- getMetadataField identifier "title"
             tags <- getTags identifier
             description <- getMetadataField identifier "description"
@@ -237,6 +237,15 @@ imagesMap :: Tag String -> Maybe String
 imagesMap (TagOpen "img" attrs) = fmap snd $ find (\attr -> fst attr == "src") attrs
 imagesMap _ = Nothing
 
+--------------------------------------------------------------------------------
+-- Comments
+--------------------------------------------------------------------------------
+
+commentsRules :: Rules ()
+commentsRules =
+    match "comments/*.html" $
+        compile getResourceBody
+
 getComments :: Maybe String -> Compiler [Item String]
 getComments Nothing = return []
 getComments (Just thread) = do
@@ -258,7 +267,7 @@ commentsField items =
     where
         ctx = bodyField "body" `mappend` metadataField
 
-        commentsList i = do
+        commentsList _ = do
             tpl <- loadBody "templates/_comment.html"
             str <- applyTemplateList tpl ctx items
             item <- makeItem str
@@ -321,7 +330,7 @@ tagsPagesRules = do
         route idRoute
         compile $ do
             t <- renderTags
-                (\tag url count minCount maxCount ->
+                (\tag _ count minCount maxCount ->
                     "<a href=\"/tag/" ++ tag ++ "/\" title=\"" ++ countText count "пост" "поста" "постов" ++
                     "\" class=\"weight-" ++ show (getWeight minCount maxCount count) ++ "\">" ++ tag ++ "</a>")
                 unwords tags
@@ -394,10 +403,17 @@ staticPagesRules = do
         route removeExtension
         compile $ do
             identifier <- getUnderlying
+            -- Comments
+            thread <- getMetadataField identifier "thread"
+            comments <- getComments thread
+            -- Metadata
             title <- getMetadataField identifier "title"
             description <- getMetadataField identifier "description"
             pandocCompiler
-                >>= loadAndApplyTemplate "templates/_post-shoutbox.html" (constField "disqus" "shoutbox" `mappend` postCtx)
+                >>= loadAndApplyTemplate "templates/_post-shoutbox.html"
+                    (constField "disqus" "shoutbox" `mappend`
+                    commentsField comments `mappend`
+                    postCtx)
                 >>= loadAndApplyTemplate "templates/default.html" (pageCtx (defaultMetadata
                     { metaTitle = fmap unwrap title
                     , metaDescription = unwrap $ fromMaybe "" description
