@@ -1,7 +1,11 @@
 _cache
 _site
+disqus-sync/node_modules
 migration/node_modules
 site
 site.hi
 site.o
 log/*.log
+dikmax-name
+dikmax-name.tar.lzma
+server
