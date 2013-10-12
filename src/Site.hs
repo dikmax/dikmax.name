@@ -35,6 +35,7 @@ main = hakyll $ do
     indexPagesRules
     staticPagesRules
     feedRules
+    sitemapRules
 
     match "templates/*" $ compile templateCompiler
 
@@ -151,7 +152,7 @@ feedRules =
         compile $ do
             posts <- fmap (take 10) . recentFirst =<<
                 loadAllSnapshots "post/**" "content"
-            time <- unsafeCompiler $ getCurrentTime
+            time <- unsafeCompiler getCurrentTime
             lastItemTime <- getItemUTC defaultTimeLocale $ itemIdentifier $ head posts
             let postsCtx =
                     listField "posts" feedPostCtx (return posts) `mappend`
@@ -204,7 +205,7 @@ lessCompilerRules = do
 --------------------------------------------------------------------------------
 
 postsRules :: Rules ()
-postsRules = do
+postsRules =
     match "post/**" $ do
         route removeExtension
 
@@ -251,8 +252,7 @@ getComments Nothing = return []
 getComments (Just thread) = do
     ids <- getMatches "comments/*.html"
     filteredIds <- filterM compareThread ids
-    items <- loadAll (fromList filteredIds)
-    return items
+    loadAll (fromList filteredIds)
     where
         compareThread :: (MonadMetadata m) => Identifier -> m Bool
         compareThread identifier = do
@@ -281,8 +281,7 @@ commentsField items =
 indexPagesRules :: Rules ()
 indexPagesRules = do
     match "index.md" $
-        compile $
-            pandocCompiler
+        compile pandocCompiler
 
     paginate <- buildPaginateWith 5 getPageIdentifier "post/**"
     d <- makePatternDependency "post/**"
@@ -419,6 +418,42 @@ staticPagesRules = do
                     , metaDescription = unwrap $ fromMaybe "" description
                     , metaUrl = '/' : identifierToUrl (toFilePath identifier)
                     }))
+
+--------------------------------------------------------------------------------
+-- Sitemap
+--------------------------------------------------------------------------------
+
+data SitemapItem = SitemapItem
+    { siUrl :: String
+    , siPriority :: String
+    }
+
+sitemapRules :: Rules ()
+sitemapRules = do
+    d <- makePatternDependency "post/**"
+    rulesExtraDependencies [d] $ create ["sitemap.xml"] $ do
+        route idRoute
+
+        ids <- getMatches "post/**"
+        let
+            postItems = map (\i -> SitemapItem ("http://dikmax.name/" ++ identifierToUrl (toFilePath i)) "1.0") ids
+        compile $
+            makeItem ""
+                 >>= loadAndApplyTemplate "templates/sitemap.xml" (sitemapField (staticItems ++ postItems))
+    where
+        staticItems =
+            [ SitemapItem "http://dikmax.name/" "0.5"
+            , SitemapItem "http://dikmax.name/about/" "0.8"
+            , SitemapItem "http://dikmax.name/shoutbox/" "0.5"
+            ]
+
+sitemapField :: [SitemapItem] -> Context String
+sitemapField items =
+    constField "sitemap" $ concatMap sitemap items
+    where
+        sitemap (SitemapItem url priority) = "<url><loc>" ++ url ++
+            "</loc><changefreq>daily</changefreq><priority>" ++ priority ++ "</priority></url>\n"
+
 
 --------------------------------------------------------------------------------
 -- Contexts

@@ -367,7 +367,7 @@ writeRawInline (Note block) = do
       "\" class=\"note-link\">" `T.append` T.pack (show noteId) `T.append` "</sup>")
 writeRawInline (Span attr inline) = do
   inlines <- concatRawInlines inline
-  return ("<span " `T.append` (writeRawAttr attr) `T.append` ">" `T.append` inlines `T.append` "</span>" )
+  return ("<span " `T.append` writeRawAttr attr `T.append` ">" `T.append` inlines `T.append` "</span>" )
 
 
 getFooter :: WriterState [Node]
