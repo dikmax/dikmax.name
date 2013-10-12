@@ -165,9 +165,22 @@ feedRules =
 -- Static files
 --------------------------------------------------------------------------------
 
+-- DO NOT merge patterns with files! It won't work!
 staticFilesRules :: Rules ()
-staticFilesRules =
-    match (fromList ["fonts/*", "images/**", "js/*", "favicon.ico", "robots.txt"]) $ do
+staticFilesRules = do
+    match "fonts/*" $ do
+        route   idRoute
+        compile copyFileCompiler
+
+    match "images/**" $ do
+        route   idRoute
+        compile copyFileCompiler
+
+    match "js/*" $ do
+        route   idRoute
+        compile copyFileCompiler
+
+    match (fromList ["favicon.ico", "robots.txt"]) $ do
         route   idRoute
         compile copyFileCompiler
 
