@@ -166,20 +166,8 @@ feedRules =
 --------------------------------------------------------------------------------
 
 staticFilesRules :: Rules ()
-staticFilesRules = do
-    match "fonts/*" $ do
-        route   idRoute
-        compile copyFileCompiler
-
-    match "images/**" $ do
-        route   idRoute
-        compile copyFileCompiler
-
-    match "js/*" $ do
-        route   idRoute
-        compile copyFileCompiler
-
-    match "favicon.ico" $ do
+staticFilesRules =
+    match (fromList ["fonts/*", "images/**", "js/*", "favicon.ico", "robots.txt"]) $ do
         route   idRoute
         compile copyFileCompiler
 
