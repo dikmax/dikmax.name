@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+$partial("templates/_head.html")$
+<body>
+$partial("templates/_topbar.html")$
+
+<div class="container">
+    <div class="panel-group">
+        $for(posts)$
+            $partial("templates/_post-list.html")$
+        $endfor$
+    </div>
+
+    $partial("templates/_pager.html")$
+
+    $partial("templates/_footer.html")$
+</div>
+$partial("templates/_yandex-metrika.html")$
+$partial("templates/_disqus-list.html")$
+$partial("templates/_scripts-development.html")$
+</body>
+</html>
+
+

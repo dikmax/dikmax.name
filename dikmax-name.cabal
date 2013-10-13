@@ -10,6 +10,10 @@ Category:            Web
 Build-type:          Simple
 Cabal-version:       >=1.2
 
+Flag development
+  Description: Development mode
+  Default: False
+
 Executable dikmax-name
   hs-source-dirs: src
   main-is: Site.hs
@@ -29,8 +33,13 @@ Executable dikmax-name
     time >= 1.4 && < 1.5,
     xmlhtml >= 0.2.3 && < 0.3
 
-  ghc-options: -threaded -Wall -fwarn-tabs -funbox-strict-fields -O2
-               -fno-warn-unused-do-bind
+  if flag(development)
+      cpp-options: -DDEVELOPMENT
+      ghc-options: -threaded -Wall -fwarn-tabs -funbox-strict-fields -O2
+                   -fno-warn-unused-do-bind
+  else
+      ghc-options: -threaded -Wall -fwarn-tabs -funbox-strict-fields -O2
+                   -fno-warn-unused-do-bind
 
 Executable server
   hs-source-dirs: src
