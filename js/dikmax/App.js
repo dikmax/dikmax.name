@@ -7,7 +7,7 @@ goog.require('dikmax.Templates');
 goog.require('goog.Timer');
 goog.require('goog.array');
 goog.require('goog.dom');
-goog.require('goog.dom.classes');
+goog.require('goog.dom.classlist');
 goog.require('goog.events');
 goog.require('goog.soy');
 goog.require('goog.string.html.HtmlParser');
@@ -47,9 +47,13 @@ dikmax.App.prototype.topNavBar_ = function() {
   var visible = false;
   var complete = function() {
     if (visible) {
-      goog.dom.classes.addRemove(collapsibleBlock, ['collapse', 'collapsing'], 'in');
+      goog.dom.classlist.add(collapsibleBlock, 'in');
+      goog.dom.classlist.remove(collapsibleBlock, 'collapse');
+      goog.dom.classlist.remove(collapsibleBlock, 'collapsing');
     } else {
-      goog.dom.classes.addRemove(collapsibleBlock, ['in', 'collapsing'], 'collapse');
+      goog.dom.classlist.add(collapsibleBlock, 'collapse');
+      goog.dom.classlist.remove(collapsibleBlock, 'collapsing');
+      goog.dom.classlist.remove(collapsibleBlock, 'in');
       goog.style.setHeight(collapsibleBlock, 1);
     }
   };
@@ -58,12 +62,15 @@ dikmax.App.prototype.topNavBar_ = function() {
     visible = !visible;
 
     if (visible) {
-      goog.dom.classes.addRemove(collapsibleBlock, ['collapse', 'in'], 'collapsing');
+      goog.dom.classlist.add(collapsibleBlock, 'collapsing');
+      goog.dom.classlist.remove(collapsibleBlock, 'collapse');
+      goog.dom.classlist.remove(collapsibleBlock, 'in');
       var height = collapsibleBlock.scrollHeight + 1;
       goog.style.setHeight(collapsibleBlock, height);
     } else {
-      goog.dom.classes.remove(collapsibleBlock, 'collapse', 'in');
-      goog.dom.classes.add(collapsibleBlock, 'collapsing');
+      goog.dom.classlist.remove(collapsibleBlock, 'collapse');
+      goog.dom.classlist.remove(collapsibleBlock, 'in');
+      goog.dom.classlist.add(collapsibleBlock, 'collapsing');
       goog.style.setHeight(collapsibleBlock, 0);
     }
     if (goog.style.transition.isSupported()) {
@@ -182,7 +189,7 @@ dikmax.App.prototype.highlightBlocks_ = function() {
       parser.parse(handler, block.innerHTML);
       goog.soy.renderElement(block, dikmax.Templates.codeWrapper,
           {lines: handler.getLines()});
-      goog.dom.classes.add(block, 'highlighted');
+      goog.dom.classlist.add(block, 'highlighted');
     });
   }
 

@@ -2,7 +2,7 @@ goog.provide('dikmax.CodeTooltip');
 
 goog.require('dikmax.CodeTooltipPosition');
 goog.require('dikmax.Templates');
-goog.require('goog.dom.classes');
+goog.require('goog.dom.classlist');
 goog.require('goog.events');
 goog.require('goog.fx.css3');
 goog.require('goog.fx.dom');
@@ -19,7 +19,7 @@ goog.require('goog.ui.HoverCard');
  */
 dikmax.CodeTooltip = function() {
   goog.base(this, function(el) {
-    return goog.dom.classes.has(el, 'line') &&
+    return goog.dom.classlist.contains(el, 'line') &&
         el.getAttribute('data-linenum');
   }, true);
 

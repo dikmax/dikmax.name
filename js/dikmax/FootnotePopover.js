@@ -2,7 +2,7 @@ goog.provide('dikmax.FootnotePopover');
 
 goog.require('dikmax.FootnotePosition');
 goog.require('dikmax.Templates');
-goog.require('goog.dom.classes');
+goog.require('goog.dom.classlist');
 goog.require('goog.events');
 goog.require('goog.fx.css3');
 goog.require('goog.fx.dom');
@@ -19,7 +19,7 @@ goog.require('goog.ui.HoverCard');
  */
 dikmax.FootnotePopover = function() {
   goog.base(this, function(el) {
-    return goog.dom.classes.has(el, 'note-link');
+    return goog.dom.classlist.contains(el, 'note-link');
   }, false);
 
   this.footnotes = {};
