@@ -1,4 +1,4 @@
---------------------------------------------------------------------------------
+{-# LANGUAGE CPP               #-}
 {-# LANGUAGE OverloadedStrings #-}
 import           Blaze.ByteString.Builder (toByteString)
 import           Control.Monad (forM_, filterM, msum)
@@ -23,6 +23,7 @@ import           Text.Regex (mkRegex, subRegex)
 import           Text.XmlHtml
 import           XmlHtmlWriter
 
+
 --------------------------------------------------------------------------------
 main :: IO ()
 main = hakyll $ do
@@ -39,6 +40,34 @@ main = hakyll $ do
 
     match "templates/*" $ compile templateCompiler
 
+
+--------------------------------------------------------------------------------
+-- Defines
+--------------------------------------------------------------------------------
+
+#ifdef DEVELOPMENT
+
+archiveTemplateName :: Identifier
+archiveTemplateName = "templates/archive-development.html"
+defaultTemplateName :: Identifier
+defaultTemplateName = "templates/default-development.html"
+indexTemplateName :: Identifier
+indexTemplateName = "templates/index-development.html"
+listTemplateName :: Identifier
+listTemplateName = "templates/list-development.html"
+
+#else
+
+archiveTemplateName :: Identifier
+archiveTemplateName = "templates/archive.html"
+defaultTemplateName :: Identifier
+defaultTemplateName = "templates/default.html"
+indexTemplateName :: Identifier
+indexTemplateName = "templates/index.html"
+listTemplateName :: Identifier
+listTemplateName = "templates/list.html"
+
+#endif
 
 --------------------------------------------------------------------------------
 -- Archive
@@ -94,7 +123,7 @@ archiveRules = do
                             , metaUrl = "/archive/"
                             })
                 makeItem ""
-                    >>= loadAndApplyTemplate "templates/archive.html" archiveCtx
+                    >>= loadAndApplyTemplate archiveTemplateName archiveCtx
     where
         yearsMap i = do
             utc <- getItemUTC defaultTimeLocale i
@@ -158,7 +187,7 @@ feedRules =
                     listField "posts" feedPostCtx (return posts) `mappend`
                     constField "build-date" (formatTime defaultTimeLocale "%a, %d %b %Y %H:%M:%S GMT" time) `mappend`
                     constField "pub-date" (formatTime defaultTimeLocale "%a, %d %b %Y %H:%M:%S GMT" lastItemTime)
-            makeItem ""
+            makeItem ("" :: String)
                 >>= loadAndApplyTemplate "templates/rss.xml" postsCtx
 
 --------------------------------------------------------------------------------
@@ -176,9 +205,15 @@ staticFilesRules = do
         route   idRoute
         compile copyFileCompiler
 
-    match "js/*" $ do
+#ifdef DEVELOPMENT
+    match "js/**" $ do
         route   idRoute
         compile copyFileCompiler
+#else
+    match "js/script.js" $ do
+        route   idRoute
+        compile copyFileCompiler
+#endif
 
     match (fromList ["favicon.ico", "robots.txt"]) $ do
         route   idRoute
@@ -224,7 +259,7 @@ postsRules =
 
             time <- getItemUTC defaultTimeLocale identifier
             loadAndApplyTemplate "templates/_post.html" (postCtx `mappend` commentsField comments) item
-                >>= loadAndApplyTemplate "templates/default.html" (postCtx `mappend` pageCtx (defaultMetadata
+                >>= loadAndApplyTemplate defaultTemplateName (postCtx `mappend` pageCtx (defaultMetadata
                     { metaTitle = fmap unwrap title
                     , metaUrl = '/' : identifierToUrl (toFilePath identifier)
                     , metaKeywords = tags
@@ -301,7 +336,7 @@ indexPagesRules = do
                                 ++ "Я рассказываю о программировании и иногда о своей жизни."
                             })
                 makeItem ""
-                    >>= loadAndApplyTemplate "templates/index.html" postsCtx
+                    >>= loadAndApplyTemplate indexTemplateName postsCtx
             else do
                 posts <- recentFirst =<< loadAllSnapshots ids "content"
                 let postsCtx =
@@ -314,7 +349,7 @@ indexPagesRules = do
                             , metaUrl = "/page/" ++ show page ++ "/"
                             })
                 makeItem ""
-                    >>= loadAndApplyTemplate "templates/list.html" postsCtx
+                    >>= loadAndApplyTemplate listTemplateName postsCtx
 
 --------------------------------------------------------------------------------
 -- Tags
@@ -342,7 +377,7 @@ tagsPagesRules = do
             makeItem t
                 >>= loadAndApplyTemplate "templates/_tags-wrapper.html" ctx
                 >>= loadAndApplyTemplate "templates/_post-without-footer.html" ctx
-                >>= loadAndApplyTemplate "templates/default.html" ctx
+                >>= loadAndApplyTemplate defaultTemplateName ctx
 
     rulesExtraDependencies [d] $ tagsRules tags $ \tag identifiers -> do
         paginate <- buildPaginateWith 5 (getTagIdentifier tag) identifiers
@@ -366,7 +401,7 @@ tagsPagesRules = do
                             })
 
                 makeItem ""
-                    >>= loadAndApplyTemplate "templates/list.html" postsCtx
+                    >>= loadAndApplyTemplate listTemplateName postsCtx
     where
         filterFn :: (a, Metadata) -> Bool
         filterFn (_, metadata)
@@ -393,7 +428,7 @@ staticPagesRules = do
             description <- getMetadataField identifier "description"
             pandocCompiler
                 >>= loadAndApplyTemplate "templates/_post-without-footer.html" postCtx
-                >>= loadAndApplyTemplate "templates/default.html" (pageCtx (defaultMetadata
+                >>= loadAndApplyTemplate defaultTemplateName (pageCtx (defaultMetadata
                     { metaTitle = fmap unwrap title
                     , metaDescription = unwrap $ fromMaybe "" description
                     , metaUrl = '/' : identifierToUrl (toFilePath identifier)
@@ -414,7 +449,7 @@ staticPagesRules = do
                     (constField "disqus" "shoutbox" `mappend`
                     commentsField comments `mappend`
                     postCtx)
-                >>= loadAndApplyTemplate "templates/default.html" (pageCtx (defaultMetadata
+                >>= loadAndApplyTemplate defaultTemplateName (pageCtx (defaultMetadata
                     { metaTitle = fmap unwrap title
                     , metaDescription = unwrap $ fromMaybe "" description
                     , metaUrl = '/' : identifierToUrl (toFilePath identifier)
