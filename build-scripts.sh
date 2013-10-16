@@ -13,7 +13,7 @@ do
 done
 
 echo "Updating dependencies..."
-js/closure-library/closure/bin/build/depswriter.py \
+python js/closure-library/closure/bin/build/depswriter.py \
   --root_with_prefix="js/closure-library/third_party/closure/goog ../../third_party/closure/goog" \
   --root_with_prefix="js/dikmax ../../../dikmax" \
   --root=js/closure-library/closure/goog \
@@ -22,7 +22,7 @@ js/closure-library/closure/bin/build/depswriter.py \
   --output_file=js/deps.js
 
 echo "Compiling script..."
-js/closure-library/closure/bin/build/closurebuilder.py \
+python js/closure-library/closure/bin/build/closurebuilder.py \
   --root=js/dikmax/ \
   --root=js/closure-library/closure/goog/ \
   --root=js/closure-library/third_party/closure/goog/ \
@@ -37,25 +37,3 @@ js/closure-library/closure/bin/build/closurebuilder.py \
   js/closure-templates/soyutils_usegoog.js \
   js/highlight.pack.js \
   > js/script.js
-
-# echo "Compiling testing version..."
-# js/closure-library/bin/build/closurebuilder.py \
-#  --root=static/js/dikmax/ \
-#  --root=static/js/goog/ \
-#  --root=static/js/soy/ \
-#  --root=static/js/third_party/ \
-#  --namespace="dikmax.main" \
-#  --output_mode=compiled \
-#  --compiler_jar=js/closure-compiler/compiler.jar \
-#  --compiler_flags="--externs=closure/compiler/externs/webkit_console.js" \
-#  --compiler_flags="--compilation_level=ADVANCED_OPTIMIZATIONS" \
-#  --compiler_flags="--use_types_for_optimization" \
-#  --compiler_flags="--warning_level=VERBOSE" \
-#  --compiler_flags="--debug" \
-#  --compiler_flags="--formatting=PRETTY_PRINT" \
-#  --compiler_flags="--formatting=PRINT_INPUT_DELIMITER" \
-#  --compiler_flags="--charset=UTF-8" \
-#  --compiler_flags="--create_source_map=static/js/script.testing.js.map" \
-#  --compiler_flags="--define='EXCLUDE_VAULT=true'" \
-#  static/js/highlight.pack.js \
-#  > static/js/script.testing.js
