@@ -6,9 +6,12 @@ goog.require('dikmax.FootnotePopover');
 goog.require('dikmax.Templates');
 goog.require('goog.Timer');
 goog.require('goog.array');
+goog.require('goog.date');
 goog.require('goog.dom');
 goog.require('goog.dom.classlist');
+goog.require('goog.dom.dataset');
 goog.require('goog.events');
+goog.require('goog.i18n.DateTimeFormat');
 goog.require('goog.soy');
 goog.require('goog.string.html.HtmlParser');
 goog.require('goog.style');
@@ -88,18 +91,24 @@ dikmax.App.prototype.topNavBar_ = function() {
  * @private
  */
 dikmax.App.prototype.fixTimeZones_ = function() {
-  // TODO
-  /*
-   moment.lang('ru');
-   $('span[data-post-date]').each(function () {
-     var $this = $(this);
-     var date = moment($this.attr('data-post-date')).zone(moment().zone());
-     var dateString = date.format("dddd, D MMMM YYYY, HH:mm");
-     dateString = dateString.substring(0, 1).toLocaleUpperCase() + dateString.substring(1)
-     $this.html(dateString);
-     $this.attr('title', date.fromNow());
-   });
-  */
+  var doc = goog.dom.getDocument();
+  var spans = doc.getElementsByTagName('span');
+
+  var format = new goog.i18n.DateTimeFormat('cccc, d MMMM yyyy, HH:mm');
+
+  goog.array.forEach(spans, function(el) {
+    var postDate = goog.dom.dataset.get(el, 'postDate');
+    if (!postDate) {
+      return;
+    }
+    var date = goog.date.fromIsoString(postDate);
+    if (!date) {
+      return;
+    }
+
+    var dateString = format.format(date);
+    goog.dom.setTextContent(el, dateString);
+  });
 };
 
 

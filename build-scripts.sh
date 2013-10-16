@@ -33,6 +33,7 @@ python js/closure-library/closure/bin/build/closurebuilder.py \
   --compiler_flags="--use_types_for_optimization" \
   --compiler_flags="--warning_level=VERBOSE" \
   --compiler_flags="--charset=UTF-8" \
+  --compiler_flags="--define='goog.LOCALE=\"ru\"'" \
   --compiler_flags="--create_source_map=js/script.js.map" \
   js/closure-templates/soyutils_usegoog.js \
   js/highlight.pack.js \
