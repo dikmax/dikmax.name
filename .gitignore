@@ -9,3 +9,4 @@ log/*.log
 dikmax-name
 dikmax-name.tar.lzma
 server
+dist
