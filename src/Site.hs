@@ -329,7 +329,7 @@ indexPagesRules = do
                 topPost <- loadBody "index.md"
                 let postsCtx =
                         constField "body" topPost `mappend`
-                        listField "posts" postWithCommentsCtx (return posts) `mappend`
+                        listField "posts" postWithCommentsCountCtx (return posts) `mappend`
                         paginateContext paginate `mappend`
                         pageCtx (defaultMetadata
                             { metaDescription = "Мой персональный блог. "
@@ -340,7 +340,7 @@ indexPagesRules = do
             else do
                 posts <- recentFirst =<< loadAllSnapshots ids "content"
                 let postsCtx =
-                        listField "posts" postWithCommentsCtx (return posts) `mappend`
+                        listField "posts" postWithCommentsCountCtx (return posts) `mappend`
                         paginateContext paginate `mappend`
                         pageCtx (defaultMetadata
                             { metaTitle = Just $ show page ++ "-я страница"
@@ -386,7 +386,7 @@ tagsPagesRules = do
             compile $ do
                 posts <- recentFirst =<< loadAllSnapshots ids "content"
                 let postsCtx =
-                        listField "posts" postWithCommentsCtx (return posts) `mappend`
+                        listField "posts" postWithCommentsCountCtx (return posts) `mappend`
                         paginateContext paginate `mappend`
                         pageCtx (defaultMetadata
                             { metaTitle = Just $ "\"" ++ tag ++
@@ -541,9 +541,9 @@ postCtx =
     tagsContext `mappend`
     defaultContext
 
-postWithCommentsCtx :: Context String
-postWithCommentsCtx =
-    constField "comments" "" `mappend`
+postWithCommentsCountCtx :: Context String
+postWithCommentsCountCtx =
+    constField "commentsCount" "" `mappend`
     postCtx
 
 pageCtx :: PageMetadata -> Context String
