@@ -210,7 +210,7 @@ staticFilesRules = do
         route   idRoute
         compile copyFileCompiler
 #else
-    match "js/script.js" $ do
+    match (fromList ["js/script.js", "js/respond.min.js", "js/html5shiv.js"]) $ do
         route   idRoute
         compile copyFileCompiler
 #endif
