@@ -16,6 +16,7 @@ goog.require('goog.soy');
 goog.require('goog.string.html.HtmlParser');
 goog.require('goog.style');
 goog.require('goog.style.transition');
+goog.require('goog.userAgent');
 goog.require('hljs');
 
 
@@ -219,7 +220,7 @@ dikmax.App.prototype.inlineFootnotes_ = function() {
  */
 dikmax.App.prototype.setupKeyboardNavigation_ = function() {
   goog.events.listen(document, goog.events.EventType.KEYDOWN, function(e) {
-    if (e.ctrlKey) {
+    if (goog.userAgent.MAC && e.altKey || e.ctrlKey) {
       var link;
       if (e.keyCode === 37) {
         // Previous page link
