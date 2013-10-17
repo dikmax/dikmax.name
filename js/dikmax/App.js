@@ -219,22 +219,37 @@ dikmax.App.prototype.inlineFootnotes_ = function() {
  * @private
  */
 dikmax.App.prototype.setupKeyboardNavigation_ = function() {
-  goog.events.listen(document, goog.events.EventType.KEYDOWN, function(e) {
-    if (goog.userAgent.MAC && e.altKey || e.ctrlKey) {
-      var link;
-      if (e.keyCode === 37) {
-        // Previous page link
-        link = goog.dom.getElementByClass('previous');
-      } else if (e.keyCode === 39) {
-        // Next page link
-        link = goog.dom.getElementByClass('next');
-      }
-      if (link && goog.dom.getAncestorByClass(link, 'pager')) {
-        var anchor = goog.dom.getElementsByTagNameAndClass('a', null, link);
-        if (anchor.length) {
-          document.location = anchor[0].getAttribute('href');
+  var pager = goog.dom.getElementByClass('pager');
+  var previousLink = goog.dom.getElementByClass('previous', pager);
+  var nextLink = goog.dom.getElementByClass('next', pager);
+  var title;
+  if (previousLink) {
+    title = previousLink.getAttribute('title');
+    previousLink.setAttribute('title', title + ' (' + (goog.userAgent.MAC ? '⎇←' : 'Ctrl + ←') + ')');
+  }
+  if (nextLink) {
+    title = nextLink.getAttribute('title');
+    nextLink.setAttribute('title', title + ' (' + (goog.userAgent.MAC ? '⎇→' : 'Ctrl + →') + ')');
+  }
+
+  if (previousLink || nextLink) {
+    goog.events.listen(document, goog.events.EventType.KEYDOWN, function(e) {
+      if (goog.userAgent.MAC && e.altKey || e.ctrlKey) {
+        var link;
+        if (e.keyCode === 37) {
+          // Previous page link
+          link = previousLink;
+        } else if (e.keyCode === 39) {
+          // Next page link
+          link = nextLink;
+        }
+        if (link) {
+          var anchor = goog.dom.getElementsByTagNameAndClass('a', null, link);
+          if (anchor.length) {
+            document.location = anchor[0].getAttribute('href');
+          }
         }
       }
-    }
-  });
+    });
+  }
 };

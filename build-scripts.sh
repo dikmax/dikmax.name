@@ -1,9 +1,10 @@
 #!/bin/sh
 
-echo "Building highlight.js..."
-python js/highlight.js/tools/build.py -n bash css haskell javascript php sql xml
-echo 'goog.provide("hljs");' > js/highlight.pack.js
-cat js/highlight.js/build/highlight.pack.js >> js/highlight.pack.js
+# Uncomment only if required
+# echo "Building highlight.js..."
+# python js/highlight.js/tools/build.py -n bash css haskell javascript php sql xml
+# echo 'goog.provide("hljs");' > js/highlight.pack.js
+# cat js/highlight.js/build/highlight.pack.js >> js/highlight.pack.js
 
 echo "Building templates..."
 for file in $(find js/dikmax -iname "*.soy")

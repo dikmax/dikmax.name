@@ -1,6 +1,8 @@
 goog.provide('dikmax.main');
 
 goog.require('dikmax.App');
+goog.require('goog.debug.ErrorHandler'); // To prevent compiler warnings
+goog.require('goog.events.EventWrapper');
 
 
 /**
