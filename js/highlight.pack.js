@@ -608,105 +608,57 @@ function() {
     return result;
   }
 }();
-hljs.LANGUAGES['php'] = function(hljs) {
-  var VARIABLE = {
-    className: 'variable', begin: '\\$+[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*'
+hljs.LANGUAGES['bash'] = function(hljs) {
+  var BASH_LITERAL = 'true false';
+  var BASH_KEYWORD = 'if then else elif fi for break continue while in do done echo exit return set declare';
+  var VAR1 = {
+    className: 'variable', begin: '\\$[a-zA-Z0-9_#]+'
   };
-  var STRINGS = [
-    hljs.inherit(hljs.APOS_STRING_MODE, {illegal: null}),
-    hljs.inherit(hljs.QUOTE_STRING_MODE, {illegal: null}),
-    {
-      className: 'string',
-      begin: 'b"', end: '"',
-      contains: [hljs.BACKSLASH_ESCAPE]
+  var VAR2 = {
+    className: 'variable', begin: '\\${([^}]|\\\\})+}'
+  };
+  var QUOTE_STRING = {
+    className: 'string',
+    begin: '"', end: '"',
+    illegal: '\\n',
+    contains: [hljs.BACKSLASH_ESCAPE, VAR1, VAR2],
+    relevance: 0
+  };
+  var APOS_STRING = {
+    className: 'string',
+    begin: '\'', end: '\'',
+    contains: [{begin: '\'\''}],
+    relevance: 0
+  };
+  var TEST_CONDITION = {
+    className: 'test_condition',
+    begin: '', end: '',
+    contains: [QUOTE_STRING, APOS_STRING, VAR1, VAR2],
+    keywords: {
+      literal: BASH_LITERAL
     },
-    {
-      className: 'string',
-      begin: 'b\'', end: '\'',
-      contains: [hljs.BACKSLASH_ESCAPE]
-    }
-  ];
-  var NUMBERS = [hljs.BINARY_NUMBER_MODE, hljs.C_NUMBER_MODE];
-  var TITLE = {
-    className: 'title', begin: hljs.UNDERSCORE_IDENT_RE
+    relevance: 0
   };
+
   return {
-    case_insensitive: true,
-    keywords:
-      'and include_once list abstract global private echo interface as static endswitch ' +
-      'array null if endwhile or const for endforeach self var while isset public ' +
-      'protected exit foreach throw elseif include __FILE__ empty require_once do xor ' +
-      'return implements parent clone use __CLASS__ __LINE__ else break print eval new ' +
-      'catch __METHOD__ case exception php_user_filter default die require __FUNCTION__ ' +
-      'enddeclare final try this switch continue endfor endif declare unset true false ' +
-      'namespace trait goto instanceof insteadof __DIR__ __NAMESPACE__ __halt_compiler',
+    keywords: {
+      "keyword": BASH_KEYWORD,
+      "literal": BASH_LITERAL
+    },
     contains: [
-      hljs.C_LINE_COMMENT_MODE,
-      hljs.HASH_COMMENT_MODE,
       {
-        className: 'comment',
-        begin: '/\\*', end: '\\*/',
-        contains: [{
-            className: 'phpdoc',
-            begin: '\\s@[A-Za-z]+'
-        }]
-      },
-      {
-          className: 'comment',
-          excludeBegin: true,
-          begin: '__halt_compiler.+?;', endsWithParent: true
-      },
-      {
-        className: 'string',
-        begin: '<<<[\'"]?\\w+[\'"]?$', end: '^\\w+;',
-        contains: [hljs.BACKSLASH_ESCAPE]
-      },
-      {
-        className: 'preprocessor',
-        begin: '<\\?php',
+        className: 'shebang',
+        begin: '(#!\\/bin\\/bash)|(#!\\/bin\\/sh)',
         relevance: 10
       },
-      {
-        className: 'preprocessor',
-        begin: '\\?>'
-      },
-      VARIABLE,
-      {
-        className: 'function',
-        beginWithKeyword: true, end: '{',
-        keywords: 'function',
-        illegal: '\\$|\\[|%',
-        contains: [
-          TITLE,
-          {
-            className: 'params',
-            begin: '\\(', end: '\\)',
-            contains: [
-              'self',
-              VARIABLE,
-              hljs.C_BLOCK_COMMENT_MODE
-            ].concat(STRINGS).concat(NUMBERS)
-          }
-        ]
-      },
-      {
-        className: 'class',
-        beginWithKeyword: true, end: '{',
-        keywords: 'class',
-        illegal: '[:\\(\\$]',
-        contains: [
-          {
-            beginWithKeyword: true, endsWithParent: true,
-            keywords: 'extends',
-            contains: [TITLE]
-          },
-          TITLE
-        ]
-      },
-      {
-        begin: '=>' // No markup, just a relevance booster
-      }
-    ].concat(STRINGS).concat(NUMBERS)
+      VAR1,
+      VAR2,
+      hljs.HASH_COMMENT_MODE,
+      QUOTE_STRING,
+      APOS_STRING,
+      hljs.inherit(TEST_CONDITION, {begin: '\\[ ', end: ' \\]', relevance: 0}),
+      hljs.inherit(TEST_CONDITION, {begin: '\\[\\[ ', end: ' \\]\\]'})
+    ]
   };
 }(hljs);
 hljs.LANGUAGES['css'] = function(hljs) {
@@ -884,6 +836,165 @@ hljs.LANGUAGES['haskell'] = function(hljs) {
     ]
   };
 }(hljs);
+hljs.LANGUAGES['javascript'] = function(hljs) {
+  return {
+    keywords: {
+      "keyword":
+        'in if for while finally var new function do return void else break catch ' +
+        'instanceof with throw case default try this switch continue typeof delete ' +
+        'let yield const',
+      "literal":
+        'true false null undefined NaN Infinity'
+    },
+    contains: [
+      hljs.APOS_STRING_MODE,
+      hljs.QUOTE_STRING_MODE,
+      hljs.C_LINE_COMMENT_MODE,
+      hljs.C_BLOCK_COMMENT_MODE,
+      hljs.C_NUMBER_MODE,
+      { // "value" container
+        begin: '(' + hljs.RE_STARTERS_RE + '|\\b(case|return|throw)\\b)\\s*',
+        keywords: 'return throw case',
+        contains: [
+          hljs.C_LINE_COMMENT_MODE,
+          hljs.C_BLOCK_COMMENT_MODE,
+          {
+            className: 'regexp',
+            begin: '/', end: '/[gim]*',
+            illegal: '\\n',
+            contains: [{begin: '\\\\/'}]
+          },
+          { // E4X
+            begin: '<', end: '>;',
+            subLanguage: 'xml'
+          }
+        ],
+        relevance: 0
+      },
+      {
+        className: 'function',
+        beginWithKeyword: true, end: '{',
+        keywords: 'function',
+        contains: [
+          {
+            className: 'title', begin: '[A-Za-z$_][0-9A-Za-z$_]*'
+          },
+          {
+            className: 'params',
+            begin: '\\(', end: '\\)',
+            contains: [
+              hljs.C_LINE_COMMENT_MODE,
+              hljs.C_BLOCK_COMMENT_MODE
+            ],
+            illegal: '["\'\\(]'
+          }
+        ],
+        illegal: '\\[|%'
+      }
+    ]
+  };
+}(hljs);
+hljs.LANGUAGES['php'] = function(hljs) {
+  var VARIABLE = {
+    className: 'variable', begin: '\\$+[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*'
+  };
+  var STRINGS = [
+    hljs.inherit(hljs.APOS_STRING_MODE, {illegal: null}),
+    hljs.inherit(hljs.QUOTE_STRING_MODE, {illegal: null}),
+    {
+      className: 'string',
+      begin: 'b"', end: '"',
+      contains: [hljs.BACKSLASH_ESCAPE]
+    },
+    {
+      className: 'string',
+      begin: 'b\'', end: '\'',
+      contains: [hljs.BACKSLASH_ESCAPE]
+    }
+  ];
+  var NUMBERS = [hljs.BINARY_NUMBER_MODE, hljs.C_NUMBER_MODE];
+  var TITLE = {
+    className: 'title', begin: hljs.UNDERSCORE_IDENT_RE
+  };
+  return {
+    case_insensitive: true,
+    keywords:
+      'and include_once list abstract global private echo interface as static endswitch ' +
+      'array null if endwhile or const for endforeach self var while isset public ' +
+      'protected exit foreach throw elseif include __FILE__ empty require_once do xor ' +
+      'return implements parent clone use __CLASS__ __LINE__ else break print eval new ' +
+      'catch __METHOD__ case exception php_user_filter default die require __FUNCTION__ ' +
+      'enddeclare final try this switch continue endfor endif declare unset true false ' +
+      'namespace trait goto instanceof insteadof __DIR__ __NAMESPACE__ __halt_compiler',
+    contains: [
+      hljs.C_LINE_COMMENT_MODE,
+      hljs.HASH_COMMENT_MODE,
+      {
+        className: 'comment',
+        begin: '/\\*', end: '\\*/',
+        contains: [{
+            className: 'phpdoc',
+            begin: '\\s@[A-Za-z]+'
+        }]
+      },
+      {
+          className: 'comment',
+          excludeBegin: true,
+          begin: '__halt_compiler.+?;', endsWithParent: true
+      },
+      {
+        className: 'string',
+        begin: '<<<[\'"]?\\w+[\'"]?$', end: '^\\w+;',
+        contains: [hljs.BACKSLASH_ESCAPE]
+      },
+      {
+        className: 'preprocessor',
+        begin: '<\\?php',
+        relevance: 10
+      },
+      {
+        className: 'preprocessor',
+        begin: '\\?>'
+      },
+      VARIABLE,
+      {
+        className: 'function',
+        beginWithKeyword: true, end: '{',
+        keywords: 'function',
+        illegal: '\\$|\\[|%',
+        contains: [
+          TITLE,
+          {
+            className: 'params',
+            begin: '\\(', end: '\\)',
+            contains: [
+              'self',
+              VARIABLE,
+              hljs.C_BLOCK_COMMENT_MODE
+            ].concat(STRINGS).concat(NUMBERS)
+          }
+        ]
+      },
+      {
+        className: 'class',
+        beginWithKeyword: true, end: '{',
+        keywords: 'class',
+        illegal: '[:\\(\\$]',
+        contains: [
+          {
+            beginWithKeyword: true, endsWithParent: true,
+            keywords: 'extends',
+            contains: [TITLE]
+          },
+          TITLE
+        ]
+      },
+      {
+        begin: '=>' // No markup, just a relevance booster
+      }
+    ].concat(STRINGS).concat(NUMBERS)
+  };
+}(hljs);
 hljs.LANGUAGES['sql'] = function(hljs) {
   return {
     case_insensitive: true,
@@ -1041,117 +1152,6 @@ hljs.LANGUAGES['xml'] = function(hljs) {
           },
           TAG_INTERNALS
         ]
-      }
-    ]
-  };
-}(hljs);
-hljs.LANGUAGES['bash'] = function(hljs) {
-  var BASH_LITERAL = 'true false';
-  var BASH_KEYWORD = 'if then else elif fi for break continue while in do done echo exit return set declare';
-  var VAR1 = {
-    className: 'variable', begin: '\\$[a-zA-Z0-9_#]+'
-  };
-  var VAR2 = {
-    className: 'variable', begin: '\\${([^}]|\\\\})+}'
-  };
-  var QUOTE_STRING = {
-    className: 'string',
-    begin: '"', end: '"',
-    illegal: '\\n',
-    contains: [hljs.BACKSLASH_ESCAPE, VAR1, VAR2],
-    relevance: 0
-  };
-  var APOS_STRING = {
-    className: 'string',
-    begin: '\'', end: '\'',
-    contains: [{begin: '\'\''}],
-    relevance: 0
-  };
-  var TEST_CONDITION = {
-    className: 'test_condition',
-    begin: '', end: '',
-    contains: [QUOTE_STRING, APOS_STRING, VAR1, VAR2],
-    keywords: {
-      literal: BASH_LITERAL
-    },
-    relevance: 0
-  };
-
-  return {
-    keywords: {
-      "keyword": BASH_KEYWORD,
-      "literal": BASH_LITERAL
-    },
-    contains: [
-      {
-        className: 'shebang',
-        begin: '(#!\\/bin\\/bash)|(#!\\/bin\\/sh)',
-        relevance: 10
-      },
-      VAR1,
-      VAR2,
-      hljs.HASH_COMMENT_MODE,
-      QUOTE_STRING,
-      APOS_STRING,
-      hljs.inherit(TEST_CONDITION, {begin: '\\[ ', end: ' \\]', relevance: 0}),
-      hljs.inherit(TEST_CONDITION, {begin: '\\[\\[ ', end: ' \\]\\]'})
-    ]
-  };
-}(hljs);
-hljs.LANGUAGES['javascript'] = function(hljs) {
-  return {
-    keywords: {
-      "keyword":
-        'in if for while finally var new function do return void else break catch ' +
-        'instanceof with throw case default try this switch continue typeof delete ' +
-        'let yield const',
-      "literal":
-        'true false null undefined NaN Infinity'
-    },
-    contains: [
-      hljs.APOS_STRING_MODE,
-      hljs.QUOTE_STRING_MODE,
-      hljs.C_LINE_COMMENT_MODE,
-      hljs.C_BLOCK_COMMENT_MODE,
-      hljs.C_NUMBER_MODE,
-      { // "value" container
-        begin: '(' + hljs.RE_STARTERS_RE + '|\\b(case|return|throw)\\b)\\s*',
-        keywords: 'return throw case',
-        contains: [
-          hljs.C_LINE_COMMENT_MODE,
-          hljs.C_BLOCK_COMMENT_MODE,
-          {
-            className: 'regexp',
-            begin: '/', end: '/[gim]*',
-            illegal: '\\n',
-            contains: [{begin: '\\\\/'}]
-          },
-          { // E4X
-            begin: '<', end: '>;',
-            subLanguage: 'xml'
-          }
-        ],
-        relevance: 0
-      },
-      {
-        className: 'function',
-        beginWithKeyword: true, end: '{',
-        keywords: 'function',
-        contains: [
-          {
-            className: 'title', begin: '[A-Za-z$_][0-9A-Za-z$_]*'
-          },
-          {
-            className: 'params',
-            begin: '\\(', end: '\\)',
-            contains: [
-              hljs.C_LINE_COMMENT_MODE,
-              hljs.C_BLOCK_COMMENT_MODE
-            ],
-            illegal: '["\'\\(]'
-          }
-        ],
-        illegal: '\\[|%'
       }
     ]
   };
