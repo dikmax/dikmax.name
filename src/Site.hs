@@ -55,6 +55,8 @@ indexTemplateName :: Identifier
 indexTemplateName = "templates/index-development.html"
 listTemplateName :: Identifier
 listTemplateName = "templates/list-development.html"
+postTemplateName :: Identifier
+postTemplateName = "templates/post-development.html"
 
 #else
 
@@ -66,6 +68,8 @@ indexTemplateName :: Identifier
 indexTemplateName = "templates/index.html"
 listTemplateName :: Identifier
 listTemplateName = "templates/list.html"
+postTemplateName :: Identifier
+postTemplateName = "templates/post.html"
 
 #endif
 
@@ -259,7 +263,7 @@ postsRules =
 
             time <- getItemUTC defaultTimeLocale identifier
             loadAndApplyTemplate "templates/_post.html" (postCtx `mappend` commentsField comments) item
-                >>= loadAndApplyTemplate defaultTemplateName (postCtx `mappend` pageCtx (defaultMetadata
+                >>= loadAndApplyTemplate postTemplateName (postCtx `mappend` pageCtx (defaultMetadata
                     { metaTitle = fmap unwrap title
                     , metaUrl = '/' : identifierToUrl (toFilePath identifier)
                     , metaKeywords = tags
