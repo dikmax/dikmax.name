@@ -6,7 +6,13 @@ $partial("templates/_topbar.html")$
 
 <div class="jumbotron">
     <div class="container">
+        <button type="button" class="close close-jumbotron-button" aria-hidden="true">&times;</button>
         $body$
+    </div>
+</div>
+<div class="jumbotron-folded" style="display: none;">
+    <div class="container text-right">
+        <a href="#" class="open-jumbotron-button">Самое интересное в блоге &raquo;</a>
     </div>
 </div>
 <div class="container">

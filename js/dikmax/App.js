@@ -12,6 +12,7 @@ goog.require('goog.dom.classlist');
 goog.require('goog.dom.dataset');
 goog.require('goog.events');
 goog.require('goog.i18n.DateTimeFormat');
+goog.require('goog.net.cookies');
 goog.require('goog.soy');
 goog.require('goog.string.html.HtmlParser');
 goog.require('goog.style');
@@ -32,6 +33,7 @@ dikmax.App = function() {
  * Inits application
  */
 dikmax.App.prototype.init = function() {
+  this.setupJumbotron_();
   this.topNavBar_();
   this.fixTimeZones_();
   this.updateCommentsText_();
@@ -225,11 +227,11 @@ dikmax.App.prototype.setupKeyboardNavigation_ = function() {
   var title;
   if (previousLink) {
     title = previousLink.getAttribute('title');
-    previousLink.setAttribute('title', title + ' (' + (goog.userAgent.MAC ? '⎇←' : 'Ctrl + ←') + ')');
+    previousLink.setAttribute('title', title + ' (' + (goog.userAgent.MAC ? '⌥←' : 'Ctrl + ←') + ')');
   }
   if (nextLink) {
     title = nextLink.getAttribute('title');
-    nextLink.setAttribute('title', title + ' (' + (goog.userAgent.MAC ? '⎇→' : 'Ctrl + →') + ')');
+    nextLink.setAttribute('title', title + ' (' + (goog.userAgent.MAC ? '⌥→' : 'Ctrl + →') + ')');
   }
 
   if (previousLink || nextLink) {
@@ -251,5 +253,43 @@ dikmax.App.prototype.setupKeyboardNavigation_ = function() {
         }
       }
     });
+  }
+};
+
+
+/**
+ * Handling of jumbotron on main page.
+ *
+ * @private
+ */
+dikmax.App.prototype.setupJumbotron_ = function() {
+  var closeButton = goog.dom.getElementByClass('close-jumbotron-button');
+  if (!closeButton) {
+    return;
+  }
+  var openButton = goog.dom.getElementByClass('open-jumbotron-button');
+  if (!openButton) {
+    return;
+  }
+  var jumbotron = goog.dom.getElementByClass('jumbotron');
+  var jumbotronFolded = goog.dom.getElementByClass('jumbotron-folded');
+  var close = function() {
+    goog.style.setElementShown(jumbotron, false);
+    goog.style.setElementShown(jumbotronFolded, true);
+  };
+  goog.events.listen(closeButton, goog.events.EventType.CLICK, function(e) {
+    close();
+    goog.net.cookies.set('closeJumbotron', '1', 180 * 86400); // Remember for 180 days
+    e.stopPropagation();
+  });
+  goog.events.listen(openButton, goog.events.EventType.CLICK, function(e) {
+    goog.style.setElementShown(jumbotron, true);
+    goog.style.setElementShown(jumbotronFolded, false);
+    goog.net.cookies.set('closeJumbotron', '0', 180 * 86400); // Remember for 180 days
+    e.stopPropagation();
+  });
+
+  if (goog.net.cookies.get('closeJumbotron') === '1') {
+    close();
   }
 };
