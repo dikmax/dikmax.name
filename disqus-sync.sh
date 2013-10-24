@@ -7,5 +7,6 @@ cd disqus-sync
 node sync.js
 cd ..
 git add comments/*.html
+git add post/*.md
 git commit -m "Comments sync"
 git push
