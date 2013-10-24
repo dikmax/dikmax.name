@@ -1,6 +1,6 @@
 ---
 title: "Eurotrip: Итоги"
-date: "2013-10-24T21:00:00+03:00"
+date: "2013-10-22T10:56:45+03:00"
 published: true
 tags: "eurotrip, interrail, booking, отпуск, путешествие, фотки"
 thread: 1885559170
