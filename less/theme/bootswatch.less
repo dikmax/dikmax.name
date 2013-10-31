@@ -1,11 +1,12 @@
-// Readable 3.0.0
+// Readable 3.0.1
 // Bootswatch
 // -----------------------------------------------------
 
-// @import url("//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic");
+@import url("//fonts.googleapis.com/css?family=Lora:400,700,400italic,700italic");
 
 .btn-shadow(@color) {
 	#gradient > .vertical-three-colors(lighten(@color, 10%), @color, 6%, darken(@color, 4%));
+	filter: none;
 	border: 1px solid darken(@color, 10%);
 }
 
@@ -56,10 +57,6 @@
 }
 
 // Typography =================================================================
-
-h1, h2, h3, h4, h5, h6 {
-	font-weight: bold;
-}
 
 // Tables =====================================================================
 
