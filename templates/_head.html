@@ -17,6 +17,7 @@
     <script src="/js/respond.min.js"></script>
     <![endif]-->
 
+    <meta name="title" content="$meta.title$" />
     <meta name="description" content="$meta.description$" />
     <meta name="keywords" content="$meta.keywords$" />
     <meta name="author" content="Maxim Dikun"/>
@@ -52,6 +53,7 @@
     $for(meta.facebook.tags)$<meta property="article:tag" content="$body$" />
     $endfor$
     $for(meta.facebook.images)$<meta property="og:image" itemprop="image" content="$body$" />
+    <link rel="image_src" href="$body$"/>
     $endfor$
     $endif$
 
