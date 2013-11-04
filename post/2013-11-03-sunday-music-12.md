@@ -8,7 +8,7 @@ tags: "youtube, видео, музыка, музыка по воскресень
 Сегодня мы\ будем слушать, петь и\ танцевать вальс. А\ ещё Жак Брель покажет, как можно успевать произносить двадцать
 слов в\ секунду.
 
-![Jacques Brel\ --- Une valse a mille temps](http://www.youtube.com/watch?v=tNpXNQ65gsA)
+![Jacques Brel\ --- Une valse a mille temps](http://www.youtube.com/watch?v=UK5X_Mb9daM)
 
 Где&#8209;то в\ комментариях на\ YouTube к\ другому варианту его выступления встретилось прекрасное: "Я\ думаю, даже
 французы не\ могут спеть эту песню."
