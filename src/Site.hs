@@ -1,18 +1,21 @@
 {-# LANGUAGE CPP               #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TupleSections     #-}
 import           Blaze.ByteString.Builder (toByteString)
-import           Control.Monad (forM_, filterM, msum)
+import           Control.Monad (forM_, filterM, liftM, msum)
 import           Data.Char
 import           Data.Function (on)
 import           Data.List (sortBy, intercalate, unfoldr, isSuffixOf, find, groupBy)
 import qualified Data.Map as M
 import           Data.Maybe
 import           Data.Monoid (mappend, mconcat)
+import           Data.Ord (comparing)
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import           Data.Time.Clock (UTCTime, getCurrentTime)
 import           Data.Time.Format (formatTime, parseTime)
-import           Hakyll hiding (getItemUTC, dateFieldWith, getTags, buildPaginateWith, paginateContext, pandocCompiler)
+import           Hakyll hiding (buildPaginateWith, chronological, dateFieldWith, getItemUTC, getTags, paginateContext,
+                    pandocCompiler, recentFirst)
 import           System.FilePath (takeFileName)
 import           System.Locale
 import           Text.HTML.TagSoup (Tag(..))
@@ -724,6 +727,22 @@ readerOptions = def
   { readerSmart = True
   , readerParseRaw = True
   }
+
+--------------------------------------------------------------------------------
+-- | Sort pages chronologically. Uses the same method as 'dateField' for
+-- extracting the date.
+chronological :: MonadMetadata m => [Item a] -> m [Item a]
+chronological =
+    sortByM $ getItemUTC defaultTimeLocale . itemIdentifier
+  where
+    sortByM :: (Monad m, Ord k) => (a -> m k) -> [a] -> m [a]
+    sortByM f xs = liftM (map fst . sortBy (comparing snd)) $
+                   mapM (\x -> liftM (x,) (f x)) xs
+
+--------------------------------------------------------------------------------
+-- | The reverse of 'chronological'
+recentFirst :: (MonadMetadata m, Functor m) => [Item a] -> m [Item a]
+recentFirst = fmap reverse . chronological
 
 --------------------------------------------------------------------------------
 -- Utility functions
