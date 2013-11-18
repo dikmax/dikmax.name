@@ -3,6 +3,7 @@ title: "JavaScript patterns"
 date: "2013-11-17T18:00:00+03:00"
 published: true
 tags: "javascript, patterns, программирование"
+thread: 1971897301
 ---
 
 Просматривал старые заметки в\ Evernote и\ набрел на\ список паттернов написания кода для\ JavaScript.
