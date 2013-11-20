@@ -212,6 +212,10 @@ staticFilesRules = do
         route   idRoute
         compile copyFileCompiler
 
+    match "demos/**" $ do
+        route   idRoute
+        compile copyFileCompiler
+
 #ifdef DEVELOPMENT
     match "js/**" $ do
         route   idRoute
