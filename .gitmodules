@@ -3,4 +3,4 @@
 	url = https://code.google.com/p/closure-library/
 [submodule "demos"]
 	path = demos
-	url = https://github.com/dikmax/dikmax.name-demos
+	url = git@github.com:dikmax/dikmax.name-demos.git
