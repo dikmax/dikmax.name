@@ -5,7 +5,7 @@ published: true
 tags: "youtube, видео, музыка, музыка по воскресеньям"
 ---
 
-Сегодня у\ нас отличная бодрая песня из\ 70-х. 
+Сегодня у\ нас отличная бодрая песня из\ 70&#8209;х.
 
 ![Ram Jam --- Black Betty](http://www.youtube.com/watch?v=V0OFF3q4Pxk)
 
