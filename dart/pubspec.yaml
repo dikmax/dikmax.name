@@ -1,0 +1,4 @@
+name: dikmax.name
+dependencies:
+  browser: any
+  intl: any
