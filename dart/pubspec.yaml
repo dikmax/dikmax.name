@@ -1,4 +1,5 @@
 name: dikmax.name
 dependencies:
   browser: any
+  cookie: any
   intl: any
