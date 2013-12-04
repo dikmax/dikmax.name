@@ -27,8 +27,11 @@ thread: 1509195133
 Свои впечатления постараюсь описать после поездки. Но, может, кто&#8209;нибудь уже пользовался этой услугой и\ сможет
 поделиться своим опытом или даже предупредить о\ возможных подводных камнях? Я\ был\ бы весьма признателен.
 
+**UPD**: Детали и впечатления можно прочитать [тут][results].
+
 [DBahn]: http://www.bahn.com/i/view/index.shtml
 [lonely-planet]: /post/lonely-planet/
 [SNCF]: http://www.sncf.com/en/passengers
 [InterRail]: http://www.interrail.eu/
 [railway-map]: http://www.interrail.eu/planning/railway-map
+[results]: /post/eurotrip-results/
