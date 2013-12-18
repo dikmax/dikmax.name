@@ -2,7 +2,7 @@
 title: "Словарь словоформ русского языка"
 date: "2012-06-13T14:42:28+03:00"
 published: true
-tags: "hunspell, spellcheck, словарь"
+tags: "hunspell, spellcheck, морфология, словарь, словоформы"
 ---
 
 **Этот пост устарел. Новая версия --- [тут][new-post]**
