@@ -1,5 +1,6 @@
 library app;
 
+import 'dart:async';
 import 'dart:html';
 import 'package:intl/intl.dart';
 import 'package:cookie/cookie.dart' as cookie;
@@ -7,6 +8,7 @@ import 'package:cookie/cookie.dart' as cookie;
 class App {
   void init() {
     _setupJumbotron();
+    _setupTopNavBar();
     _fixTimeZones();
   }
 
@@ -39,6 +41,45 @@ class App {
     }
   }
 
+  void _setupTopNavBar() {
+    Element toggleButton = query('.navbar-toggle-button');
+    Element collapsibleBlock = query('.navbar-collapsible-block');
+
+    bool visible = false;
+
+    var complete = (_) {
+      if (visible) {
+        collapsibleBlock.classes
+            ..add('in')
+            ..remove('collapse')
+            ..remove('collapsing');
+      } else {
+        collapsibleBlock.classes
+            ..add('collapse')
+            ..remove('collapsing')
+            ..remove('in');
+        collapsibleBlock.style.height = '0';
+      }
+    };
+
+    collapsibleBlock.onTransitionEnd.listen(complete);
+
+    toggleButton.onClick.listen((event) {
+      visible = !visible;
+
+      collapsibleBlock.classes
+        ..add('collapsing')
+        ..remove('collapse')
+        ..remove('in');
+      if (visible) {
+        int height = collapsibleBlock.scrollHeight + 1;
+        collapsibleBlock.style.height = "${height}px";
+      } else {
+        collapsibleBlock.style.height = "0";
+      }
+    });
+  }
+
   void _fixTimeZones() {
     List<Node> spans = document.getElementsByTagName('span');
 
@@ -46,7 +87,6 @@ class App {
 
     var dt = new DateTime.now();
     var tz = dt.timeZoneOffset;
-    print(tz);
 
     spans.forEach((Element el) {
       String postDate = el.dataset['postDate'];
