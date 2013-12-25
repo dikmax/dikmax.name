@@ -10,6 +10,7 @@ class App {
     _setupJumbotron();
     _setupTopNavBar();
     _fixTimeZones();
+    updateCommentsText_();
   }
 
   void _setupJumbotron() {
@@ -101,5 +102,40 @@ class App {
 
       el.text = format.format(date.add(tz));
     });
+  }
+
+  void updateCommentsText_() {
+    ElementList elements = queryAll('span.post-comments');
+    if (elements.length == 0) {
+      return;
+    }
+
+    new Timer.periodic(new Duration(microseconds: 100), (timer) {
+      if (elements[0].text.startsWith('Считаем')) {
+        return;
+      }
+
+      timer.cancel();
+      elements.forEach((Element el) {
+        Element link = el.query('a');
+        if (link == null) {
+          return;
+        }
+
+        link.text = link.text.replaceAllMapped(new RegExp('^(\\d+) комментариев\$'), (Match match) {
+          int count = int.parse(match[1]);
+          if ((count % 100 / 10).round() != 1) {
+            int count10 = count % 10;
+            if (count10 == 1) {
+              return '$count комментарий';
+            } else if (count10 >= 2 && count10 <= 4) {
+              return '$count комментария';
+            }
+          }
+          return match[0];
+        });
+      });
+    });
+
   }
 }
