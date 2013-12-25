@@ -12,3 +12,4 @@ site
 site.hi
 site.o
 /.idea
+/less/*.css
