@@ -18,8 +18,9 @@ goog.require('goog.ui.HoverCard');
  * @extends {goog.ui.HoverCard}
  */
 dikmax.CodeTooltip = function() {
+  var doc = goog.dom.getDocument();
   goog.base(this, function(el) {
-    return goog.dom.classlist.contains(el, 'line') &&
+    return el !== doc && goog.dom.classlist.contains(el, 'line') &&
         el.getAttribute('data-linenum');
   }, true);
 
