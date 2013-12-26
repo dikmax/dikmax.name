@@ -1,7 +1,7 @@
 /*
 Language: CoffeeScript
 Author: Dmytrii Nagirniak <dnagir@gmail.com>
-Contributors: Oleg Efimov <efimovov@gmail.com>
+Contributors: Oleg Efimov <efimovov@gmail.com>, Cédric Néhémie <cedric.nehemie@gmail.com>
 Description: CoffeeScript is a programming language that transcompiles to JavaScript. For info about language see http://coffeescript.org/
 */
 
@@ -17,9 +17,12 @@ function(hljs) {
       // JS literals
       'true false null undefined ' +
       // Coffee literals
-      'yes no on off ',
-    reserved: 'case default function var void with const let enum export import native ' +
-      '__hasProp __extends __slice __bind __indexOf'
+      'yes no on off',
+    reserved:
+      'case default function var void with const let enum export import native ' +
+      '__hasProp __extends __slice __bind __indexOf',
+    built_in:
+      'npm require console print module exports global window document'
   };
   var JS_IDENT_RE = '[A-Za-z$_][0-9A-Za-z$_]*';
   var TITLE = {className: 'title', begin: JS_IDENT_RE};
@@ -27,60 +30,85 @@ function(hljs) {
     className: 'subst',
     begin: '#\\{', end: '}',
     keywords: KEYWORDS,
-    contains: [hljs.BINARY_NUMBER_MODE, hljs.C_NUMBER_MODE]
   };
+  var EXPRESSIONS = [
+    // Numbers
+    hljs.BINARY_NUMBER_MODE,
+    hljs.inherit(hljs.C_NUMBER_MODE, {starts: {end: '(\\s*/)?', relevance: 0}}), // a number tries to eat the following slash to prevent treating it as a regexp
+    // Strings
+    {
+      className: 'string',
+      begin: '\'\'\'', end: '\'\'\'',
+      contains: [hljs.BACKSLASH_ESCAPE]
+    },
+    {
+      className: 'string',
+      begin: '\'', end: '\'',
+      contains: [hljs.BACKSLASH_ESCAPE],
+      relevance: 0
+    },
+    {
+      className: 'string',
+      begin: '"""', end: '"""',
+      contains: [hljs.BACKSLASH_ESCAPE, SUBST]
+    },
+    {
+      className: 'string',
+      begin: '"', end: '"',
+      contains: [hljs.BACKSLASH_ESCAPE, SUBST],
+      relevance: 0
+    },
+    // RegExps
+    {
+      className: 'regexp',
+      begin: '///', end: '///',
+      contains: [hljs.HASH_COMMENT_MODE]
+    },
+    {
+      className: 'regexp', begin: '//[gim]*',
+      relevance: 0
+    },
+    {
+      className: 'regexp',
+      begin: '/\\S(\\\\.|[^\\n])*?/[gim]*(?=\\s|\\W|$)' // \S is required to parse x / 2 / 3 as two divisions
+    },
+
+    {
+      className: 'property',
+      begin: '@' + JS_IDENT_RE
+    },
+    {
+      begin: '`', end: '`',
+      excludeBegin: true, excludeEnd: true,
+      subLanguage: 'javascript'
+    }
+  ];
+  SUBST.contains = EXPRESSIONS;
 
   return {
     keywords: KEYWORDS,
-    contains: [
-      // Numbers
-      hljs.BINARY_NUMBER_MODE,
-      hljs.C_NUMBER_MODE,
-      // Strings
-      hljs.APOS_STRING_MODE,
-      {
-        className: 'string',
-        begin: '"""', end: '"""',
-        contains: [hljs.BACKSLASH_ESCAPE, SUBST]
-      },
-      {
-        className: 'string',
-        begin: '"', end: '"',
-        contains: [hljs.BACKSLASH_ESCAPE, SUBST],
-        relevance: 0
-      },
-      // Comments
+    contains: EXPRESSIONS.concat([
       {
         className: 'comment',
         begin: '###', end: '###'
       },
       hljs.HASH_COMMENT_MODE,
       {
-        className: 'regexp',
-        begin: '///', end: '///',
-        contains: [hljs.HASH_COMMENT_MODE]
-      },
-      {
-        className: 'regexp', begin: '//[gim]*'
-      },
-      {
-        className: 'regexp',
-        begin: '/\\S(\\\\.|[^\\n])*/[gim]*' // \S is required to parse x / 2 / 3 as two divisions
-      },
-      {
-        begin: '`', end: '`',
-        excludeBegin: true, excludeEnd: true,
-        subLanguage: 'javascript'
-      },
-      {
         className: 'function',
-        begin: JS_IDENT_RE + '\\s*=\\s*(\\(.+\\))?\\s*[-=]>',
+        begin: '(' + JS_IDENT_RE + '\\s*=\\s*)?(\\(.*\\))?\\s*[-=]>', end: '[-=]>',
         returnBegin: true,
         contains: [
           TITLE,
           {
             className: 'params',
-            begin: '\\(', end: '\\)'
+            begin: '\\(', returnBegin: true,
+            /* We need another contained nameless mode to not have every nested
+            pair of parens to be called "params" */
+            contains: [{
+              begin: /\(/, end: /\)/,
+              keywords: KEYWORDS,
+              contains: ['self'].concat(EXPRESSIONS)
+            }]
           }
         ]
       },
@@ -88,7 +116,7 @@ function(hljs) {
         className: 'class',
         beginWithKeyword: true, keywords: 'class',
         end: '$',
-        illegal: ':',
+        illegal: '[:\\[\\]]',
         contains: [
           {
             beginWithKeyword: true, keywords: 'extends',
@@ -100,9 +128,10 @@ function(hljs) {
         ]
       },
       {
-        className: 'property',
-        begin: '@' + JS_IDENT_RE
+        className: 'attribute',
+        begin: JS_IDENT_RE + ':', end: ':',
+        returnBegin: true, excludeEnd: true
       }
-    ]
+    ])
   };
 }

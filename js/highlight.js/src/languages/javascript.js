@@ -24,14 +24,9 @@ function(hljs) {
         contains: [
           hljs.C_LINE_COMMENT_MODE,
           hljs.C_BLOCK_COMMENT_MODE,
-          {
-            className: 'regexp',
-            begin: '/', end: '/[gim]*',
-            illegal: '\\n',
-            contains: [{begin: '\\\\/'}]
-          },
+          hljs.REGEXP_MODE,
           { // E4X
-            begin: '<', end: '>;',
+            begin: /</, end: />;/,
             subLanguage: 'xml'
           }
         ],
@@ -39,23 +34,23 @@ function(hljs) {
       },
       {
         className: 'function',
-        beginWithKeyword: true, end: '{',
+        beginWithKeyword: true, end: /{/,
         keywords: 'function',
         contains: [
           {
-            className: 'title', begin: '[A-Za-z$_][0-9A-Za-z$_]*'
+            className: 'title', begin: /[A-Za-z$_][0-9A-Za-z$_]*/
           },
           {
             className: 'params',
-            begin: '\\(', end: '\\)',
+            begin: /\(/, end: /\)/,
             contains: [
               hljs.C_LINE_COMMENT_MODE,
               hljs.C_BLOCK_COMMENT_MODE
             ],
-            illegal: '["\'\\(]'
+            illegal: /["'\(]/
           }
         ],
-        illegal: '\\[|%'
+        illegal: /\[|%/
       }
     ]
   };
