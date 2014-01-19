@@ -17,8 +17,8 @@ text. Старый код был написан на\ PHP в\ незапамят
 в\ котором перечислено большое количество русских слов во\ всех возможных формах, по\ одному слову в\ каждой строчке.
 Общее количество слов\ --- 173975, словоформ\ --- 2376434.
 
-* [Скачать russian.diс.tar.bz2](http://205185d7dcfd66a63245-b404bd713c6e8af6c0fce456c6fad544.r32.cf2.rackcdn.com/russian.dic.tar.bz2) (6,7 Мб)
-* [Скачать russian.dic.zip](http://205185d7dcfd66a63245-b404bd713c6e8af6c0fce456c6fad544.r32.cf2.rackcdn.com/russian.dic.zip) (6,7 Мб)
+* [Скачать russian.diс.tar.bz2](/media/russian.dic.tar.bz2) (6 Мб)
+* [Скачать russian.dic.zip](/media/russian.dic.zip) (6,7 Мб)
 
 Дальше используете файл на\ своё усмотрение. Например, можно подключить его в\ качестве словаря в\ [PhpStorm],
 [IntelliJ IDEA][idea] или [Eclipse].
