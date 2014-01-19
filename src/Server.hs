@@ -17,6 +17,7 @@ site :: Snap ()
 site = path "github-webhook" githubWebhook <|>
     path "rss" (redirect "feed.rss") <|>
     path "rss/" (redirect "feed.rss") <|>
+    dir "media" (serveDirectory "/home/dikmax/Dropbox/dikmax.name") <|>
     serveDirectory "_site" <|>
     notFoundHandler
 
