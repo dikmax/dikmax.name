@@ -3,6 +3,7 @@ title: "DigitalOcean"
 date: "2014-01-19T00:25:00+03:00"
 published: true
 tags: "digitalocean, rackspace, блог"
+thread: 2141014040
 ---
 
 ![](/images/3rd-party/digitalocean.png "DigitalOcean")
