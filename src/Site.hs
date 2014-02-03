@@ -245,7 +245,7 @@ lessCompilerRules = do
         compile $ loadBody "less/style.less"
             >>= makeItem
             >>= withItemBody
-              (unixFilter "lessc" ["--yui-compress","-O2", "--include-path=less","-"])
+              (unixFilter "lessc" ["--yui-compress","-O2", "--include-path=less","-"]) -- TODO replace with --compress or --clean-css
 
 --------------------------------------------------------------------------------
 -- Posts
