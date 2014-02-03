@@ -8,5 +8,10 @@
     $if(commentsCount)$
     | <i class="glyphicon glyphicon-comment"></i>
     <span class='post-comments'><a itemprop='discussionUrl' href='/$url$#disqus_thread' data-disqus-identifier="$disqus$">Считаем комментарии...</a></span>
+    $else$
+    | <div id="vk_like" style="display: inline-block; vertical-align: middle;"></div>
+    <script type="text/javascript">
+        VK.Widgets.Like("vk_like", {type: "mini"});
+    </script>
     $endif$
 </div>
