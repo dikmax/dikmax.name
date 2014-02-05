@@ -2,6 +2,7 @@ library app;
 
 import 'dart:async';
 import 'dart:html';
+import 'dart:js';
 import 'package:intl/intl.dart';
 import 'package:cookie/cookie.dart' as cookie;
 
@@ -10,7 +11,8 @@ class App {
     _setupJumbotron();
     _setupTopNavBar();
     _fixTimeZones();
-    updateCommentsText_();
+    _updateCommentsText();
+    _updateCodeListings();
   }
 
   void _setupJumbotron() {
@@ -104,7 +106,7 @@ class App {
     });
   }
 
-  void updateCommentsText_() {
+  void _updateCommentsText() {
     ElementList elements = queryAll('span.post-comments');
     if (elements.length == 0) {
       return;
@@ -136,6 +138,49 @@ class App {
         });
       });
     });
+  }
 
+  void _updateCodeListings() {
+    if (_highlightBlocks()) {
+    }
+  }
+
+  bool _highlightBlocks() {
+    ElementList blocks = queryAll('pre > code.sourceCode');
+    if (blocks.length > 0) {
+      JsObject hljs = context['hljs'];
+      blocks.forEach((HtmlElement block) {
+        hljs.callMethod('highlightBlock', [block]);
+        // TODO better html parser in case spans are taking 2 or more rows
+        List<String> html = block.innerHtml.split('\n');
+        RegExp open = new RegExp(r'<span[\s\S]*?>');
+        RegExp close = new RegExp(r'</span>');
+        List<String> spans = [];
+        for (int i = 0; i < html.length; ++i) {
+          String result = '<span class="line" data-linenum="${i + 1}">';
+          spans = [];
+          if (html[i] == '') {
+            result += '&nbsp;';
+          } else {
+            String line = spans.join('') + html[i];
+            result += line;
+            Iterable<Match> openMatches = open.allMatches(line);
+            Iterable<Match> closeMatches = close.allMatches(line);
+            for (int j = closeMatches.length; j < openMatches.length; ++j) {
+              spans.add(openMatches.elementAt(j).group(0));
+              result += '</span>';
+            }
+          }
+          result += '</span>';
+
+          html[i] = result;
+        }
+        block.innerHtml = html.join('\n');
+        block.classes.add('highlighted');
+      });
+      return true;
+    } else {
+      return false;
+    }
   }
 }

@@ -1,9 +1,9 @@
 #!/bin/sh
 
 # Uncomment only if required
-# echo "Building highlight.js..."
-# python js/highlight.js/tools/build.py -n bash css haskell javascript markdown sql xml
-# echo 'goog.provide("hljs");' > js/highlight.pack.js
+echo "Building highlight.js..."
+python js/highlight.js/tools/build.py -n bash css haskell javascript markdown sql xml
+cp js/highlight.js/build/highlight.pack.js dart/highlight.pack.js
 # cat js/highlight.js/build/highlight.pack.js >> js/highlight.pack.js
 
 echo "Building minified dart..."
