@@ -3,6 +3,7 @@ title: "lowmemorykiller"
 date: "2014-02-06T22:30:00+03:00"
 published: true
 tags: "android, digitalocean, lowmemorykiller, server, ubuntu, блог"
+thread: 2230547425
 ---
 
 А\ давайте я\ расскажу вам про\ необычный баг в\ своем блоге, на\ борьбу с\ которым я\ потратил не\ один вечер.
