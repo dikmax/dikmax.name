@@ -142,10 +142,14 @@ class App {
 
   void _updateCodeListings() {
     if (_highlightBlocks()) {
+      _handleCodeTooltips();
     }
   }
 
   bool _highlightBlocks() {
+    final NodeValidatorBuilder _htmlValidator=new NodeValidatorBuilder.common()
+      ..allowElement('span', attributes: ['data-linenum']);
+
     ElementList blocks = queryAll('pre > code.sourceCode');
     if (blocks.length > 0) {
       JsObject hljs = context['hljs'];
@@ -175,12 +179,50 @@ class App {
 
           html[i] = result;
         }
-        block.innerHtml = html.join('\n');
+        block.setInnerHtml(html.join('\n'), validator: _htmlValidator);
         block.classes.add('highlighted');
       });
       return true;
     } else {
       return false;
     }
+  }
+
+  Element _codeTooltip;
+
+  void _handleCodeTooltips() {
+    if (_codeTooltip == null) {
+      _codeTooltip = new DivElement()
+          ..append(new DivElement()
+              ..classes.add('tooltip-arrow'))
+          ..append(new DivElement()
+              ..classes.add('tooltip-inner'))
+          ..classes.addAll(['tooltip', 'fade', 'left', 'in']);
+      _codeTooltip.style.display = 'none';
+
+      document.body.append(_codeTooltip);
+    }
+
+    Element tooltipTarget;
+
+    queryAll('span.line').onClick.listen((MouseEvent event) {
+      if (tooltipTarget == event.currentTarget) {
+        // Hide on second click
+        _codeTooltip.style.display = 'none';
+        tooltipTarget = null;
+        return;
+      }
+
+      tooltipTarget = event.currentTarget;
+      _codeTooltip.query('.tooltip-inner').text = '#' + tooltipTarget.getAttribute('data-linenum');
+      _codeTooltip.style
+          ..visibility = 'hidden'
+          ..display = 'block';
+
+      _codeTooltip.style
+          ..left = "${tooltipTarget.offsetLeft - _codeTooltip.clientWidth}px"
+          ..top = "${tooltipTarget.offsetTop - 2}px"
+          ..visibility = "visible";
+    });
   }
 }
