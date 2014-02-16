@@ -81,55 +81,57 @@ postTemplateName = "templates/post.html"
 
 archiveRules :: Rules ()
 archiveRules = do
-    ids <- getMatches "post/**"
-    filteredIds <- filterM isPublished ids
-    years <- mapM yearsMap filteredIds
-    let ym = sortBy (\a b -> compare (fst b) (fst a)) $ yearsMap1 years
-        firstYear = fst $ head ym
-        fp year
-            | year == firstYear = "archive/index.html"
-            | otherwise = "archive/" ++ year ++ "/index.html"
-        fp' year
-            | year == firstYear = "/archive/"
-            | otherwise = "/archive/" ++ year ++ "/"
-    forM_ ym $ \(year, list) ->
-        create [fromFilePath $ fp year] $ do
-            route idRoute
-            compile $ do
-                posts <- recentFirst =<< loadAllSnapshots (fromList list) "content"
-                months <- mapM monthsMap posts
-                let yearCtx =
-                        field "active" (\i -> if itemBody i == year then return "active" else fail "") `mappend`
-                        field "href" (return . fp' . itemBody) `mappend`
-                        bodyField "year"
+    d <- makePatternDependency "post/**"
+    rulesExtraDependencies [d] $ do
+        ids <- getMatches "post/**"
+        filteredIds <- filterM isPublished ids
+        years <- mapM yearsMap filteredIds
+        let ym = sortBy (\a b -> compare (fst b) (fst a)) $ yearsMap1 years
+            firstYear = fst $ head ym
+            fp year
+                | year == firstYear = "archive/index.html"
+                | otherwise = "archive/" ++ year ++ "/index.html"
+            fp' year
+                | year == firstYear = "/archive/"
+                | otherwise = "/archive/" ++ year ++ "/"
+        forM_ ym $ \(year, list) ->
+            create [fromFilePath $ fp year] $ do
+                route idRoute
+                compile $ do
+                    posts <- recentFirst =<< loadAllSnapshots (fromList list) "content"
+                    months <- mapM monthsMap posts
+                    let yearCtx =
+                            field "active" (\i -> if itemBody i == year then return "active" else fail "") `mappend`
+                            field "href" (return . fp' . itemBody) `mappend`
+                            bodyField "year"
 
-                    mm = groupBy ((==) `on` fst) months
+                        mm = groupBy ((==) `on` fst) months
 
-                    postsList i = do
-                        tpl <- loadBody "templates/_post-archive.html"
-                        str <- applyTemplateList tpl ctx items
-                        item <- makeItem str
-                            >>= loadAndApplyTemplate "templates/_post-list-archive.html" postCtx
-                        return $ itemBody item
-                        where
-                            items = map snd $ filter (\m -> fst m == itemBody i) months
-                            ctx = field "day" daysField `mappend` postCtx
+                        postsList i = do
+                            tpl <- loadBody "templates/_post-archive.html"
+                            str <- applyTemplateList tpl ctx items
+                            item <- makeItem str
+                                >>= loadAndApplyTemplate "templates/_post-list-archive.html" postCtx
+                            return $ itemBody item
+                            where
+                                items = map snd $ filter (\m -> fst m == itemBody i) months
+                                ctx = field "day" daysField `mappend` postCtx
 
-                    monthsCtx =
-                        field "posts" postsList `mappend`
-                        {- listField "posts" postCtx postsList `mappend` -}
-                        bodyField "month"
+                        monthsCtx =
+                            field "posts" postsList `mappend`
+                            {- listField "posts" postCtx postsList `mappend` -}
+                            bodyField "month"
 
-                    archiveCtx =
-                        listField "years" yearCtx (mapM (makeItem . fst) ym) `mappend`
-                        listField "months" monthsCtx (mapM (makeItem . fst . head) mm) `mappend`
-                        pageCtx (defaultMetadata
-                            { metaTitle = Just "Архив"
-                            , metaDescription = "Список всех постов для \"быстрого поиска\""
-                            , metaUrl = "/archive/"
-                            })
-                makeItem ""
-                    >>= loadAndApplyTemplate archiveTemplateName archiveCtx
+                        archiveCtx =
+                            listField "years" yearCtx (mapM (makeItem . fst) ym) `mappend`
+                            listField "months" monthsCtx (mapM (makeItem . fst . head) mm) `mappend`
+                            pageCtx (defaultMetadata
+                                { metaTitle = Just "Архив"
+                                , metaDescription = "Список всех постов для \"быстрого поиска\""
+                                , metaUrl = "/archive/"
+                                })
+                    makeItem ""
+                        >>= loadAndApplyTemplate archiveTemplateName archiveCtx
     where
         yearsMap i = do
             utc <- getItemUTC defaultTimeLocale i
