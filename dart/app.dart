@@ -236,11 +236,32 @@ class App {
 
     Element tooltipTarget;
 
-    queryAll('span.line').onClick.listen((MouseEvent event) {
+    bool isTapTriggered = false;
+
+    var lines = queryAll('span.line');
+    lines.onClick.listen((MouseEvent event) {
       if (tooltipTarget == event.currentTarget) {
+        if (!isTapTriggered) {
+          isTapTriggered = true;
+          return;
+        }
+
         // Hide on second click
         hideTooltip();
         tooltipTarget = null;
+        isTapTriggered = false;
+        return;
+      }
+
+      isTapTriggered = true;
+      tooltipTarget = event.currentTarget;
+      inner.text = '#' + tooltipTarget.getAttribute('data-linenum');
+
+      showTooltip(tooltipTarget);
+    });
+
+    lines.onMouseMove.listen((MouseEvent event) {
+      if (isTapTriggered || tooltipTarget == event.currentTarget) {
         return;
       }
 
@@ -248,6 +269,15 @@ class App {
       inner.text = '#' + tooltipTarget.getAttribute('data-linenum');
 
       showTooltip(tooltipTarget);
+    });
+
+    lines.onMouseOut.listen((MouseEvent event) {
+      if (isTapTriggered || tooltipTarget != event.currentTarget) {
+        return;
+      }
+
+      hideTooltip();
+      tooltipTarget = null;
     });
   }
 }
