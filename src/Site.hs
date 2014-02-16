@@ -187,8 +187,10 @@ feedRules =
     create ["feed.rss"] $ do
         route idRoute
         compile $ do
+            ids <- getMatches "post/**"
+            filteredIds <- filterM isPublished ids
             posts <- fmap (take 10) . recentFirst =<<
-                loadAllSnapshots "post/**" "content"
+                loadAllSnapshots (fromList filteredIds) "content"
             time <- unsafeCompiler getCurrentTime
             lastItemTime <- getItemUTC defaultTimeLocale $ itemIdentifier $ head posts
             let postsCtx =
