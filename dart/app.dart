@@ -188,19 +188,50 @@ class App {
     }
   }
 
-  Element _codeTooltip;
-
   void _handleCodeTooltips() {
-    if (_codeTooltip == null) {
-      _codeTooltip = new DivElement()
-          ..append(new DivElement()
-              ..classes.add('tooltip-arrow'))
-          ..append(new DivElement()
-              ..classes.add('tooltip-inner'))
-          ..classes.addAll(['tooltip', 'fade', 'left', 'in']);
-      _codeTooltip.style.display = 'none';
+    Element inner = new DivElement()
+      ..classes.add('tooltip-inner');
+    Element codeTooltip = new DivElement()
+        ..append(new DivElement()
+            ..classes.add('tooltip-arrow'))
+        ..append(inner)
+        ..classes.addAll(['tooltip', 'left', 'fade']);
+    codeTooltip.classes.add(CssStyleDeclaration.supportsTransitions ? 'out' : 'in');
 
-      document.body.append(_codeTooltip);
+    codeTooltip.style.display = 'none';
+    document.body.append(codeTooltip);
+
+    codeTooltip.onTransitionEnd.listen((TransitionEvent event) {
+      if (codeTooltip.classes.contains('out')) {
+        codeTooltip.style.display = 'none';
+      }
+    });
+
+    void hideTooltip() {
+      if (!CssStyleDeclaration.supportsTransitions) {
+        codeTooltip.style.display = 'none';
+      } else {
+        codeTooltip.classes
+            ..remove('in')
+            ..add('out');
+      }
+    }
+
+    void showTooltip(target) {
+      codeTooltip.style
+          ..visibility = 'hidden'
+          ..display = 'block';
+
+      codeTooltip.style
+          ..left = "${target.offsetLeft - codeTooltip.clientWidth}px"
+          ..top = "${target.offsetTop - 2}px"
+          ..visibility = "visible";
+
+      if (CssStyleDeclaration.supportsTransitions) {
+        codeTooltip.classes
+          ..remove('out')
+          ..add('in');
+      }
     }
 
     Element tooltipTarget;
@@ -208,21 +239,15 @@ class App {
     queryAll('span.line').onClick.listen((MouseEvent event) {
       if (tooltipTarget == event.currentTarget) {
         // Hide on second click
-        _codeTooltip.style.display = 'none';
+        hideTooltip();
         tooltipTarget = null;
         return;
       }
 
       tooltipTarget = event.currentTarget;
-      _codeTooltip.query('.tooltip-inner').text = '#' + tooltipTarget.getAttribute('data-linenum');
-      _codeTooltip.style
-          ..visibility = 'hidden'
-          ..display = 'block';
+      inner.text = '#' + tooltipTarget.getAttribute('data-linenum');
 
-      _codeTooltip.style
-          ..left = "${tooltipTarget.offsetLeft - _codeTooltip.clientWidth}px"
-          ..top = "${tooltipTarget.offsetTop - 2}px"
-          ..visibility = "visible";
+      showTooltip(tooltipTarget);
     });
   }
 }
