@@ -14,6 +14,7 @@ class App {
     _updateCommentsText();
     _updateCodeListings();
     _inlineFootnotes();
+    _setupKeyboardNavigation();
   }
 
   void _setupJumbotron() {
@@ -287,7 +288,6 @@ class App {
 
   void _inlineFootnotes() {
     var links = queryAll('.note-link');
-    print(links);
     if (links.length == 0) {
       return;
     }
@@ -358,10 +358,40 @@ class App {
       }
     });
   }
+
+  void _setupKeyboardNavigation() {
+    Element previousLink = query('.pager .previous');
+    Element nextLink = query('.pager .next');
+
+    bool isMac = window.navigator.platform.indexOf('Mac') != -1;
+
+    if (previousLink != null) {
+      previousLink.attributes['title'] += " (${isMac ? '⌥←' : 'Ctrl + ←'})";
+    }
+    if (nextLink != null) {
+      nextLink.attributes['title'] += " (${isMac ? '⌥→' : 'Ctrl + →'})";
+    }
+
+    if (previousLink != null || nextLink != null) {
+      document.onKeyDown.listen((KeyboardEvent event) {
+        if (event.altKey || event.ctrlKey) {
+          Element link;
+          if (event.keyCode == KeyCode.LEFT) {
+            link = previousLink;
+          } else if (event.keyCode == KeyCode.RIGHT) {
+            link = nextLink;
+          }
+
+          if (link != null) {
+            window.location.replace(link.query('a').getAttribute('href'));
+          }
+        }
+      });
+    }
+  }
 }
 
 class AllowedUriPolicy implements UriPolicy {
-
   bool allowsUri(String uri) {
     return true;
   }
