@@ -13,6 +13,7 @@ class App {
     _fixTimeZones();
     _updateCommentsText();
     _updateCodeListings();
+    _inlineFootnotes();
   }
 
   void _setupJumbotron() {
@@ -189,6 +190,7 @@ class App {
   }
 
   void _handleCodeTooltips() {
+    // Generate layout
     Element inner = new DivElement()
       ..classes.add('tooltip-inner');
     Element codeTooltip = new DivElement()
@@ -238,6 +240,7 @@ class App {
 
     bool isTapTriggered = false;
 
+    // Clicks handler
     var lines = queryAll('span.line');
     lines.onClick.listen((MouseEvent event) {
       if (tooltipTarget == event.currentTarget) {
@@ -260,6 +263,7 @@ class App {
       showTooltip(tooltipTarget);
     });
 
+    // Mouse hover handlers
     lines.onMouseMove.listen((MouseEvent event) {
       if (isTapTriggered || tooltipTarget == event.currentTarget) {
         return;
@@ -279,5 +283,86 @@ class App {
       hideTooltip();
       tooltipTarget = null;
     });
+  }
+
+  void _inlineFootnotes() {
+    var links = queryAll('.note-link');
+    print(links);
+    if (links.length == 0) {
+      return;
+    }
+
+    Element title = new HeadingElement.h3()
+        ..classes.add('popover-title');
+    DivElement content = new DivElement()
+        ..classes.add('popover-content');
+    Element footnote = new DivElement()
+        ..append(new DivElement()
+            ..classes.add('arrow'))
+        ..append(title)
+        ..append(content)
+        ..classes.addAll(['popover', 'top', 'fade']);
+    footnote.classes.add(CssStyleDeclaration.supportsTransitions ? 'out' : 'in');
+
+    footnote.style.display = 'none';
+    document.body.append(footnote);
+
+    footnote.onTransitionEnd.listen((TransitionEvent event) {
+      if (footnote.classes.contains('out')) {
+        footnote.style.display = 'none';
+      }
+    });
+
+    var currentFootnote;
+
+    final NodeValidatorBuilder _htmlValidator = new NodeValidatorBuilder.common()
+      ..allowNavigation(new AllowedUriPolicy());
+
+    links.onClick.listen((MouseEvent event) {
+      var target = event.currentTarget;
+
+      if (currentFootnote == target) {
+        // hide
+        if (!CssStyleDeclaration.supportsTransitions) {
+          footnote.style.display = 'none';
+        } else {
+          footnote.classes
+            ..remove('in')
+            ..add('out');
+        }
+        currentFootnote = null;
+        return;
+      }
+
+      title.text = "Примечание ${target.text}";
+      var dataEl = query('.footnotes li[data-for=${target.id}]');
+      if (dataEl == null) {
+        return;
+      }
+      content.setInnerHtml(dataEl.innerHtml, validator: _htmlValidator);
+      currentFootnote = target;
+
+      footnote.style
+        ..visibility = 'hidden'
+        ..display = 'block';
+
+      footnote.style
+        ..left = "${target.offsetLeft + (target.clientWidth - footnote.clientWidth) / 2 + 2}px"
+        ..top = "${target.offsetTop - footnote.clientHeight}px"
+        ..visibility = "visible";
+
+      if (CssStyleDeclaration.supportsTransitions) {
+        footnote.classes
+          ..remove('out')
+          ..add('in');
+      }
+    });
+  }
+}
+
+class AllowedUriPolicy implements UriPolicy {
+
+  bool allowsUri(String uri) {
+    return true;
   }
 }
