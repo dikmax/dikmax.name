@@ -3,7 +3,6 @@ library app;
 import 'dart:async';
 import 'dart:html';
 import 'dart:js';
-import 'package:intl/intl.dart';
 import 'package:cookie/cookie.dart' as cookie;
 
 class App {
@@ -88,10 +87,12 @@ class App {
   void _fixTimeZones() {
     List<Node> spans = document.getElementsByTagName('span');
 
-    DateFormat format = new DateFormat('cccc, d MMMM yyyy, HH:mm', 'RU_ru');
+    DateTime dt = new DateTime.now();
+    Duration tz = dt.timeZoneOffset;
 
-    var dt = new DateTime.now();
-    var tz = dt.timeZoneOffset;
+    List<String> weekdays = const ['Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота', 'Воскресенье'];
+    List<String> months = const [ 'января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября',
+      'октября', 'ноября', 'декабря'];
 
     spans.forEach((Element el) {
       String postDate = el.dataset['postDate'];
@@ -104,7 +105,9 @@ class App {
         return;
       }
 
-      el.text = format.format(date.add(tz));
+      DateTime localDate = date.add(tz);
+      el.text = "${weekdays[localDate.weekday - 1]}, ${localDate.day} ${months[localDate.month - 1]} ${localDate.year}"
+        ", ${localDate.hour < 10 ? '0' : ''}${localDate.hour}:${localDate.minute < 10 ? '0' : ''}${localDate.minute}";
     });
   }
 
