@@ -2,7 +2,7 @@
 , "description" : "Syntax highlighting with language autodetection."
 , "keywords" : ["highlight", "syntax"]
 , "homepage" : "http://highlightjs.org/"
-, "version" : "7.5.0"
+, "version" : "8.0.0"
 , "author" :
   { "name": "Ivan Sagalaev"
   , "email": "maniac@softwaremaniacs.org"
@@ -18,7 +18,7 @@
   { "type" : "git"
   , "url" : "git://github.com/isagalaev/highlight.js.git"
   }
-, "main" : "./highlight.js"
+, "main" : "./lib/index.js"
 , "scripts" : {}
 , "engines" : { "node" : "*" }
 }
