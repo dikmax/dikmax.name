@@ -233,7 +233,7 @@ staticFilesRules = do
 
 #endif
 
-    match (fromList ["favicon.ico", "robots.txt", "css/style.css"]) $ do
+    match (fromList ["favicon.ico", "robots.txt", "css/style.css", "js/html5shiv.js", "js/respond.min.js"]) $ do
         route   idRoute
         compile copyFileCompiler
 
