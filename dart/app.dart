@@ -160,7 +160,6 @@ class App {
       JsObject hljs = context['hljs'];
       blocks.forEach((HtmlElement block) {
         hljs.callMethod('highlightBlock', [block]);
-        // TODO better html parser in case spans are taking 2 or more rows
         List<String> html = block.innerHtml.split('\n');
         RegExp open = new RegExp(r'<span[\s\S]*?>');
         RegExp close = new RegExp(r'</span>');

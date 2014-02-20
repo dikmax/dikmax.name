@@ -219,9 +219,19 @@ staticFilesRules = do
         route   idRoute
         compile copyFileCompiler
 
+#ifdef DEVELOPMENT
+
     match "dart/**" $ do
         route   idRoute
         compile copyFileCompiler
+
+#else
+
+    match (fromList ["dart/script.dart", "dart/script.dart.js", "dart/s.js"]) $ do
+        route   idRoute
+        compile copyFileCompiler
+
+#endif
 
     match (fromList ["favicon.ico", "robots.txt", "css/style.css"]) $ do
         route   idRoute
