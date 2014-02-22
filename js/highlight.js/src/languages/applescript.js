@@ -14,7 +14,7 @@ function(hljs) {
   var COMMENTS = [
     {
       className: 'comment',
-      begin: '--', end: '$',
+      begin: '--', end: '$'
     },
     {
       className: 'comment',
@@ -25,6 +25,7 @@ function(hljs) {
   ];
 
   return {
+    aliases: ['osascript'],
     keywords: {
       keyword:
         'about above after against and around as at back before beginning ' +

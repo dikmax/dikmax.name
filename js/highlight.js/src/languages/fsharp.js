@@ -6,6 +6,7 @@ Description: F# language definition.
 */
 function(hljs) {
   return {
+    aliases: ['fs'],
     keywords:
       'abstract and as assert base begin class default delegate do done ' +
       'downcast downto elif else end exception extern false finally for ' +
@@ -14,7 +15,6 @@ function(hljs) {
       'override private public rec return sig static struct then to ' +
       'true try type upcast use val void when while with yield',
     contains: [
-
       {
         className: 'string',
         begin: '@"', end: '"',
@@ -30,7 +30,7 @@ function(hljs) {
       },
       {
         className: 'class',
-        beginKeywords: 'type', end: '\\(|=|$',
+        beginKeywords: 'type', end: '\\(|=|$', excludeEnd: true,
         contains: [
           hljs.UNDERSCORE_TITLE_MODE
         ]
@@ -48,5 +48,5 @@ function(hljs) {
       hljs.inherit(hljs.QUOTE_STRING_MODE, {illegal: null}),
       hljs.C_NUMBER_MODE
     ]
-  }
+  };
 }

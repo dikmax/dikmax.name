@@ -17,6 +17,7 @@ function(hljs) {
   ];
 
   return {
+    aliases: ['sci'],
     keywords: {
       keyword: 'abort break case clear catch continue do elseif else endfunction end for function'+
         'global if pause return resume select try then while'+
@@ -40,8 +41,8 @@ function(hljs) {
           {
             className: 'params',
             begin: '\\(', end: '\\)'
-          },
-        ],
+          }
+        ]
       },
       {
         className: 'transposed_variable',

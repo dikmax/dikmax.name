@@ -44,7 +44,7 @@ function(hljs) {
     className: 'comment',
     begin: '^(__END__|__DATA__)', end: '\\n$',
     relevance: 5
-  }
+  };
   var STRING_CONTAINS = [hljs.BACKSLASH_ESCAPE, SUBST, VAR];
   var PERL_DEFAULT_CONTAINS = [
     VAR,
@@ -146,6 +146,7 @@ function(hljs) {
   METHOD.contains = PERL_DEFAULT_CONTAINS;
 
   return {
+    aliases: ['pl'],
     keywords: PERL_KEYWORDS,
     contains: PERL_DEFAULT_CONTAINS
   };

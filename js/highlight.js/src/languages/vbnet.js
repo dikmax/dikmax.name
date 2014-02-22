@@ -5,6 +5,7 @@ Author: Poren Chiang <ren.chiang@gmail.com>
 
 function(hljs) {
   return {
+    aliases: ['vb'],
     case_insensitive: true,
     keywords: {
       keyword:
@@ -40,7 +41,7 @@ function(hljs) {
           {
             className: 'xmlDocTag',
             begin: '</?', end: '>'
-          },
+          }
           ]
       },
       hljs.C_NUMBER_MODE,
@@ -48,7 +49,7 @@ function(hljs) {
         className: 'preprocessor',
         begin: '#', end: '$',
         keywords: 'if else elseif end region externalsource'
-      },
+      }
     ]
   };
 }

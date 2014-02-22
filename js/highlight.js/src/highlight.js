@@ -20,21 +20,9 @@ function() {
     return match && match.index == 0;
   }
 
-  function blockText(block) {
-    return Array.prototype.map.call(block.childNodes, function(node) {
-      if (node.nodeType == 3) {
-        return options.useBR ? node.nodeValue.replace(/\n/g, '') : node.nodeValue;
-      }
-      if (tag(node) == 'br') {
-        return '\n';
-      }
-      return blockText(node);
-    }).join('');
-  }
-
   function blockLanguage(block) {
     var classes = (block.className + ' ' + (block.parentNode ? block.parentNode.className : '')).split(/\s+/);
-    classes = classes.map(function(c) {return c.replace(/^language-/, '');});
+    classes = classes.map(function(c) {return c.replace(/^lang(uage)?-/, '');});
     return classes.filter(function(c) {return getLanguage(c) || c == 'no-highlight';})[0];
   }
 
@@ -197,7 +185,7 @@ function() {
 
       if (parent) {
         if (mode.beginKeywords) {
-          mode.begin = mode.beginKeywords.split(' ').join('|');
+          mode.begin = '\\b(' + mode.beginKeywords.split(' ').join('|') + ')\\b';
         }
         if (!mode.begin)
           mode.begin = /\B|\b/;
@@ -234,10 +222,9 @@ function() {
 
       var terminators =
         mode.contains.map(function(c) {
-          return c.beginKeywords ? '\\.?\\b(' + c.begin + ')\\b\\.?' : c.begin;
+          return c.beginKeywords ? '\\.?(' + c.begin + ')\\.?' : c.begin;
         })
-        .concat([mode.terminator_end])
-        .concat([mode.illegal])
+        .concat([mode.terminator_end, mode.illegal])
         .map(reStr)
         .filter(Boolean);
       mode.terminators = terminators.length ? langRe(terminators.join('|'), true) : {exec: function(s) {return null;}};
@@ -296,26 +283,25 @@ function() {
     }
 
     function processKeywords() {
-      var buffer = escape(mode_buffer);
       if (!top.keywords)
-        return buffer;
+        return escape(mode_buffer);
       var result = '';
       var last_index = 0;
       top.lexemesRe.lastIndex = 0;
-      var match = top.lexemesRe.exec(buffer);
+      var match = top.lexemesRe.exec(mode_buffer);
       while (match) {
-        result += buffer.substr(last_index, match.index - last_index);
+        result += escape(mode_buffer.substr(last_index, match.index - last_index));
         var keyword_match = keywordMatch(top, match);
         if (keyword_match) {
           relevance += keyword_match[1];
-          result += buildSpan(keyword_match[0], match[0]);
+          result += buildSpan(keyword_match[0], escape(match[0]));
         } else {
-          result += match[0];
+          result += escape(match[0]);
         }
         last_index = top.lexemesRe.lastIndex;
-        match = top.lexemesRe.exec(buffer);
+        match = top.lexemesRe.exec(mode_buffer);
       }
-      return result + buffer.substr(last_index);
+      return result + escape(mode_buffer.substr(last_index));
     }
 
     function processSubLanguage() {
@@ -416,7 +402,7 @@ function() {
     var result = '';
     for(var current = top; current != language; current = current.parent) {
       if (current.className) {
-        result = buildSpan(current.className, result, true);
+        result += buildSpan(current.className, result, true);
       }
     }
     var mode_buffer = '';
@@ -517,7 +503,9 @@ function() {
   two optional parameters for fixMarkup.
   */
   function highlightBlock(block) {
-    var text = blockText(block);
+    var text = options.useBR ? block.innerHTML
+      .replace(/\n/g,'').replace(/<br>|<br [^>]*>/g, '\n').replace(/<[^>]*>/g,'')
+      : block.textContent;
     var language = blockLanguage(block);
     if (language == 'no-highlight')
         return;
@@ -588,6 +576,10 @@ function() {
     }
   }
 
+  function listLanguages() {
+    return Object.keys(languages);
+  }
+
   function getLanguage(name) {
     return languages[name] || languages[aliases[name]];
   }
@@ -602,6 +594,7 @@ function() {
   this.initHighlighting = initHighlighting;
   this.initHighlightingOnLoad = initHighlightingOnLoad;
   this.registerLanguage = registerLanguage;
+  this.listLanguages = listLanguages;
   this.getLanguage = getLanguage;
   this.inherit = inherit;
 
@@ -629,17 +622,23 @@ function() {
     illegal: '\\n',
     contains: [this.BACKSLASH_ESCAPE]
   };
+  this.PHRASAL_WORDS_MODE = {
+    begin: /\b(a|an|the|are|I|I'm|isn't|don't|doesn't|won't|but|just|should|pretty|simply|enough|gonna|going|wtf|so|such)\b/
+  };
   this.C_LINE_COMMENT_MODE = {
     className: 'comment',
-    begin: '//', end: '$'
+    begin: '//', end: '$',
+    contains: [this.PHRASAL_WORDS_MODE]
   };
   this.C_BLOCK_COMMENT_MODE = {
     className: 'comment',
-    begin: '/\\*', end: '\\*/'
+    begin: '/\\*', end: '\\*/',
+    contains: [this.PHRASAL_WORDS_MODE]
   };
   this.HASH_COMMENT_MODE = {
     className: 'comment',
-    begin: '#', end: '$'
+    begin: '#', end: '$',
+    contains: [this.PHRASAL_WORDS_MODE]
   };
   this.NUMBER_MODE = {
     className: 'number',
@@ -654,6 +653,19 @@ function() {
   this.BINARY_NUMBER_MODE = {
     className: 'number',
     begin: this.BINARY_NUMBER_RE,
+    relevance: 0
+  };
+  this.CSS_NUMBER_MODE = {
+    className: 'number',
+    begin: this.NUMBER_RE + '(' +
+      '%|em|ex|ch|rem'  +
+      '|vw|vh|vmin|vmax' +
+      '|cm|mm|in|pt|pc|px' +
+      '|deg|grad|rad|turn' +
+      '|s|ms' +
+      '|Hz|kHz' +
+      '|dpi|dpcm|dppx' +
+      ')?',
     relevance: 0
   };
   this.REGEXP_MODE = {

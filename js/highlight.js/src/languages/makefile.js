@@ -8,8 +8,9 @@ function(hljs) {
     className: 'variable',
     begin: /\$\(/, end: /\)/,
     contains: [hljs.BACKSLASH_ESCAPE]
-  }
+  };
   return {
+    aliases: ['mk', 'mak'],
     contains: [
       hljs.HASH_COMMENT_MODE,
       {
@@ -23,7 +24,7 @@ function(hljs) {
             relevance: 0,
             contains: [
               VARIABLE
-            ],
+            ]
           }
         }
       },
