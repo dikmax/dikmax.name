@@ -166,7 +166,6 @@ class App {
         List<String> spans = [];
         for (int i = 0; i < html.length; ++i) {
           String result = '<span class="line" data-linenum="${i + 1}">';
-          spans = [];
           if (html[i] == '') {
             result += '&nbsp;';
           } else {
@@ -174,6 +173,7 @@ class App {
             result += line;
             Iterable<Match> openMatches = open.allMatches(line);
             Iterable<Match> closeMatches = close.allMatches(line);
+            spans = [];
             for (int j = closeMatches.length; j < openMatches.length; ++j) {
               spans.add(openMatches.elementAt(j).group(0));
               result += '</span>';
