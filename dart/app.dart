@@ -14,17 +14,18 @@ class App {
     _updateCodeListings();
     _inlineFootnotes();
     _setupKeyboardNavigation();
+    _setupMath();
   }
 
   void _setupJumbotron() {
-    Element closeButton = query('.close-jumbotron-button');
-    Element openButton = query('.open-jumbotron-button');
+    Element closeButton = querySelector('.close-jumbotron-button');
+    Element openButton = querySelector('.open-jumbotron-button');
     if (closeButton == null || openButton == null) {
       return;
     }
 
-    Element jumbotron = query('.jumbotron');
-    Element jumbotronFolded = query('.jumbotron-folded');
+    Element jumbotron = querySelector('.jumbotron');
+    Element jumbotronFolded = querySelector('.jumbotron-folded');
 
     closeButton.onClick.listen((event) {
       jumbotron.style.display = 'none';
@@ -46,8 +47,8 @@ class App {
   }
 
   void _setupTopNavBar() {
-    Element toggleButton = query('.navbar-toggle-button');
-    Element collapsibleBlock = query('.navbar-collapsible-block');
+    Element toggleButton = querySelector('.navbar-toggle-button');
+    Element collapsibleBlock = querySelector('.navbar-collapsible-block');
 
     bool visible = false;
 
@@ -112,7 +113,7 @@ class App {
   }
 
   void _updateCommentsText() {
-    ElementList elements = queryAll('span.post-comments');
+    ElementList elements = querySelectorAll('span.post-comments');
     if (elements.length == 0) {
       return;
     }
@@ -124,7 +125,7 @@ class App {
 
       timer.cancel();
       elements.forEach((Element el) {
-        Element link = el.query('a');
+        Element link = el.querySelector('a');
         if (link == null) {
           return;
         }
@@ -155,7 +156,7 @@ class App {
     final NodeValidatorBuilder _htmlValidator=new NodeValidatorBuilder.common()
       ..allowElement('span', attributes: ['data-linenum']);
 
-    ElementList blocks = queryAll('pre > code.sourceCode');
+    ElementList blocks = querySelectorAll('pre > code.sourceCode');
     if (blocks.length > 0) {
       JsObject hljs = context['hljs'];
       blocks.forEach((HtmlElement block) {
@@ -244,7 +245,7 @@ class App {
     bool isTapTriggered = false;
 
     // Clicks handler
-    var lines = queryAll('span.line');
+    var lines = querySelectorAll('span.line');
     lines.onClick.listen((MouseEvent event) {
       if (tooltipTarget == event.currentTarget) {
         if (!isTapTriggered) {
@@ -289,7 +290,7 @@ class App {
   }
 
   void _inlineFootnotes() {
-    var links = queryAll('.note-link');
+    var links = querySelectorAll('.note-link');
     if (links.length == 0) {
       return;
     }
@@ -337,7 +338,7 @@ class App {
       }
 
       title.text = "Примечание ${target.text}";
-      var dataEl = query('.footnotes li[data-for=${target.id}]');
+      var dataEl = querySelector('.footnotes li[data-for=${target.id}]');
       if (dataEl == null) {
         return;
       }
@@ -362,8 +363,8 @@ class App {
   }
 
   void _setupKeyboardNavigation() {
-    Element previousLink = query('.pager .previous');
-    Element nextLink = query('.pager .next');
+    Element previousLink = querySelector('.pager .previous');
+    Element nextLink = querySelector('.pager .next');
 
     bool isMac = window.navigator.platform.indexOf('Mac') != -1;
 
@@ -385,10 +386,21 @@ class App {
           }
 
           if (link != null) {
-            window.location.replace(link.query('a').getAttribute('href'));
+            window.location.replace(link.querySelector('a').getAttribute('href'));
           }
         }
       });
+    }
+  }
+
+  void _setupMath() {
+    // Load MathJax only if there's math on page
+    if (querySelectorAll('span.math').length > 0) {
+      Element script = new ScriptElement()
+          ..type = "text/javascript"
+          ..async = true
+          ..src = "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML";
+      document.body.append(script);
     }
   }
 }
