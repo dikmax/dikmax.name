@@ -2,7 +2,7 @@
 title: "Lonely Planet"
 date: "2013-07-16T00:19:25+03:00"
 published: true
-tags: "eurotrip, лытдыбр, отпуск, путешествие"
+tags: "eurotrip, lonely planet, лытдыбр, отпуск, путешествие"
 thread: 1502763540
 ---
 
