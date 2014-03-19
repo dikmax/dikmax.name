@@ -37,8 +37,8 @@ class CitiesListController {
     var minsk = new City("Минск", 53.906077, 27.554914);
     firstCity = minsk;
     lastCity = minsk;
-    //cities = [];
-    cities = [
+    cities = [];
+    /*cities = [
         new City("Загреб", 45.807205, 15.967563),
         new City("Братислава", 48.149248, 17.106986),
         new City("Вена", 48.202536, 16.368796),
@@ -49,14 +49,14 @@ class CitiesListController {
         new City("Рим", 41.903044, 12.495799),
         new City("Венеция", 45.438108, 12.318166),
         new City("Палермо", 38.121359, 13.358433)
-    ];
+    ];*/
     suggestions = [];
     exclusions = [];
 
     var options = new JsObject.jsify({
         "behaviors": ["drag", "scrollZoom", "dblClickZoom", "multiTouch", "rightMouseButtonMagnifier"],
         "center": [53.906077, 27.554914],
-        "zoom": 7
+        "zoom": 8
     });
     map = new JsObject(context['ymaps']['Map'], ["map", options]);
     map['controls'].callMethod('add', ['zoomControl']);
@@ -77,20 +77,21 @@ class CitiesListController {
   }
 
   void remove(City city) {
-    // TODO update map
     cities.remove(city);
+    map["geoObjects"].callMethod("remove", [city.placemark]);
     if (autoUpdate) {
       calc();
     }
   }
 
-  // TODO move dot icon
   void makeFirst(City city) {
     if (cities.indexOf(firstCity) == -1 && lastCity != firstCity) {
       cities.add(firstCity);
+      firstCity.placemark['options'].callMethod('set', ['preset', 'twirl#blueIcon']);
     }
     cities.remove(city);
     firstCity = city;
+    firstCity.placemark['options'].callMethod('set', ['preset', 'twirl#blueDotIcon']);
     if (autoUpdate) {
       calc();
     }
@@ -99,9 +100,11 @@ class CitiesListController {
   void makeLast(City city) {
     if (cities.indexOf(lastCity) == -1 && lastCity != firstCity) {
       cities.add(lastCity);
+      lastCity.placemark['options'].callMethod('set', ['preset', 'twirl#blueIcon']);
     }
     cities.remove(city);
     lastCity = city;
+    lastCity.placemark['options'].callMethod('set', ['preset', 'twirl#blueDotIcon']);
     if (autoUpdate) {
       calc();
     }
@@ -137,7 +140,7 @@ class CitiesListController {
   }
 
   void exclude(int index) {
-    exclusions.add(<City>[result.path[index], result.path[index + 1]]);
+    exclusions.add(result.path[index]);
     if (autoUpdate) {
       calc();
     }
@@ -157,9 +160,26 @@ class CitiesListController {
     Stopwatch stopwatch = new Stopwatch()..start();
 
     if (cities.length == 0) {
-      result = new Path(<City>[firstCity, lastCity], firstCity.distanceTo(lastCity));
+      result = new Path(<List<City>>[<City>[firstCity, lastCity]], firstCity.distanceTo(lastCity));
 
-      // TODO update map
+      if (route != null) {
+        map["geoObjects"].callMethod("remove", [route]);
+      }
+
+      var coords = [[firstCity.lat, firstCity.lon], [lastCity.lat, lastCity.lon]];
+
+      var lineString = new JsObject(context['ymaps']['geometry']['LineString'], [new JsObject.jsify(coords)]);
+      route = new JsObject(context['ymaps']['GeoObject'], [
+          new JsObject.jsify({ "geometry": lineString })
+      ]);
+
+      map["geoObjects"].callMethod("add", [route]);
+      if (firstCity != lastCity) {
+        map.callMethod("setBounds", [new JsObject.jsify(
+          [[min(firstCity.lat, lastCity.lat), min(firstCity.lon, lastCity.lon)],
+          [max(firstCity.lat, lastCity.lat), max(firstCity.lon, lastCity.lon)]]
+        )]);
+      }
       return;
     }
 
@@ -308,7 +328,6 @@ class CitiesListController {
       }
 
       // High estimate
-      // TODO better high estimate (it won't be valid in case of forbidden routes)
       double f = routeLength + c[Ilast][firstAvailable];
       int prev = firstAvailable;
       int skip = firstAvailable;
@@ -343,38 +362,47 @@ class CitiesListController {
     iteration([0], new Set<int>());
     print("Elapsed: ${stopwatch.elapsedMilliseconds}");
 
-    List<City> path = <City>[];
-    for (int i in x_0) {
-      path.add(index[i]);
-    }
+    if (f_x_0 > inf) { // Path not found
+      result = null;
+    } else {
+      List<List<City>> path = <List<City>>[];
+      for (int i = 0; i < x_0.length - 1; ++i) {
+        path.add(<City>[index[x_0[i]], index[x_0[i + 1]]]);
+      }
 
-    result = new Path(path, f_x_0);
+      result = new Path(path, f_x_0);
+    }
 
     if (route != null) {
       map["geoObjects"].callMethod("remove", [route]);
+      route = null;
     }
 
     var coords = [];
-    double minLat = path[0].lat;
-    double maxLat = path[0].lat;
-    double minLon = path[0].lon;
-    double maxLon = path[0].lon;
+    double minLat = index[0].lat;
+    double maxLat = index[0].lat;
+    double minLon = index[0].lon;
+    double maxLon = index[0].lon;
 
-    for (City city in path) {
+    for (int i in x_0) {
+      City city = index[i];
       minLat = min(minLat, city.lat);
       minLon = min(minLon, city.lon);
       maxLat = max(maxLat, city.lat);
       maxLon = max(maxLon, city.lon);
       coords.add([city.lat, city.lon]);
     }
-    var lineString = new JsObject(context['ymaps']['geometry']['LineString'],
-      [new JsObject.jsify(coords)]
-    );
-    route = new JsObject(context['ymaps']['GeoObject'], [
-      new JsObject.jsify({ "geometry": lineString })
-    ]);
 
-    map["geoObjects"].callMethod("add", [route]);
+    if (f_x_0 < inf) {
+      var lineString = new JsObject(context['ymaps']['geometry']['LineString'],
+      [new JsObject.jsify(coords)]
+      );
+      route = new JsObject(context['ymaps']['GeoObject'], [
+          new JsObject.jsify({ "geometry": lineString })
+      ]);
+
+      map["geoObjects"].callMethod("add", [route]);
+    }
     map.callMethod("setBounds", [new JsObject.jsify([[minLat, minLon], [maxLat, maxLon]])]);
   }
 }
@@ -423,7 +451,7 @@ class City {
 }
 
 class Path {
-  List<City> path;
+  List<List<City>> path;
   double distance;
 
   Path(this.path, this.distance);

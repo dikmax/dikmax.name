@@ -1,34 +1,48 @@
 <div id="map" style="width: 100%; height: 400px"></div>
 
-<div class="cities-list container-fluid" ng-cloak>
-    <div>
-        <input type="checkbox" ng-model="ctrl.autoUpdate"/> Автообновление
-        <span ng-if="!ctrl.autoUpdate">
-            <button class="btn btn-default btn-sm" ng-click="ctrl.calc()" title="Обновить"><i class="glyphicon glyphicon-refresh"></i></button>
-        </span>
-    </div>
-
+<div class="cities-list container-fluid" ng-cloak style="margin-top: 20px;">
     <div class="row">
         <div class="col-xs-12 col-md-12 col-lg-4" >
             <div ng-if="ctrl.result == null">
                 <ul class="list-group">
                     <li class="list-group-item">
-                        <h4 class="list-group-item-heading">Маршрут</h4>
+                        <h4 class="list-group-item-heading">Маршрут не существует
+                            <span ng-if="!ctrl.autoUpdate">
+                                <button class="btn btn-default btn-xs pull-right" ng-click="ctrl.calc()" title="Обновить"><i class="glyphicon glyphicon-refresh"></i></button>
+                            </span>
+                        </h4>
+                        <form>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="ctrl.autoUpdate"/>
+                                    Автообновление
+                                </label>
+                            </div>
+                        </form>
                     </li>
                 </ul>
             </div>
             <div ng-if="ctrl.result != null">
                 <ul class="list-group">
                     <li class="list-group-item">
-                        <h4 class="list-group-item-heading">Маршрут {{ctrl.result.distance.round()}} км</h4>
+                        <h4 class="list-group-item-heading">Маршрут {{ctrl.result.distance.round()}} км
+                            <span ng-if="!ctrl.autoUpdate">
+                                <button class="btn btn-default btn-xs pull-right" ng-click="ctrl.calc()" title="Обновить"><i class="glyphicon glyphicon-refresh"></i></button>
+                            </span>
+                            <form>
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" ng-model="ctrl.autoUpdate"/>
+                                        Автообновление
+                                    </label>
+                                </div>
+                            </form>
+                        </h4>
                     </li>
-                    <li class="list-group-item" ng-repeat="city in ctrl.result.path track by $index" ng-if="!$last">
-                        <span ng-if="!$last">
-                            <span class="badge pull-right">{{city.distanceTo(ctrl.result.path[$index+1]).round()}} км</span>
-                            <button class="btn btn-default btn-xs" ng-click="ctrl.exclude($index)" title="Исключить"><i class="glyphicon glyphicon-remove"></i></button>
-                            {{city.name}} &mdash;
-                            {{ctrl.result.path[$index+1].name}}
-                        </span>
+                    <li class="list-group-item" ng-repeat="segment in ctrl.result.path track by $index">
+                        <span class="badge distance pull-right">{{segment[0].distanceTo(segment[1]).round()}} км</span>
+                        <button class="btn btn-default btn-xs" ng-click="ctrl.exclude($index)" title="Исключить"><i class="glyphicon glyphicon-remove"></i></button>
+                        {{segment[0].name}} &mdash; {{segment[1].name}}
                     </li>
                 </ul>
             </div>
@@ -40,34 +54,33 @@
                     <h4 class="list-group-item-heading">Города</h4>
                 </li>
                 <li class="list-group-item">
-                    <form class="form-inline" role="form">
+                    <form class="form-inline">
                         <label class="sr-only" for="searchText">Добавить город</label>
                         <input type="search" class="form-control input-sm" id="searchText" placeholder="Добавить город" ng-model="ctrl.newCity"/>
                         <button class="btn btn-default btn-sm" ng-click="ctrl.searchCity()">Искать</button>
+                        <div ng-if="ctrl.showSuggestions" class="btn btn-default btn-sm" ng-click="ctrl.showSuggestions = false" title="Скрыть результаты">
+                            <i class="glyphicon glyphicon-remove"></i>
+                        </div>
                     </form>
                     <div ng-if="ctrl.showSuggestions">
                         <ul ng-if="ctrl.suggestions.length > 0" class="list-group">
                             <li ng-repeat="city in ctrl.suggestions" class="list-group-item">
-                                <div class="btn-group">
-                                    <button class="btn btn-default btn-xs" ng-click="ctrl.showCity(city)" title="Показать"><i class="glyphicon glyphicon-eye-open"></i></button>
-                                    <button class="btn btn-default btn-xs" ng-click="ctrl.addCity(city)" title="Добавить"><i class="glyphicon glyphicon-plus"></i></button>
-                                </div>
-                                {{city.fullName}}
+                                <a href="#" ng-click="ctrl.addCity(city)">{{city.fullName}}</a>
+                                <!--<button class="btn btn-default btn-xs" ng-click="ctrl.showCity(city)" title="Показать"><i class="glyphicon glyphicon-eye-open"></i></button>-->
                             </li>
                         </ul>
                         <div ng-if="ctrl.suggestions.length == 0">
                             Ничего не найдено.
                         </div>
                     </div>
-
                 </li>
                 <li class="list-group-item">
                     <div class="btn-group">
                         <button class="btn btn-default btn-xs" disabled="disabled" title="Удалить"><i class="glyphicon glyphicon-remove"></i></button>
                         <button class="btn btn-default btn-xs" disabled="disabled" title="В начало"><i class="glyphicon glyphicon-chevron-up"></i></button>
-                        <button class="btn btn-default btn-xs" ng-click="ctrl.makeLast(city)" title="В конец"><i class="glyphicon glyphicon-chevron-down"></i></button>
+                        <button class="btn btn-default btn-xs" ng-click="ctrl.makeLast(ctrl.firstCity)" title="В конец"><i class="glyphicon glyphicon-chevron-down"></i></button>
                     </div>
-                    {{ctrl.firstCity.name}}
+                    {{ctrl.firstCity.name}} <small><em>Старт</em></small>
                 </li>
                 <li class="list-group-item" ng-repeat="city in ctrl.cities">
                     <div class="btn-group">
@@ -80,10 +93,10 @@
                 <li class="list-group-item">
                     <div class="btn-group">
                         <button class="btn btn-default btn-xs" disabled="disabled" title="Удалить"><i class="glyphicon glyphicon-remove"></i></button>
-                        <button class="btn btn-default btn-xs" ng-click="ctrl.makeFirst(city)" title="В начало"><i class="glyphicon glyphicon-chevron-up"></i></button>
+                        <button class="btn btn-default btn-xs" ng-click="ctrl.makeFirst(ctrl.lastCity)" title="В начало"><i class="glyphicon glyphicon-chevron-up"></i></button>
                         <button class="btn btn-default btn-xs" disabled="disabled" title="В конец"><i class="glyphicon glyphicon-chevron-down"></i></button>
                     </div>
-                    {{ctrl.lastCity.name}}
+                    {{ctrl.lastCity.name}} <small><em>Финиш</em></small>
                 </li>
             </ul>
 
