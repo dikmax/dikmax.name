@@ -1,4 +1,5 @@
 name: dikmax.name
 dependencies:
+  angular: any
   browser: any
   cookie: any

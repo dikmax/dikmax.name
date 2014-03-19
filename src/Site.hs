@@ -59,6 +59,8 @@ listTemplateName :: Identifier
 listTemplateName = "templates/list-development.html"
 postTemplateName :: Identifier
 postTemplateName = "templates/post-development.html"
+routePlannerTemplateName :: Identifier
+routePlannerTemplateName = "templates/route-planner-development.html"
 
 #else
 
@@ -421,6 +423,18 @@ getTags identifier = do
 
 staticPagesRules :: Rules ()
 staticPagesRules = do
+    match "route-planner/index.html" $ do
+        route idRoute
+        compile $ do
+            getResourceBody
+                >>= loadAndApplyTemplate "templates/_post-without-footer.html" postCtx
+                >>= loadAndApplyTemplate routePlannerTemplateName (pageCtx (defaultMetadata
+                    { metaTitle = Just "Планировщик маршрута"
+                    , metaDescription = "Расчет оптимального маршрута путешествия по городам"
+                    , metaUrl = "/route-planner/"
+                    }))
+
+
     match (fromList ["about.md", "404.md"]) $ do
         route removeExtension
         compile $ do

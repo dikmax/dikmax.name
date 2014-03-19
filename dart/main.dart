@@ -1,6 +1,6 @@
 import 'app.dart';
 
 void main () {
-  var app = new App();
+  App app = new App();
   app.init();
 }
