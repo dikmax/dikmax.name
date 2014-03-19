@@ -1,6 +1,6 @@
 <div id="map" style="width: 100%; height: 400px"></div>
 
-<div class="cities-list container" ng-cloak>
+<div class="cities-list container-fluid" ng-cloak>
     <div>
         <input type="checkbox" ng-model="ctrl.autoUpdate"/> Автообновление
         <span ng-if="!ctrl.autoUpdate">
@@ -11,15 +11,21 @@
     <div class="row">
         <div class="col-xs-12 col-md-12 col-lg-4" >
             <div ng-if="ctrl.result == null">
-                <h3>Маршрут</h3>
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <h4 class="list-group-item-heading">Маршрут</h4>
+                    </li>
+                </ul>
             </div>
             <div ng-if="ctrl.result != null">
-                <h3>Маршрут {{ctrl.result.distance.round()}} км</h3>
                 <ul class="list-group">
+                    <li class="list-group-item">
+                        <h4 class="list-group-item-heading">Маршрут {{ctrl.result.distance.round()}} км</h4>
+                    </li>
                     <li class="list-group-item" ng-repeat="city in ctrl.result.path track by $index" ng-if="!$last">
                         <span ng-if="!$last">
                             <span class="badge pull-right">{{city.distanceTo(ctrl.result.path[$index+1]).round()}} км</span>
-                            <button class="btn btn-default btn-xs" ng-click="ctrl.exclude($index)"><i class="glyphicon glyphicon-remove"></i></button>
+                            <button class="btn btn-default btn-xs" ng-click="ctrl.exclude($index)" title="Исключить"><i class="glyphicon glyphicon-remove"></i></button>
                             {{city.name}} &mdash;
                             {{ctrl.result.path[$index+1].name}}
                         </span>
@@ -29,49 +35,77 @@
         </div>
 
         <div class="col-xs-12 col-md-6 col-lg-4">
-            <h3>Города</h3>
             <ul class="list-group">
                 <li class="list-group-item">
-                    <button class="btn btn-default btn-xs" ng-click="ctrl.makeLast(city)" title="В конец"><i class="glyphicon glyphicon-chevron-down"></i></button>
+                    <h4 class="list-group-item-heading">Города</h4>
+                </li>
+                <li class="list-group-item">
+                    <form class="form-inline" role="form">
+                        <label class="sr-only" for="searchText">Добавить город</label>
+                        <input type="search" class="form-control input-sm" id="searchText" placeholder="Добавить город" ng-model="ctrl.newCity"/>
+                        <button class="btn btn-default btn-sm" ng-click="ctrl.searchCity()">Искать</button>
+                    </form>
+                    <div ng-if="ctrl.showSuggestions">
+                        <ul ng-if="ctrl.suggestions.length > 0" class="list-group">
+                            <li ng-repeat="city in ctrl.suggestions" class="list-group-item">
+                                <div class="btn-group">
+                                    <button class="btn btn-default btn-xs" ng-click="ctrl.showCity(city)" title="Показать"><i class="glyphicon glyphicon-eye-open"></i></button>
+                                    <button class="btn btn-default btn-xs" ng-click="ctrl.addCity(city)" title="Добавить"><i class="glyphicon glyphicon-plus"></i></button>
+                                </div>
+                                {{city.fullName}}
+                            </li>
+                        </ul>
+                        <div ng-if="ctrl.suggestions.length == 0">
+                            Ничего не найдено.
+                        </div>
+                    </div>
+
+                </li>
+                <li class="list-group-item">
+                    <div class="btn-group">
+                        <button class="btn btn-default btn-xs" disabled="disabled" title="Удалить"><i class="glyphicon glyphicon-remove"></i></button>
+                        <button class="btn btn-default btn-xs" disabled="disabled" title="В начало"><i class="glyphicon glyphicon-chevron-up"></i></button>
+                        <button class="btn btn-default btn-xs" ng-click="ctrl.makeLast(city)" title="В конец"><i class="glyphicon glyphicon-chevron-down"></i></button>
+                    </div>
                     {{ctrl.firstCity.name}}
                 </li>
                 <li class="list-group-item" ng-repeat="city in ctrl.cities">
                     <div class="btn-group">
-                        <button class="btn btn-default btn-xs" ng-click="ctrl.remove(city)"><i class="glyphicon glyphicon-remove"></i></button>
+                        <button class="btn btn-default btn-xs" ng-click="ctrl.remove(city)" title="Удалить"><i class="glyphicon glyphicon-remove"></i></button>
                         <button class="btn btn-default btn-xs" ng-click="ctrl.makeFirst(city)" title="В начало"><i class="glyphicon glyphicon-chevron-up"></i></button>
                         <button class="btn btn-default btn-xs" ng-click="ctrl.makeLast(city)" title="В конец"><i class="glyphicon glyphicon-chevron-down"></i></button>
                     </div>
                     {{city.name}}
                 </li>
                 <li class="list-group-item">
-                    <button class="btn btn-default btn-xs" ng-click="ctrl.makeFirst(city)" title="В начало"><i class="glyphicon glyphicon-chevron-up"></i></button>
+                    <div class="btn-group">
+                        <button class="btn btn-default btn-xs" disabled="disabled" title="Удалить"><i class="glyphicon glyphicon-remove"></i></button>
+                        <button class="btn btn-default btn-xs" ng-click="ctrl.makeFirst(city)" title="В начало"><i class="glyphicon glyphicon-chevron-up"></i></button>
+                        <button class="btn btn-default btn-xs" disabled="disabled" title="В конец"><i class="glyphicon glyphicon-chevron-down"></i></button>
+                    </div>
                     {{ctrl.lastCity.name}}
                 </li>
             </ul>
-            <!--suppress HtmlFormInputWithoutLabel -->
-            <input type="text" ng-model="ctrl.newCity"/><button ng-click="ctrl.searchCity()">Искать</button>
-            <div ng-if="ctrl.showSuggestions">
-                <ul ng-if="ctrl.suggestions.length > 0" class="list-group">
-                    <li ng-repeat="city in ctrl.suggestions" class="list-group-item">
-                        <div class="btn-group">
-                            <button class="btn btn-default btn-xs" ng-click="ctrl.showCity(city)" title="Показать"><i class="glyphicon glyphicon-eye-open"></i></button>
-                            <button class="btn btn-default btn-xs" ng-click="ctrl.addCity(city)" title="Добавить"><i class="glyphicon glyphicon-plus"></i></button>
-                        </div>
-                        {{city.fullName}}
-                    </li>
-                </ul>
-                <div ng-if="ctrl.suggestions.length == 0">
-                    Ничего не найдено.
-                </div>
-            </div>
 
         </div>
 
         <div class="col-xs-12 col-md-6 col-lg-4">
-            <h3>Исключения</h3>
+            <div ng-if="ctrl.exclusions.length == 0">
+                <ul class="list-group">
+                    <li class="list-group-item">
+                        <h4 class="list-group-item-heading">Исключения</h4>
+                    </li>
+                    <li class="list-group-item">
+                        Нет исключений
+                    </li>
+                </ul>
+            </div>
 
             <div ng-if="ctrl.exclusions.length > 0">
                 <ul class="list-group">
+                    <li class="list-group-item">
+                        <h4 class="list-group-item-heading">Исключения</h4>
+                    </li>
                     <li class="list-group-item" ng-repeat="exclusion in ctrl.exclusions">
                         <button class="btn btn-default btn-xs" ng-click="ctrl.include($index)"><i class="glyphicon glyphicon-remove"></i></button>
                         {{exclusion[0].name}} - {{exclusion[1].name}}
