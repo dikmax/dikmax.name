@@ -74,6 +74,8 @@ listTemplateName :: Identifier
 listTemplateName = "templates/list.html"
 postTemplateName :: Identifier
 postTemplateName = "templates/post.html"
+routePlannerTemplateName :: Identifier
+routePlannerTemplateName = "templates/route-planner.html"
 
 #endif
 
@@ -229,7 +231,7 @@ staticFilesRules = do
 
 #else
 
-    match (fromList ["dart/script.dart", "dart/script.dart.js", "dart/s.js"]) $ do
+    match (fromList ["dart/script.dart", "dart/script.dart.js", "dart/s.js", "dart/script-route-planner.dart", "dart/script-route-planner.dart.js"]) $ do
         route   idRoute
         compile copyFileCompiler
 

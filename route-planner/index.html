@@ -25,7 +25,7 @@
             <div ng-if="ctrl.result != null">
                 <ul class="list-group">
                     <li class="list-group-item">
-                        <h4 class="list-group-item-heading">Маршрут {{ctrl.result.distance.round()}} км
+                        <h4 class="list-group-item-heading">Маршрут {{ctrl.result.distanceRound}} км
                             <span ng-if="!ctrl.autoUpdate">
                                 <button class="btn btn-default btn-xs pull-right" ng-click="ctrl.calc()" title="Обновить"><i class="glyphicon glyphicon-refresh"></i></button>
                             </span>
@@ -40,7 +40,7 @@
                         </h4>
                     </li>
                     <li class="list-group-item" ng-repeat="segment in ctrl.result.path track by $index">
-                        <span class="badge distance pull-right">{{segment[0].distanceTo(segment[1]).round()}} км</span>
+                        <span class="badge distance pull-right">{{segment[0].distanceToRound(segment[1])}} км</span>
                         <button class="btn btn-default btn-xs" ng-click="ctrl.exclude($index)" title="Исключить"><i class="glyphicon glyphicon-remove"></i></button>
                         {{segment[0].name}} &mdash; {{segment[1].name}}
                     </li>

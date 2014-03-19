@@ -6,7 +6,7 @@ import 'dart:js';
 import 'dart:math';
 
 // Temporary, please follow https://github.com/angular/angular.dart/issues/476
-@MirrorsUsed(targets: 'cities_list', override: '*')
+@MirrorsUsed(targets: const ['City', 'Path', 'double'], override: '*')
 import 'dart:mirrors';
 
 import 'package:angular/angular.dart';
@@ -360,7 +360,7 @@ class CitiesListController {
     }
 
     iteration([0], new Set<int>());
-    print("Elapsed: ${stopwatch.elapsedMilliseconds}");
+    //print("Elapsed: ${stopwatch.elapsedMilliseconds}");
 
     if (f_x_0 > inf) { // Path not found
       result = null;
@@ -447,12 +447,18 @@ class City {
     return R * c;
   }
 
+  int distanceToRound(City city2) {
+    return distanceTo(city2).round();
+  }
+
   String toString() => _fullName == '' ? "${_name} (${_lat}, ${_lon})" : "${_fullName} (${_lat}, ${_lon})";
 }
 
 class Path {
   List<List<City>> path;
   double distance;
+
+  int get distanceRound => distance.round();
 
   Path(this.path, this.distance);
 }
