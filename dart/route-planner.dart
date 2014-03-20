@@ -500,5 +500,5 @@ void main() {
   app.init();
 
   // Initializing route planner
-  ngBootstrap(module: new AppModule());
+  context['ymaps'].callMethod('ready', [() => ngBootstrap(module: new AppModule())]);
 }

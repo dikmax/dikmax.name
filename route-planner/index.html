@@ -55,11 +55,15 @@
                 </li>
                 <li class="list-group-item">
                     <form class="form-inline">
-                        <label class="sr-only" for="searchText">Добавить город</label>
-                        <input type="search" class="form-control input-sm" id="searchText" placeholder="Добавить город" ng-model="ctrl.newCity"/>
-                        <button class="btn btn-default btn-sm" ng-click="ctrl.searchCity()">Искать</button>
-                        <div ng-if="ctrl.showSuggestions" class="btn btn-default btn-sm" ng-click="ctrl.showSuggestions = false" title="Скрыть результаты">
-                            <i class="glyphicon glyphicon-remove"></i>
+                        <div class="input-group">
+                            <label class="sr-only" for="searchText">Добавить город</label>
+                            <input type="search" class="form-control input-sm" id="searchText" placeholder="Добавить город" ng-model="ctrl.newCity"/>
+                            <span class="input-group-btn">
+                                <button ng-if="ctrl.showSuggestions" class="btn btn-default btn-sm" ng-click="ctrl.showSuggestions = false;ctrl.newCity = ''" title="Скрыть результаты">
+                                    <i class="glyphicon glyphicon-remove"></i>
+                                </button>
+                                <button class="btn btn-default btn-sm" ng-click="ctrl.searchCity()"><i class="glyphicon glyphicon-search"></i></button>
+                            </span>
                         </div>
                     </form>
                     <div ng-if="ctrl.showSuggestions">
