@@ -431,7 +431,7 @@ staticPagesRules = do
             getResourceBody
                 >>= loadAndApplyTemplate "templates/_post-without-footer.html" postCtx
                 >>= loadAndApplyTemplate routePlannerTemplateName (pageCtx (defaultMetadata
-                    { metaTitle = Just "Планировщик маршрута"
+                    { metaTitle = Just "Планировщик маршрутов"
                     , metaDescription = "Расчет оптимального маршрута путешествия по городам"
                     , metaUrl = "/route-planner/"
                     }))
