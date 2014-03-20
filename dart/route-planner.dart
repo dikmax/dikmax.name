@@ -30,7 +30,6 @@ class CitiesListController {
   bool loaded = true;
 
   var map;
-  var previewPlacemark;
   var route;
 
   CitiesListController() {
@@ -110,33 +109,18 @@ class CitiesListController {
     }
   }
 
-  void addCity(city) {
+  void addCity(city, event) {
+    event.preventDefault();
     cities.add(city);
     suggestions = [];
     showSuggestions = false;
     newCity = '';
-    if (previewPlacemark != null) {
-      map["geoObjects"].callMethod("remove", [previewPlacemark]);
-      previewPlacemark = null;
-    }
     var placemark = city.placemark;
     placemark['options'].callMethod('set', ['preset', 'twirl#blueIcon']);
     map["geoObjects"].callMethod("add", [placemark]);
     if (autoUpdate) {
       calc();
     }
-  }
-
-  void showCity(city) {
-    if (previewPlacemark != null) {
-      map["geoObjects"].callMethod("remove", [previewPlacemark]);
-    }
-    previewPlacemark = city.placemark;
-    previewPlacemark['options'].callMethod('set', ['preset', 'twirl#whiteIcon']);
-    map["geoObjects"].callMethod("add", [previewPlacemark]);
-    map.callMethod("setCenter", [
-      new JsObject.jsify([city.lat, city.lon])
-    ]);
   }
 
   void exclude(int index) {

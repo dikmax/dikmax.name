@@ -69,8 +69,7 @@
                     <div ng-if="ctrl.showSuggestions">
                         <ul ng-if="ctrl.suggestions.length > 0" class="list-group">
                             <li ng-repeat="city in ctrl.suggestions" class="list-group-item">
-                                <a href="#" ng-click="ctrl.addCity(city)">{{city.fullName}}</a>
-                                <!--<button class="btn btn-default btn-xs" ng-click="ctrl.showCity(city)" title="Показать"><i class="glyphicon glyphicon-eye-open"></i></button>-->
+                                <a href="#" ng-click="ctrl.addCity(city, $event)">{{city.fullName}}</a>
                             </li>
                         </ul>
                         <div ng-if="ctrl.suggestions.length == 0">
