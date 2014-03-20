@@ -85,6 +85,7 @@ defaultMimeTypes = Map.fromList [
   ( ".cpp"     , "text/plain"                        ),
   ( ".css"     , "text/css"                          ),
   ( ".cxx"     , "text/plain"                        ),
+  ( ".dart"    , "application/dart"                  ),
   ( ".dtd"     , "text/xml"                          ),
   ( ".dvi"     , "application/x-dvi"                 ),
   ( ".gif"     , "image/gif"                         ),
