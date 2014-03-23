@@ -13,6 +13,8 @@ site.o
 /less/*.css
 /dart/pubspec.lock
 /dart/packages
+/dart/benchmark/packages
+/dart/web/packages
 *.dart.deps
 *.dart.js.deps
 *.dart.js.map

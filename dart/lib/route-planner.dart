@@ -1,20 +1,16 @@
+library routePlanner;
+
 import 'dart:async';
-import 'dart:collection';
 import 'dart:convert';
 import 'dart:html';
 import 'dart:js';
 import 'dart:math';
-
-// Temporary, please follow https://github.com/angular/angular.dart/issues/476
-@MirrorsUsed(targets: const ['City', 'Path', 'double'], override: '*')
-import 'dart:mirrors';
-
 import 'package:angular/angular.dart';
-import 'app.dart';
+import 'tsp.dart';
 
 @NgController(
-  selector: '.cities-list',
-  publishAs: 'ctrl'
+    selector: '.cities-list',
+    publishAs: 'ctrl'
 )
 class CitiesListController {
   List<City> cities;
@@ -36,8 +32,8 @@ class CitiesListController {
     var minsk = new City("Минск", 53.906077, 27.554914);
     firstCity = minsk;
     lastCity = minsk;
-    cities = [];
-    /*cities = [
+    //cities = [];
+    cities = [
         new City("Загреб", 45.807205, 15.967563),
         new City("Братислава", 48.149248, 17.106986),
         new City("Вена", 48.202536, 16.368796),
@@ -48,7 +44,7 @@ class CitiesListController {
         new City("Рим", 41.903044, 12.495799),
         new City("Венеция", 45.438108, 12.318166),
         new City("Палермо", 38.121359, 13.358433)
-    ];*/
+    ];
     suggestions = [];
     exclusions = [];
 
@@ -137,8 +133,6 @@ class CitiesListController {
     }
   }
 
-  static final double inf = 1e8;
-
   // Bounds and branches
   void calc() {
     Stopwatch stopwatch = new Stopwatch()..start();
@@ -160,8 +154,8 @@ class CitiesListController {
       map["geoObjects"].callMethod("add", [route]);
       if (firstCity != lastCity) {
         map.callMethod("setBounds", [new JsObject.jsify(
-          [[min(firstCity.lat, lastCity.lat), min(firstCity.lon, lastCity.lon)],
-          [max(firstCity.lat, lastCity.lat), max(firstCity.lon, lastCity.lon)]]
+            [[min(firstCity.lat, lastCity.lat), min(firstCity.lon, lastCity.lon)],
+            [max(firstCity.lat, lastCity.lat), max(firstCity.lon, lastCity.lon)]]
         )]);
       }
       return;
@@ -176,7 +170,7 @@ class CitiesListController {
 
     List<List<double>> c = <List<double>>[];
     for (int i = 0; i < iLen; ++i) {
-      c.add(new List<double>.filled(iLen, inf));
+      c.add(new List<double>.filled(iLen, TSPAlgorithm.inf));
     }
 
     for (int i = 0; i < cities.length; ++i) {
@@ -201,160 +195,24 @@ class CitiesListController {
         while ((index0 = index.indexOf(exclusion[0], index0 + 1)) != -1) {
           int index1 = -1;
           while ((index1 = index.indexOf(exclusion[1], index1 + 1)) != -1) {
-            c[index0][index1] = inf;
-            c[index1][index0] = inf;
+            c[index0][index1] = TSPAlgorithm.inf;
+            c[index1][index0] = TSPAlgorithm.inf;
           }
         }
       }
     }
 
-    // Algorithm goes here
+    AlgorithmResult ar = (new BranchAndBound()).solve(c);
 
-    // Hungry search for initial upper estimate
-    double f_x_0 = 0.0;
-    List<int> x_0 = <int>[0];
-    while (x_0.length < iLen - 1) {
-      double min;
-      int next;
-      int last = x_0.last;
-      for (int i = 1; i < iLen - 1; ++i) {
-        if (x_0.contains(i)) {
-          continue;
-        }
-        if (min == null || c[last][i] < min) {
-          min = c[last][i];
-          next = i;
-        }
-      }
-      x_0.add(next);
-      f_x_0 += min;
-    }
-    f_x_0 += c[x_0.last][iLen - 1];
-    x_0.add(iLen - 1);
-
-    void iteration(List<int> I, Set<int> J) {
-      Set<int> Iset = new Set<int>.from(I);
-      int Ilast = I.last;
-      Iset.remove(Ilast);
-
-      List<int> Isupp = <int>[]; // All - I
-      int firstAvailable;
-
-      for (int i = 0; i < iLen; ++i) {
-        if (!Iset.contains(i)) {
-          Isupp.add(i);
-          if (firstAvailable == null && i != Ilast && !J.contains(i)) {
-            firstAvailable = i;
-          }
-        }
-      }
-
-      if (firstAvailable == null) {
-        return;
-      }
-
-      List<double> alpha = new List<double>.filled(iLen, inf);
-      for (int i in Isupp) {
-        double min = inf;
-        for (int j in Isupp) {
-          if (j == Ilast || i == Ilast && J.contains(j)) {
-            continue;
-          }
-          if (c[i][j] < min) {
-            min = c[i][j];
-          }
-        }
-
-        alpha[i] = min;
-      }
-
-      List<double> beta = new List<double>.filled(iLen, inf);
-      for (int i in Isupp) {
-        if (i == Ilast) {
-          continue;
-        }
-        double min = inf;
-        for (int j in Isupp) {
-          if (j == Ilast && J.contains(i)) {
-            continue;
-          }
-          double val = c[j][i] - alpha[j];
-          if (val < min) {
-            min = val;
-          }
-        }
-
-        beta[i] = min;
-      }
-
-      // Low estimate
-      double H = 0.0;
-      double routeLength = 0.0;
-      for (int i = 0; i < I.length - 1; ++i) {
-        routeLength += c[I[i]][I[i+1]];
-      }
-      H += routeLength;
-      for (int i in Isupp) {
-        if (i >= iLen - 1) {
-          continue;
-        }
-        H += alpha[i];
-      }
-      for (int i in Isupp) {
-        if (i == Ilast) {
-          continue;
-        }
-        H += beta[i];
-      }
-
-      if (H >= f_x_0) {
-        return;
-      }
-
-      // High estimate
-      double f = routeLength + c[Ilast][firstAvailable];
-      int prev = firstAvailable;
-      int skip = firstAvailable;
-      List<int> x = new List<int>.from(I);
-      x.add(firstAvailable);
-
-      for (int i in Isupp) {
-        if (i != Ilast && i != firstAvailable) {
-          f += c[prev][i];
-          x.add(i);
-          prev = i;
-        }
-      }
-
-      if (f < f_x_0) {
-        f_x_0 = f;
-        x_0 = x;
-      }
-
-      if (H < f_x_0) {
-        // Use firstAvailable as next stop
-        I.add(firstAvailable);
-        iteration(I, new Set<int>());
-        I.removeLast();
-
-        // Don't firstAvailable as next stop
-        J.add(firstAvailable);
-        iteration(I, J);
-      }
-    }
-
-    iteration([0], new Set<int>());
-    //print("Elapsed: ${stopwatch.elapsedMilliseconds}");
-
-    if (f_x_0 > inf) { // Path not found
+    if (ar.distance > TSPAlgorithm.inf) { // Path not found
       result = null;
     } else {
       List<List<City>> path = <List<City>>[];
-      for (int i = 0; i < x_0.length - 1; ++i) {
-        path.add(<City>[index[x_0[i]], index[x_0[i + 1]]]);
+      for (int i = 0; i < ar.points.length - 1; ++i) {
+        path.add(<City>[index[ar.points[i]], index[ar.points[i + 1]]]);
       }
 
-      result = new Path(path, f_x_0);
+      result = new Path(path, ar.distance);
     }
 
     if (route != null) {
@@ -368,7 +226,7 @@ class CitiesListController {
     double minLon = index[0].lon;
     double maxLon = index[0].lon;
 
-    for (int i in x_0) {
+    for (int i in ar.points) {
       City city = index[i];
       minLat = min(minLat, city.lat);
       minLon = min(minLon, city.lon);
@@ -377,7 +235,7 @@ class CitiesListController {
       coords.add([city.lat, city.lon]);
     }
 
-    if (f_x_0 < inf) {
+    if (ar.distance < TSPAlgorithm.inf) {
       var lineString = new JsObject(context['ymaps']['geometry']['LineString'],
       [new JsObject.jsify(coords)]
       );
@@ -460,8 +318,8 @@ class Geocoder {
       for (var item in data['response']['GeoObjectCollection']['featureMember']) {
         List<String> point = item['GeoObject']['Point']['pos'].split(' ');
         result.add(new City(item['GeoObject']['name'],
-          double.parse(point[1]), double.parse(point[0]),
-          item['GeoObject']['metaDataProperty']['GeocoderMetaData']['text']));
+        double.parse(point[1]), double.parse(point[0]),
+        item['GeoObject']['metaDataProperty']['GeocoderMetaData']['text']));
       }
 
       completer.complete(result);
@@ -470,19 +328,4 @@ class Geocoder {
 
     return completer.future;
   }
-}
-
-class AppModule extends Module {
-  AppModule() {
-    type(CitiesListController);
-  }
-}
-
-void main() {
-  // Initializing site function
-  App app = new App();
-  app.init();
-
-  // Initializing route planner
-  context['ymaps'].callMethod('ready', [() => ngBootstrap(module: new AppModule())]);
 }
