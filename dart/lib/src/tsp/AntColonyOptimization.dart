@@ -6,6 +6,10 @@ class AntColonyOptimization extends TSPAlgorithm {
   List<List<int>> _nnList;    // Nearest neighbor list
   List<List<double>> _pheromone;
   List<List<double>> _choiceInfo;
+  List<Ant> _ants;
+
+  static final double alfa = 0.1; // The importance of the previous trails
+  static final double beta = 2.0; // The importance of the durations
 
   AlgorithmResult solve(List<List<double>> dist) {
     _dist = dist;
@@ -20,7 +24,15 @@ class AntColonyOptimization extends TSPAlgorithm {
 
   void _initializeData() {
     _size = _dist.length;
+    _pheromone = <List<double>>[];
+    _choiceInfo = <List<double>>[];
+    for (int i = 0; i < _size; ++i) {
+      _pheromone.add(new List<double>.filled(_size, 1.0));
+      _choiceInfo.add(new List<double>.filled(_size, 0.0));
+    }
     _computeNearestNeighborLists();
+    _computeChoiceInformation();
+
     /*
     ReadInstance
     ComputeDistances
@@ -49,6 +61,15 @@ class AntColonyOptimization extends TSPAlgorithm {
     }
   }
 
+  void _computeChoiceInformation() {
+    for (var i = 0; i < _size; ++i) {
+      for (var j = 0; j < _size; ++j) {
+        _choiceInfo[i][j] = pow(_pheromone[i][j], alfa) * pow(_dist[i][j], -beta);
+      }
+    }
+  }
+
+
   bool get _terminate => true;
 
   void _constructSolutions() {}
@@ -65,4 +86,14 @@ class Tuple<T1, T2> {
   final T2 item2;
 
   const Tuple(this.item1, this.item2);
+}
+
+class Ant {
+  double tourLength;
+  // integer tour[n þ 1] % ant’s memory storing (partial) tours
+  // integer visited[n] % visited cities
+
+  Ant() {
+    tourLength = 0.0;
+  }
 }
