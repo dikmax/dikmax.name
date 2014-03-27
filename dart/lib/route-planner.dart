@@ -32,8 +32,8 @@ class CitiesListController {
     var minsk = new City("Минск", 53.906077, 27.554914);
     firstCity = minsk;
     lastCity = minsk;
-    //cities = [];
-    cities = [
+    cities = [];
+    /*cities = [
         new City("Загреб", 45.807205, 15.967563),
         new City("Братислава", 48.149248, 17.106986),
         new City("Вена", 48.202536, 16.368796),
@@ -44,7 +44,7 @@ class CitiesListController {
         new City("Рим", 41.903044, 12.495799),
         new City("Венеция", 45.438108, 12.318166),
         new City("Палермо", 38.121359, 13.358433)
-    ];
+    ];*/
     suggestions = [];
     exclusions = [];
 
@@ -135,8 +135,6 @@ class CitiesListController {
 
   // Bounds and branches
   void calc() {
-    Stopwatch stopwatch = new Stopwatch()..start();
-
     if (cities.length == 0) {
       result = new Path(<List<City>>[<City>[firstCity, lastCity]], firstCity.distanceTo(lastCity));
 
@@ -202,7 +200,7 @@ class CitiesListController {
       }
     }
 
-    AlgorithmResult ar = (new BranchAndBound()).solve(c);
+    AlgorithmResult ar = (new AntColonyOptimization()).solve(c);
 
     if (ar.distance > TSPAlgorithm.inf) { // Path not found
       result = null;

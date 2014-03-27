@@ -16,15 +16,16 @@ class AntColonyOptimization extends TSPAlgorithm {
   static final double beta = 2.0;  // The importance of the durations
   static final double rho = 0.5;   // Pheromone evaporation speed
   static final double rho1 = 1 - rho;
-  static final int antsCount = 20;
-  static final int wavesCount = 50;
+  static final int antsCount = 200;
+  static final int wavesCount = 500;
 
   AlgorithmResult solve(List<List<double>> dist) {
+    Stopwatch stopwatch = new Stopwatch()..start();
     _dist = dist;
     _initializeData();
 
     int wave = 0;
-    while (wave < wavesCount) {
+    while (stopwatch.elapsedMilliseconds < 500) {
       ++wave;
       _constructSolutions();
       _localSearch();
@@ -32,8 +33,8 @@ class AntColonyOptimization extends TSPAlgorithm {
       _updatePheromoneTrails();
       _checkBestSolution();
     }
-    print(bestLength);
-    print(bestTour);
+
+    return new AlgorithmResult(bestTour, bestLength);
   }
 
   void _initializeData() {
