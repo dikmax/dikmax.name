@@ -2,11 +2,13 @@ library routePlanner;
 
 import 'dart:async';
 import 'dart:convert';
+import 'package:crypto/crypto.dart';
 import 'dart:html';
 import 'dart:js';
 import 'dart:math';
 import 'package:angular/angular.dart';
 import 'tsp.dart';
+import 'package:lzma/lzma.dart' as LZMA;
 
 @NgController(
     selector: '.cities-list',
@@ -133,7 +135,30 @@ class CitiesListController {
     }
   }
 
-  // Bounds and branches
+  void updateUrl() {
+    Map data = {
+      "f": firstCity,
+      "c": cities
+    };
+    if (firstCity != lastCity) {
+      data["l"] = lastCity;
+    }
+
+    List<int> bytes = UTF8.encode(JSON.encode(data));
+    var input = new LZMA.InStream(bytes);
+    var output = new LZMA.OutStream();
+    LZMA.compress(input, output);
+
+
+
+    print(bytes.length);
+    print(output.data.length);
+    print(JSON.encode(data));
+    print(output.data);
+    var base64 = CryptoUtils.bytesToBase64(output.data);
+    print(base64);
+  }
+
   void calc() {
     if (cities.length == 0) {
       result = new Path(<List<City>>[<City>[firstCity, lastCity]], firstCity.distanceTo(lastCity));
@@ -156,6 +181,7 @@ class CitiesListController {
             [max(firstCity.lat, lastCity.lat), max(firstCity.lon, lastCity.lon)]]
         )]);
       }
+      updateUrl();
       return;
     }
 
@@ -244,6 +270,7 @@ class CitiesListController {
       map["geoObjects"].callMethod("add", [route]);
     }
     map.callMethod("setBounds", [new JsObject.jsify([[minLat, minLon], [maxLat, maxLon]])]);
+    updateUrl();
   }
 }
 
@@ -292,6 +319,12 @@ class City {
   }
 
   String toString() => _fullName == '' ? "${_name} (${_lat}, ${_lon})" : "${_fullName} (${_lat}, ${_lon})";
+
+  Map toJson() => {
+    "n": _name,
+    "a": _lat,
+    "o": _lon
+  };
 }
 
 class Path {
