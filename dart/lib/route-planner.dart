@@ -31,11 +31,25 @@ class CitiesListController {
   var route;
 
   CitiesListController() {
-    var minsk = new City("Минск", 53.906077, 27.554914);
-    firstCity = minsk;
-    lastCity = minsk;
-    cities = [];
-    /*cities = [
+    var options;
+    //if (firstCity == lastCity) {
+    // TODO try to remove center and zoom
+    options = new JsObject.jsify({
+        "behaviors": ["drag", "scrollZoom", "dblClickZoom", "multiTouch", "rightMouseButtonMagnifier"],
+        "center": [53.906077, 27.554914],
+        "zoom": 8
+    });
+    //}
+    map = new JsObject(context['ymaps']['Map'], ["map", options]);
+    map['controls'].callMethod('add', ['zoomControl']);
+
+    bool initialized = _initializeFromHash();
+    if (!initialized) {
+      City minsk = new City("Минск", 53.906077, 27.554914);
+      firstCity = minsk;
+      lastCity = minsk;
+      cities = [];
+      /*cities = [
         new City("Загреб", 45.807205, 15.967563),
         new City("Братислава", 48.149248, 17.106986),
         new City("Вена", 48.202536, 16.368796),
@@ -46,23 +60,79 @@ class CitiesListController {
         new City("Рим", 41.903044, 12.495799),
         new City("Венеция", 45.438108, 12.318166),
         new City("Палермо", 38.121359, 13.358433)
-    ];*/
+      ];*/
+    }
     suggestions = [];
     exclusions = [];
 
-    var options = new JsObject.jsify({
-        "behaviors": ["drag", "scrollZoom", "dblClickZoom", "multiTouch", "rightMouseButtonMagnifier"],
-        "center": [53.906077, 27.554914],
-        "zoom": 8
-    });
-    map = new JsObject(context['ymaps']['Map'], ["map", options]);
-    map['controls'].callMethod('add', ['zoomControl']);
-
-    var placemark = minsk.placemark;
+    var placemark = firstCity.placemark;
     placemark['options'].callMethod('set', ['preset', 'twirl#blueDotIcon']);
     map["geoObjects"].callMethod("add", [placemark]);
 
-    calc();
+    if (firstCity != lastCity) {
+      placemark = lastCity.placemark;
+      placemark['options'].callMethod('set', ['preset', 'twirl#blueDotIcon']);
+      map["geoObjects"].callMethod("add", [placemark]);
+    }
+
+    if (!initialized) {
+      calc();
+    }
+  }
+
+  bool _initializeFromHash() {
+    String hash = window.location.hash;
+    if (hash == '' || hash == '#') {
+      return false;
+    }
+    hash = hash.substring(1);
+
+    try {
+      List<int> bz2 = CryptoUtils.base64StringToBytes(hash);
+      List<int> bytes = new BZip2Decoder().decodeBytes(bz2);
+      String str = UTF8.decode(bytes);
+      List items = JSON.decode(str);
+      bool roundTrip = false;
+      int count;
+      if (items.last is bool && items.last == true) {
+        roundTrip = true;
+        items.removeLast();
+        count = items.length;
+      } else {
+        count = items.length - 1;
+      }
+      firstCity = new City.fromJson(items.first);
+      cities = [];
+      double distance = 0.0;
+      List<int> path = [0];
+      City prevCity = firstCity;
+      for (int i = 1; i < count; ++i) {
+        City city = new City.fromJson(items[i]);
+        cities.add(city);
+        path.add(i);
+        distance += prevCity.distanceTo(city);
+        prevCity = city;
+      }
+      if (roundTrip) {
+        lastCity = firstCity;
+        path.add(items.length);
+      } else {
+        lastCity = new City.fromJson(items.last);
+      }
+      distance += prevCity.distanceTo(lastCity);
+
+      for (City city in cities) {
+        var placemark = city.placemark;
+        placemark['options'].callMethod('set', ['preset', 'twirl#blueIcon']);
+        map["geoObjects"].callMethod("add", [placemark]);
+      }
+
+      _updateResult(new AlgorithmResult(path, distance));
+    } catch (e) {
+      return false;
+    }
+
+    return true;
   }
 
   void searchCity() {
@@ -151,12 +221,9 @@ class CitiesListController {
     List<int> bytes = UTF8.encode(JSON.encode(data));
     List<int> bz2 = new BZip2Encoder().encode(bytes);
 
-    print("Uncompressed: ${bytes.length}");
-    print("Bzip2: ${bz2.length}");
     var base64 = CryptoUtils.bytesToBase64(bz2);
-    print(base64);
     if (History.supportsState) {
-      window.history.pushState(null, document.title, window.location.pathname + "#" + base64);
+      window.history.replaceState(null, document.title, window.location.pathname + "#" + base64);
     } else {
       window.location.hash = '#' + base64;
     }
@@ -231,12 +298,28 @@ class CitiesListController {
 
     AlgorithmResult ar = (new AntColonyOptimization()).solve(c);
 
+    _updateResult(ar);
+
+    updateUrl();
+  }
+
+  City _getCityByIndex(int index) {
+    if (index == 0) {
+      return firstCity;
+    } else if (index == cities.length + 1) {
+      return lastCity;
+    } else {
+      return cities[index - 1];
+    }
+  }
+
+  void _updateResult(AlgorithmResult ar) {
     if (ar.distance > TSPAlgorithm.inf) { // Path not found
       result = null;
     } else {
       List<List<City>> path = <List<City>>[];
       for (int i = 0; i < ar.points.length - 1; ++i) {
-        path.add(<City>[index[ar.points[i]], index[ar.points[i + 1]]]);
+        path.add(<City>[_getCityByIndex(ar.points[i]), _getCityByIndex(ar.points[i + 1])]);
       }
 
       result = new Path(path, ar.distance);
@@ -248,19 +331,25 @@ class CitiesListController {
     }
 
     var coords = [];
-    double minLat = index[0].lat;
-    double maxLat = index[0].lat;
-    double minLon = index[0].lon;
-    double maxLon = index[0].lon;
+    double minLat = firstCity.lat;
+    double maxLat = firstCity.lat;
+    double minLon = firstCity.lon;
+    double maxLon = firstCity.lon;
+    coords.add([firstCity.lat, firstCity.lon]);
 
-    for (int i in ar.points) {
-      City city = index[i];
+    for (City city in cities) {
       minLat = min(minLat, city.lat);
       minLon = min(minLon, city.lon);
       maxLat = max(maxLat, city.lat);
       maxLon = max(maxLon, city.lon);
       coords.add([city.lat, city.lon]);
     }
+
+    minLat = min(minLat, lastCity.lat);
+    minLon = min(minLon, lastCity.lon);
+    maxLat = max(maxLat, lastCity.lat);
+    maxLon = max(maxLon, lastCity.lon);
+    coords.add([lastCity.lat, lastCity.lon]);
 
     if (ar.distance < TSPAlgorithm.inf) {
       var lineString = new JsObject(context['ymaps']['geometry']['LineString'],
@@ -273,7 +362,6 @@ class CitiesListController {
       map["geoObjects"].callMethod("add", [route]);
     }
     map.callMethod("setBounds", [new JsObject.jsify([[minLat, minLon], [maxLat, maxLon]])]);
-    updateUrl();
   }
 }
 
@@ -284,6 +372,14 @@ class City {
   double _lon;
 
   City(this._name, this._lat, this._lon, [this._fullName = '']);
+
+  City.fromJson(String json) {
+    List<String> values = json.split("|");
+    _name = values[0];
+    _lat = double.parse(values[1]);
+    _lon = double.parse(values[2]);
+    _fullName = '';
+  }
 
   String get name => _name;
   String get fullName => _fullName;
@@ -323,11 +419,7 @@ class City {
 
   String toString() => _fullName == '' ? "${_name} (${_lat}, ${_lon})" : "${_fullName} (${_lat}, ${_lon})";
 
-  Map toJson() => {
-    "n": _name,
-    "a": _lat,
-    "o": _lon
-  };
+  String toJson() => "${_name}|${_lat}|${_lon}";
 }
 
 class Path {

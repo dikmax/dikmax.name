@@ -183,7 +183,7 @@ class Ant {
   }
 
   void reset(int size) {
-    tourLength = 0;
+    tourLength = 0.0;
     visited = new List<bool>.filled(size, false);
     visited[0] = true;
     tour = <int>[0];
