@@ -4,5 +4,6 @@ dependencies:
   browser: any
   cookie: any
   benchmark_harness: ">=1.0.0 <2.0.0"
-  lzma: any
   crypto: any
+  archive: any
+

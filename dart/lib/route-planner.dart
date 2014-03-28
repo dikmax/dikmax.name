@@ -8,7 +8,7 @@ import 'dart:js';
 import 'dart:math';
 import 'package:angular/angular.dart';
 import 'tsp.dart';
-import 'package:lzma/lzma.dart' as LZMA;
+import 'package:archive/archive.dart';
 
 @NgController(
     selector: '.cities-list',
@@ -136,27 +136,30 @@ class CitiesListController {
   }
 
   void updateUrl() {
-    Map data = {
-      "f": firstCity,
-      "c": cities
-    };
-    if (firstCity != lastCity) {
-      data["l"] = lastCity;
+    List data = [
+      firstCity
+    ];
+    int length = result.path.length - (firstCity == lastCity ? 1 : 0);
+
+    for (var i = 0; i < length; ++i) {
+      data.add(result.path[i][1]);
+    }
+    if (firstCity == lastCity) {
+      data.add(true);
     }
 
     List<int> bytes = UTF8.encode(JSON.encode(data));
-    var input = new LZMA.InStream(bytes);
-    var output = new LZMA.OutStream();
-    LZMA.compress(input, output);
+    List<int> bz2 = new BZip2Encoder().encode(bytes);
 
-
-
-    print(bytes.length);
-    print(output.data.length);
-    print(JSON.encode(data));
-    print(output.data);
-    var base64 = CryptoUtils.bytesToBase64(output.data);
+    print("Uncompressed: ${bytes.length}");
+    print("Bzip2: ${bz2.length}");
+    var base64 = CryptoUtils.bytesToBase64(bz2);
     print(base64);
+    if (History.supportsState) {
+      window.history.pushState(null, document.title, window.location.pathname + "#" + base64);
+    } else {
+      window.location.hash = '#' + base64;
+    }
   }
 
   void calc() {
