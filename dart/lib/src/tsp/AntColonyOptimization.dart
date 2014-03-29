@@ -12,6 +12,9 @@ class AntColonyOptimization extends TSPAlgorithm {
   double _bestLength;
   Random _random = new Random();
   int _timeout;
+  Stream<int> onProgress;
+  StreamController<int> _onProgressController;
+  int _halfAnts;
 
   static final double alpha = 0.1; // The importance of the previous trails
   static final double beta = 2.0;  // The importance of the durations
@@ -20,6 +23,11 @@ class AntColonyOptimization extends TSPAlgorithm {
   static final int antsCount = 50;
   static final int stillPeriod = 100;
   static final double epsilon = 0.01;
+
+  AntColonyOptimization() {
+    _onProgressController = new StreamController<int>.broadcast();
+    onProgress = _onProgressController.stream;
+  }
 
   Future<AlgorithmResult> solve(List<List<double>> dist) {
     Completer<AlgorithmResult> c = new Completer<AlgorithmResult>();
@@ -33,7 +41,7 @@ class AntColonyOptimization extends TSPAlgorithm {
     int bestUpdatedIterationsAgo = 0;
 
     void process() {
-      if (stopwatch.elapsedMilliseconds < _timeout && bestUpdatedIterationsAgo < stillPeriod) {
+      if (/*stopwatch.elapsedMilliseconds < _timeout && */bestUpdatedIterationsAgo < stillPeriod) {
         ++bestUpdatedIterationsAgo;
         ++wave;
         _constructSolutions();
@@ -71,6 +79,7 @@ class AntColonyOptimization extends TSPAlgorithm {
 
   void _initializeData() {
     _size = _dist.length;
+    _halfAnts = (antsCount / 2).round();
     _pheromone = <List<double>>[];
     _choiceInfo = <List<double>>[];
     for (int i = 0; i < _size; ++i) {
@@ -196,8 +205,12 @@ class AntColonyOptimization extends TSPAlgorithm {
 
   void _updatePheromoneTrails() {
     _evaporate();
-    for (Ant ant in _ants) {
-      _depositPheromone(ant);
+    _ants.sort((Ant a, Ant b) => -Comparable.compare(a.tourLength, b.tourLength));
+    for (int i = 0; i < _halfAnts - 1; ++i) {
+      _depositPheromone(_ants[i].tourLength, _ants[i].tour, (_halfAnts - i - 1).toDouble());
+    }
+    if (_bestLength != null) {
+      _depositPheromone(_bestLength, _bestTour, _halfAnts.toDouble());
     }
     _computeChoiceInformation();
   }
@@ -211,11 +224,11 @@ class AntColonyOptimization extends TSPAlgorithm {
     }
   }
 
-  void _depositPheromone(Ant ant) {
-    double delta = 1/ant.tourLength;
-    for (int i = 0; i < ant.tour.length - 1; ++i) {
-      int from = ant.tour[i];
-      int to = ant.tour[i + 1];
+  void _depositPheromone(double length, List<int> tour, double weight) {
+    double delta = weight/length;
+    for (int i = 0; i < tour.length - 1; ++i) {
+      int from = tour[i];
+      int to = tour[i + 1];
       _pheromone[from][to] += delta;
       _pheromone[to][from] = _pheromone[from][to];
     }
