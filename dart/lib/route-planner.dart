@@ -230,7 +230,12 @@ class CitiesListController {
     }
   }
 
+  bool _calcInProgress = false;
+
   void calc() {
+    if (_calcInProgress) {
+      return;
+    }
     if (cities.length == 0) {
       result = new Path(<List<City>>[<City>[firstCity, lastCity]], firstCity.distanceTo(lastCity));
 
@@ -303,10 +308,18 @@ class CitiesListController {
       }
     }
 
+    Element button = query('.route-box .refresh-button');
+    Element icon = query('.route-box .refresh-button i');
+    button.classes.add('disabled');
+    icon.classes.add('in-progress');
+    _calcInProgress = true;
     (new AntColonyOptimization()).solve(c).then((ar) {
       _updateResult(ar);
 
       updateUrl();
+      icon.classes.remove('in-progress');
+      button.classes.remove('disabled');
+      _calcInProgress = false;
     });
   }
 
