@@ -239,7 +239,13 @@ class CitiesListController {
 
       var coords = [[firstCity.lat, firstCity.lon], [lastCity.lat, lastCity.lon]];
 
-      var lineString = new JsObject(context['ymaps']['geometry']['LineString'], [new JsObject.jsify(coords)]);
+      var lineString = new JsObject(context['ymaps']['geometry']['LineString'], [
+          new JsObject.jsify(coords),
+          new JsObject.jsify({
+              "coordRendering": 'shortestPath',
+              "geodesic": true
+          })
+      ]);
       route = new JsObject(context['ymaps']['GeoObject'], [
           new JsObject.jsify({ "geometry": lineString })
       ]);
@@ -337,7 +343,8 @@ class CitiesListController {
     double maxLon = firstCity.lon;
     coords.add([firstCity.lat, firstCity.lon]);
 
-    for (City city in cities) {
+    for (int i = 1; i < ar.points.length - 1; ++i) {
+      City city = cities[ar.points[i] - 1];
       minLat = min(minLat, city.lat);
       minLon = min(minLon, city.lon);
       maxLat = max(maxLat, city.lat);
@@ -353,7 +360,10 @@ class CitiesListController {
 
     if (ar.distance < TSPAlgorithm.inf) {
       var lineString = new JsObject(context['ymaps']['geometry']['LineString'],
-      [new JsObject.jsify(coords)]
+        [new JsObject.jsify(coords), new JsObject.jsify({
+          "coordRendering": 'shortestPath',
+          "geodesic": true
+        })]
       );
       route = new JsObject(context['ymaps']['GeoObject'], [
           new JsObject.jsify({ "geometry": lineString })
