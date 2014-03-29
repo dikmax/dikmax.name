@@ -530,6 +530,9 @@ class Geocoder {
 
       List<City> result = <City>[];
       for (var item in data['response']['GeoObjectCollection']['featureMember']) {
+        if (item['GeoObject']['metaDataProperty']['GeocoderMetaData']['kind'] != 'locality') {
+          continue;
+        }
         List<String> point = item['GeoObject']['Point']['pos'].split(' ');
         result.add(new City(item['GeoObject']['name'],
         double.parse(point[1]), double.parse(point[0]),
