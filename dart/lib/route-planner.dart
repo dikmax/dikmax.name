@@ -23,6 +23,7 @@ class CitiesListController {
   List<City> suggestions;
   List<List<City>> exclusions;
   bool showSuggestions = false;
+  int activeSuggestion = -1;
   bool autoUpdate = true;
   Path result;
   int elapsed = 0;
@@ -139,9 +140,69 @@ class CitiesListController {
   void searchCity() {
     // TODO error handling
     Geocoder.geocode(newCity).then((value) {
+      if (value.length == 1) {
+        addCity(value[0], null);
+        return;
+      }
       suggestions = value;
       showSuggestions = true;
+      activeSuggestion = -1;
     });
+  }
+
+  void _scrollIntoView() {
+    var element = query('.suggestions-list .suggestion-${activeSuggestion}');
+    Point offset = element.offsetTo(document.body);
+    if (offset.y < window.scrollY + 70) {
+      window.scrollTo(window.scrollX, offset.y - 70);
+    }
+    if (offset.y + element.clientHeight > window.scrollY + window.innerHeight) {
+      window.scrollTo(window.scrollX, offset.y + element.clientHeight - window.innerHeight);
+    }
+  }
+
+
+  void cityKeyDown(KeyboardEvent event) {
+    bool stop = false;
+    switch (event.keyCode) {
+    case KeyCode.ENTER:
+      if (showSuggestions && activeSuggestion != -1) {
+        addCity(suggestions[activeSuggestion], null);
+      } else {
+        searchCity();
+      }
+      stop = true;
+      break;
+
+    case KeyCode.ESC:
+      showSuggestions = false;
+      newCity = '';
+      stop = true;
+      break;
+
+    case KeyCode.UP:
+      --activeSuggestion;
+      if (activeSuggestion < 0) {
+        activeSuggestion = suggestions.length - 1;
+      }
+      _scrollIntoView();
+      stop = true;
+      break;
+
+    case KeyCode.DOWN:
+      ++activeSuggestion;
+      if (activeSuggestion >= suggestions.length) {
+        activeSuggestion = 0;
+      }
+      _scrollIntoView();
+      stop = true;
+      break;
+    }
+
+    if (stop) {
+      event.preventDefault();
+      event.stopPropagation();
+    }
   }
 
   void remove(City city) {
@@ -179,7 +240,9 @@ class CitiesListController {
   }
 
   void addCity(city, event) {
-    event.preventDefault();
+    if (event != null) {
+      event.preventDefault();
+    }
     cities.add(city);
     suggestions = [];
     showSuggestions = false;

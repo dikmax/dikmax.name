@@ -53,7 +53,7 @@
                     <form class="form-inline">
                         <div class="input-group">
                             <label class="sr-only" for="searchText">Добавить город</label>
-                            <input type="search" class="form-control input-sm" id="searchText" placeholder="Добавить город" ng-model="ctrl.newCity"/>
+                            <input type="search" class="form-control input-sm" id="searchText" placeholder="Добавить город" ng-model="ctrl.newCity" ng-keydown="ctrl.cityKeyDown($event)"/>
                             <span class="input-group-btn">
                                 <button ng-if="ctrl.showSuggestions" class="btn btn-default btn-sm" ng-click="ctrl.showSuggestions = false;ctrl.newCity = ''" title="Скрыть результаты">
                                     <i class="glyphicon glyphicon-remove"></i>
@@ -63,8 +63,8 @@
                         </div>
                     </form>
                     <div ng-if="ctrl.showSuggestions">
-                        <ul ng-if="ctrl.suggestions.length > 0" class="list-group">
-                            <li ng-repeat="city in ctrl.suggestions" class="list-group-item">
+                        <ul ng-if="ctrl.suggestions.length > 0" class="list-group suggestions-list">
+                            <li ng-repeat="city in ctrl.suggestions" class="list-group-item suggestion-{{$index}}" ng-class="{'list-group-item-info': $index == ctrl.activeSuggestion}">
                                 <a href="#" ng-click="ctrl.addCity(city, $event)">{{city.fullName}}</a>
                             </li>
                         </ul>
