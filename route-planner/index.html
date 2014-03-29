@@ -7,9 +7,7 @@
                 <ul class="list-group">
                     <li class="list-group-item">
                         <h4 class="list-group-item-heading">Маршрут не существует
-                            <span ng-if="!ctrl.autoUpdate">
-                                <button class="btn btn-default btn-xs pull-right" ng-click="ctrl.calc()" title="Обновить"><i class="glyphicon glyphicon-refresh"></i></button>
-                            </span>
+                            <button class="btn btn-default btn-xs pull-right" ng-click="ctrl.calc()" title="Обновить"><i class="glyphicon glyphicon-refresh"></i></button>
                         </h4>
                         <form>
                             <div class="checkbox">
@@ -26,18 +24,16 @@
                 <ul class="list-group">
                     <li class="list-group-item">
                         <h4 class="list-group-item-heading">Маршрут {{ctrl.result.distanceRound}} км
-                            <span ng-if="!ctrl.autoUpdate">
-                                <button class="btn btn-default btn-xs pull-right" ng-click="ctrl.calc()" title="Обновить"><i class="glyphicon glyphicon-refresh"></i></button>
-                            </span>
-                            <form>
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" ng-model="ctrl.autoUpdate"/>
-                                        Автообновление
-                                    </label>
-                                </div>
-                            </form>
+                            <button class="btn btn-default btn-xs pull-right" ng-click="ctrl.calc()" title="Обновить"><i class="glyphicon glyphicon-refresh"></i></button>
                         </h4>
+                        <form>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="ctrl.autoUpdate"/>
+                                    Автообновление
+                                </label>
+                            </div>
+                        </form>
                     </li>
                     <li class="list-group-item" ng-repeat="segment in ctrl.result.path track by $index">
                         <span class="badge distance pull-right">{{segment[0].distanceToRound(segment[1])}} км</span>

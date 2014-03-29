@@ -18,6 +18,7 @@ class AntColonyOptimization extends TSPAlgorithm {
   static final double rho1 = 1 - rho;
   static final int antsCount = 20;
   static final int wavesCount = 50; // TODO
+  static final int stillPeriod = 50;
 
   AlgorithmResult solve(List<List<double>> dist) {
     Stopwatch stopwatch = new Stopwatch()..start();
@@ -25,16 +26,34 @@ class AntColonyOptimization extends TSPAlgorithm {
     _initializeData();
 
     int wave = 0;
-    while (stopwatch.elapsedMilliseconds < 500) {
+    int bestUpdatedIterationsAgo = 0;
+    while (stopwatch.elapsedMilliseconds < 500 && bestUpdatedIterationsAgo < stillPeriod) {
+      ++bestUpdatedIterationsAgo;
       ++wave;
       _constructSolutions();
       _localSearch();
       _updateStatistics();
       _updatePheromoneTrails();
-      _checkBestSolution();
+
+      bool bestUpdated = false;
+      for (Ant ant in _ants) {
+        if (bestTour == null || ant.tourLength < bestLength) {
+          bestTour = ant.tour;
+          bestLength = ant.tourLength;
+          bestUpdated = true;
+          print("Wave: $wave, length: $bestLength");
+        }
+      }
+      if (bestUpdated) {
+        bestUpdatedIterationsAgo = 0;
+      }
     }
 
-    _3optSearch();
+    if (bestUpdatedIterationsAgo == stillPeriod) {
+      print("Still!");
+    }
+
+    _3opt(bestTour, bestLength);
 
     print("Waves: ${wave}");
 
@@ -204,16 +223,7 @@ class AntColonyOptimization extends TSPAlgorithm {
     }
   }
 
-  void _checkBestSolution() {
-    for (Ant ant in _ants) {
-      if (bestTour == null || ant.tourLength < bestLength) {
-        bestTour = ant.tour;
-        bestLength = ant.tourLength;
-      }
-    }
-  }
-
-  void _3optSearch() {
+  void _3opt(List<int> tour, double distance) {
     // TODO implement
   }
 }
