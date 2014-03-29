@@ -304,7 +304,6 @@ class CitiesListController {
     }
 
     (new AntColonyOptimization()).solve(c).then((ar) {
-      print("Done!");
       _updateResult(ar);
 
       updateUrl();

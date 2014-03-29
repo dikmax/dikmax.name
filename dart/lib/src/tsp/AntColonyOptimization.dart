@@ -8,44 +8,44 @@ class AntColonyOptimization extends TSPAlgorithm {
   List<List<double>> _pheromone;
   List<List<double>> _choiceInfo;
   List<Ant> _ants;
-  List<int> bestTour;
-  double bestLength;
-  Random random = new Random();
+  List<int> _bestTour;
+  double _bestLength;
+  Random _random = new Random();
+  int _timeout;
 
   static final double alpha = 0.1; // The importance of the previous trails
   static final double beta = 2.0;  // The importance of the durations
   static final double rho = 0.5;   // Pheromone evaporation speed
   static final double rho1 = 1 - rho;
-  static final int antsCount = 200;
-  static final int stillPeriod = 500;
-  static final int timeout = 5000;
+  static final int antsCount = 50;
+  static final int stillPeriod = 100;
+  static final double epsilon = 0.01;
 
   Future<AlgorithmResult> solve(List<List<double>> dist) {
     Completer<AlgorithmResult> c = new Completer<AlgorithmResult>();
 
     Stopwatch stopwatch = new Stopwatch()..start();
     _dist = dist;
+    _timeout = dist.length * 100;
     _initializeData();
 
     int wave = 0;
     int bestUpdatedIterationsAgo = 0;
 
     void process() {
-      if (stopwatch.elapsedMilliseconds < timeout && bestUpdatedIterationsAgo < stillPeriod) {
+      if (stopwatch.elapsedMilliseconds < _timeout && bestUpdatedIterationsAgo < stillPeriod) {
         ++bestUpdatedIterationsAgo;
         ++wave;
         _constructSolutions();
-        //_localSearch();
-        _updateStatistics();
+        _localSearch();
         _updatePheromoneTrails();
 
         bool bestUpdated = false;
         for (Ant ant in _ants) {
-          if (bestTour == null || ant.tourLength < bestLength) {
-            bestTour = ant.tour;
-            bestLength = ant.tourLength;
+          if (_bestTour == null || ant.tourLength < _bestLength) {
+            _bestTour = ant.tour;
+            _bestLength = ant.tourLength;
             bestUpdated = true;
-            print("Wave: $wave, length: $bestLength");
           }
         }
         if (bestUpdated) {
@@ -53,15 +53,14 @@ class AntColonyOptimization extends TSPAlgorithm {
         }
         Timer.run(process);
       } else {
-        if (bestUpdatedIterationsAgo == stillPeriod) {
-          print("Still!");
-        }
 
-        _3opt(bestTour, bestLength);
+        print("Waves: ${wave}, bestLength: $_bestLength");
 
-        print("Waves: ${wave}");
-
-        c.complete(new AlgorithmResult(bestTour, bestLength));
+        Timer.run(() {
+          _3opt();
+          print("BestLength: $_bestLength");
+          c.complete(new AlgorithmResult(_bestTour, _bestLength));
+        });
       }
     }
 
@@ -146,7 +145,7 @@ class AntColonyOptimization extends TSPAlgorithm {
       }
     }
 
-    double r = random.nextDouble() * probabilitiesSum;
+    double r = _random.nextDouble() * probabilitiesSum;
     int i = 1;
     double p = _selectionProbability[i];
     while (p < r) {
@@ -195,8 +194,6 @@ class AntColonyOptimization extends TSPAlgorithm {
     }
   }
 
-  void _updateStatistics() {}
-
   void _updatePheromoneTrails() {
     _evaporate();
     for (Ant ant in _ants) {
@@ -224,8 +221,99 @@ class AntColonyOptimization extends TSPAlgorithm {
     }
   }
 
-  void _3opt(List<int> tour, double distance) {
-    // TODO implement
+  void _3opt() {
+    List<double> forward = new List<double>.filled(_size, 0.0);
+    List<double> backward = new List<double>.filled(_size, 0.0);
+    List<int> curr = new List<int>.from(_bestTour);
+    double best;
+    bool changed = true;
+
+    void updateCosts () {
+      for (int i = 1; i < _size; ++i) {
+        forward[i] = forward[i - 1] + _dist[curr[i - 1]][curr[i]];
+      }
+      best = forward.last;
+      for (int i = _size - 2; i >= 0; --i) {
+        backward[i] = backward[i + 1] + _dist[curr[i + 1]][curr[i]];
+      }
+    }
+
+    double getCost(a, b) {
+      if (a <= b) {
+        return forward[b] - forward[a];
+      } else {
+        return backward[b] - backward[a];
+      }
+    }
+
+    double checkCost(a, b, c, d, e, f) => getCost(0, a) + _dist[curr[a]][curr[b]] +
+        getCost(b, c) + _dist[curr[c]][curr[d]] + getCost(d, e) + _dist[curr[e]][curr[f]] + getCost(f, _size - 1);
+
+    void update(a, b, c, d, e, f) {
+      changed = true;
+      List<int> next = new List<int>.from(curr);
+
+      int offset = a + 1;
+      next[offset++] = curr[b];
+      if (b < c) {
+        for (int i = b + 1; i <= c; ++i) {
+          next[offset++] = curr[i];
+        }
+      } else {
+        for (int i = b - 1; i >= c; --i) {
+          next[offset++] = curr[i];
+        }
+      }
+      next[offset++] = curr[d];
+      if (d < e) {
+        for (int i = d + 1; i <= e; ++i) {
+          next[offset++] = curr[i];
+        }
+      } else {
+        for (int i = d - 1; i >= e; --i) {
+          next[offset++] = curr[i];
+        }
+      }
+      next[offset++] = curr[f];
+      curr = next;
+
+      updateCosts();
+    }
+
+    updateCosts();
+    while (changed) {
+      changed = false;
+      for (int i = 0; i < _size - 3; ++i) {
+        for (int j = i + 1; j < _size - 2; ++j) {
+          for (int k  = j + 1; k < _size - 1; ++k) {
+            if (checkCost(i, i + 1, j, k, j + 1, k + 1) - best < -epsilon) {
+              update(i, i+1, j, k, j+1, k+1);
+            }
+            if (checkCost(i, j, i+1, j+1, k, k+1) - best < -epsilon) {
+              update(i, j, i+1, j+1, k, k+1);
+            }
+            if (checkCost(i, j, i+1, k, j+1, k+1) - best < -epsilon) {
+              update(i, j, i+1, k, j+1, k+1);
+            }
+            if (checkCost(i, j+1, k, i+1, j, k+1) - best < -epsilon) {
+              update(i, j+1, k, i+1, j, k+1);
+            }
+            if (checkCost(i, j+1, k, j, i+1, k+1) - best < -epsilon) {
+              update(i, j+1, k, j, i+1, k+1);
+            }
+            if (checkCost(i, k, j+1, i+1, j, k+1) - best < -epsilon) {
+              update(i, k, j+1, i+1, j, k+1);
+            }
+            if (checkCost(i, k, j+1, j, i+1, k+1) - best < -epsilon) {
+              update(i, k, j+1, j, i+1, k+1);
+            }
+          }
+        }
+      }
+    };
+
+    _bestTour = curr;
+    _bestLength = best;
   }
 }
 
