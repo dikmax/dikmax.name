@@ -156,36 +156,27 @@ class AntColonyOptimization extends TSPAlgorithm {
 
       if (changed) {
         changed = false;
-        for (int i = 1; !changed && i < _size - 2; ++i) {
+        int i = 1;
+        for (; !changed && i < _size - 2; ++i) {
           int at_i_1 = ant.tour[i - 1];
           int at_i = ant.tour[i];
-          int at_i1 = ant.tour[i + 1];
-          double adjDistI = -_dist[at_i_1][at_i] - _dist[at_i][at_i1];
-          // Checking two neighbor nodes
-          if (i < _size - 2) {
-            int at_i2 = ant.tour[i + 2];
-            double adjDist = adjDistI - _dist[at_i1][at_i2]
-                + _dist[at_i_1][at_i1] + _dist[at_i1][at_i]
-                + _dist[at_i][at_i2];
-            if (adjDist < 0) {
-              ant.tour[i] = at_i1;
-              ant.tour[i + 1] = at_i;
-              ant.tourLength += adjDist;
-              changed = true;
-            }
-          }
-          // Checking other nodes
-          for (int j = i + 2; !changed && j < _size - 1; ++j) {
-            int at_j_1 = ant.tour[j - 1];
+          double adjDistI = -_dist[at_i_1][at_i];
+
+          for (int j = i + 1; !changed && j < _size - 1; ++j) {
             int at_j = ant.tour[j];
             int at_j1 = ant.tour[j + 1];
-            double adjDist = adjDistI - _dist[at_j_1][at_j] - _dist[at_j][at_j1]
-                + _dist[at_i_1][at_j] + _dist[at_j][at_i1]
-                + _dist[at_j_1][at_i] + _dist[at_i][at_j1];
+            double adjDist = adjDistI - _dist[at_j][at_j1]
+                + _dist[at_i_1][at_j] + _dist[at_i][at_j1];
             if (adjDist < 0) {
-              ant.tour[i] = at_j;
-              ant.tour[j] = at_i;
+              // Reverse detached part
+              int l = ((j - i + 1) / 2).floor();
+              for (int k = 0; k < l; ++k) {
+                int tmp = ant.tour[i+k];
+                ant.tour[i+k] = ant.tour[j-k];
+                ant.tour[j-k] = tmp;
+              }
               ant.tourLength += adjDist;
+              --i;
               changed = true;
             }
           }
