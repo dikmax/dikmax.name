@@ -1,6 +1,5 @@
 part of tsp;
 
-// TODO remove unnecessary object creation. Reuse objects.
 class AntColonyOptimization extends TSPAlgorithm {
   int _size;
   List<List<double>> _dist;   // Distances matrix
@@ -12,8 +11,6 @@ class AntColonyOptimization extends TSPAlgorithm {
   double _bestLength;
   Random _random = new Random();
   int _timeout;
-  Stream<int> onProgress;
-  StreamController<int> _onProgressController;
   int _halfAnts;
 
   static final double alpha = 0.1; // The importance of the previous trails
@@ -24,15 +21,9 @@ class AntColonyOptimization extends TSPAlgorithm {
   static final int stillPeriod = 100;
   static final double epsilon = 0.01;
 
-  AntColonyOptimization() {
-    _onProgressController = new StreamController<int>.broadcast();
-    onProgress = _onProgressController.stream;
-  }
-
   Future<AlgorithmResult> solve(List<List<double>> dist) {
     Completer<AlgorithmResult> c = new Completer<AlgorithmResult>();
 
-    Stopwatch stopwatch = new Stopwatch()..start();
     _dist = dist;
     _timeout = dist.length * 100;
     _initializeData();
@@ -41,7 +32,7 @@ class AntColonyOptimization extends TSPAlgorithm {
     int bestUpdatedIterationsAgo = 0;
 
     void process() {
-      if (/*stopwatch.elapsedMilliseconds < _timeout && */bestUpdatedIterationsAgo < stillPeriod) {
+      if (bestUpdatedIterationsAgo < stillPeriod) {
         ++bestUpdatedIterationsAgo;
         ++wave;
         _constructSolutions();
@@ -61,12 +52,8 @@ class AntColonyOptimization extends TSPAlgorithm {
         }
         Timer.run(process);
       } else {
-
-        print("Waves: ${wave}, bestLength: $_bestLength");
-
         Timer.run(() {
           _3opt();
-          print("BestLength: $_bestLength");
           c.complete(new AlgorithmResult(_bestTour, _bestLength));
         });
       }
