@@ -3,7 +3,7 @@ part of tsp;
 abstract class TSPAlgorithm {
   static final double inf = 1e8;
 
-  AlgorithmResult solve(List<List<double>> c);
+  Future<AlgorithmResult> solve(List<List<double>> c);
 }
 
 class AlgorithmResult {

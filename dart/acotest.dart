@@ -1,4 +1,6 @@
+import 'dart:async';
 import 'lib/tsp.dart';
+
 
 final List<List<double>> table = [
     [100000000.0, 1222.14355582974, 969.6694132357358, 1004.7477548314536, 770.4661803965226, 1058.4310336225042, 928.1364523100309, 1274.5610221378743, 1736.6174649969366, 1439.9251813119245, 2060.8542199416547, 100000000.0],
@@ -16,6 +18,9 @@ final List<List<double>> table = [
 ];
 
 main() {
-  AntColonyOptimization aco = new AntColonyOptimization();
-  aco.solve(table);
+  BranchAndBound bnb = new BranchAndBound();
+  Future<AlgorithmResult> ar = bnb.solve(table);
+  ar.then((AlgorithmResult v) => print("Path: ${v.points}, distance: ${v.distance}"));
+  /*AntColonyOptimization aco = new AntColonyOptimization();
+  aco.solve(table);*/
 }

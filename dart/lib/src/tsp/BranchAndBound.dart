@@ -2,7 +2,14 @@ part of tsp;
 
 
 class BranchAndBound extends TSPAlgorithm {
-  AlgorithmResult solve(List<List<double>> c) {
+  Future<AlgorithmResult> solve(List<List<double>> table) {
+    Completer<AlgorithmResult> c = new Completer<AlgorithmResult>();
+
+    c.complete(_solve(table));
+    return c.future;
+  }
+
+  AlgorithmResult _solve(List<List<double>> c) {
     int iLen = c.length;
 
     // Hungry search for initial upper estimate

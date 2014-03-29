@@ -303,11 +303,12 @@ class CitiesListController {
       }
     }
 
-    AlgorithmResult ar = (new AntColonyOptimization()).solve(c);
+    (new AntColonyOptimization()).solve(c).then((ar) {
+      print("Done!");
+      _updateResult(ar);
 
-    _updateResult(ar);
-
-    updateUrl();
+      updateUrl();
+    });
   }
 
   City _getCityByIndex(int index) {

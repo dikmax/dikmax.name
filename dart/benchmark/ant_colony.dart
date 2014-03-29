@@ -1,3 +1,5 @@
+// !!! NOT VALID, benchmark doesn't support async operations!!!
+
 // Import BenchmarkBase class.
 import 'package:benchmark_harness/benchmark_harness.dart';
 import '../lib/tsp.dart';

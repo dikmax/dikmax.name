@@ -16,48 +16,58 @@ class AntColonyOptimization extends TSPAlgorithm {
   static final double beta = 2.0;  // The importance of the durations
   static final double rho = 0.5;   // Pheromone evaporation speed
   static final double rho1 = 1 - rho;
-  static final int antsCount = 20;
-  static final int wavesCount = 50; // TODO
-  static final int stillPeriod = 50;
+  static final int antsCount = 200;
+  static final int stillPeriod = 500;
+  static final int timeout = 5000;
 
-  AlgorithmResult solve(List<List<double>> dist) {
+  Future<AlgorithmResult> solve(List<List<double>> dist) {
+    Completer<AlgorithmResult> c = new Completer<AlgorithmResult>();
+
     Stopwatch stopwatch = new Stopwatch()..start();
     _dist = dist;
     _initializeData();
 
     int wave = 0;
     int bestUpdatedIterationsAgo = 0;
-    while (stopwatch.elapsedMilliseconds < 500 && bestUpdatedIterationsAgo < stillPeriod) {
-      ++bestUpdatedIterationsAgo;
-      ++wave;
-      _constructSolutions();
-      _localSearch();
-      _updateStatistics();
-      _updatePheromoneTrails();
 
-      bool bestUpdated = false;
-      for (Ant ant in _ants) {
-        if (bestTour == null || ant.tourLength < bestLength) {
-          bestTour = ant.tour;
-          bestLength = ant.tourLength;
-          bestUpdated = true;
-          print("Wave: $wave, length: $bestLength");
+    void process() {
+      if (stopwatch.elapsedMilliseconds < timeout && bestUpdatedIterationsAgo < stillPeriod) {
+        ++bestUpdatedIterationsAgo;
+        ++wave;
+        _constructSolutions();
+        //_localSearch();
+        _updateStatistics();
+        _updatePheromoneTrails();
+
+        bool bestUpdated = false;
+        for (Ant ant in _ants) {
+          if (bestTour == null || ant.tourLength < bestLength) {
+            bestTour = ant.tour;
+            bestLength = ant.tourLength;
+            bestUpdated = true;
+            print("Wave: $wave, length: $bestLength");
+          }
         }
-      }
-      if (bestUpdated) {
-        bestUpdatedIterationsAgo = 0;
+        if (bestUpdated) {
+          bestUpdatedIterationsAgo = 0;
+        }
+        Timer.run(process);
+      } else {
+        if (bestUpdatedIterationsAgo == stillPeriod) {
+          print("Still!");
+        }
+
+        _3opt(bestTour, bestLength);
+
+        print("Waves: ${wave}");
+
+        c.complete(new AlgorithmResult(bestTour, bestLength));
       }
     }
 
-    if (bestUpdatedIterationsAgo == stillPeriod) {
-      print("Still!");
-    }
+    Timer.run(process);
 
-    _3opt(bestTour, bestLength);
-
-    print("Waves: ${wave}");
-
-    return new AlgorithmResult(bestTour, bestLength);
+    return c.future;
   }
 
   void _initializeData() {
