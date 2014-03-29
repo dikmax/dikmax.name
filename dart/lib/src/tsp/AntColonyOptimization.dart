@@ -16,8 +16,8 @@ class AntColonyOptimization extends TSPAlgorithm {
   static final double beta = 2.0;  // The importance of the durations
   static final double rho = 0.5;   // Pheromone evaporation speed
   static final double rho1 = 1 - rho;
-  static final int antsCount = 200;
-  static final int wavesCount = 500;
+  static final int antsCount = 20;
+  static final int wavesCount = 50; // TODO
 
   AlgorithmResult solve(List<List<double>> dist) {
     Stopwatch stopwatch = new Stopwatch()..start();
@@ -33,6 +33,10 @@ class AntColonyOptimization extends TSPAlgorithm {
       _updatePheromoneTrails();
       _checkBestSolution();
     }
+
+    _3optSearch();
+
+    print("Waves: ${wave}");
 
     return new AlgorithmResult(bestTour, bestLength);
   }
@@ -84,18 +88,18 @@ class AntColonyOptimization extends TSPAlgorithm {
   }
 
   void _constructSolutions() {
-    for (int i = 0; i < antsCount; ++i) {
-      _ants[i].reset(_size);
+    for (Ant ant in _ants) {
+      ant.reset(_size);
     }
     for (int step = 1; step < _size - 1; ++step) {
-      for (int k = 0; k < antsCount; ++k) {
-        _asDecisionRule(_ants[k], step);
+      for (Ant ant in _ants) {
+        _asDecisionRule(ant, step);
       }
     }
-    for (int k = 0; k < antsCount; ++k) {
-      int last = _ants[k].tour.last;
-      _ants[k].tour.add(_size - 1);
-      _ants[k].tourLength += _dist[last][_size - 1];
+    for (Ant ant in _ants) {
+      int last = ant.tour.last;
+      ant.tour.add(_size - 1);
+      ant.tourLength += _dist[last][_size - 1];
     }
   }
 
@@ -125,14 +129,58 @@ class AntColonyOptimization extends TSPAlgorithm {
     ant.visited[i] = true;
   }
 
-  void _localSearch() {}
+  //bool _2optCheck(Ant)
+  void _localSearch() {
+    // Performing 2-opt local search
+    for (Ant ant in _ants) {
+      bool changed = true;
+
+      if (changed) {
+        changed = false;
+        for (int i = 1; !changed && i < _size - 2; ++i) {
+          int at_i_1 = ant.tour[i - 1];
+          int at_i = ant.tour[i];
+          int at_i1 = ant.tour[i + 1];
+          double adjDistI = -_dist[at_i_1][at_i] - _dist[at_i][at_i1];
+          // Checking two neighbor nodes
+          if (i < _size - 2) {
+            int at_i2 = ant.tour[i + 2];
+            double adjDist = adjDistI - _dist[at_i1][at_i2]
+                + _dist[at_i_1][at_i1] + _dist[at_i1][at_i]
+                + _dist[at_i][at_i2];
+            if (adjDist < 0) {
+              ant.tour[i] = at_i1;
+              ant.tour[i + 1] = at_i;
+              ant.tourLength += adjDist;
+              changed = true;
+            }
+          }
+          // Checking other nodes
+          for (int j = i + 2; !changed && j < _size - 1; ++j) {
+            int at_j_1 = ant.tour[j - 1];
+            int at_j = ant.tour[j];
+            int at_j1 = ant.tour[j + 1];
+            double adjDist = adjDistI - _dist[at_j_1][at_j] - _dist[at_j][at_j1]
+                + _dist[at_i_1][at_j] + _dist[at_j][at_i1]
+                + _dist[at_j_1][at_i] + _dist[at_i][at_j1];
+            if (adjDist < 0) {
+              ant.tour[i] = at_j;
+              ant.tour[j] = at_i;
+              ant.tourLength += adjDist;
+              changed = true;
+            }
+          }
+        }
+      }
+    }
+  }
 
   void _updateStatistics() {}
 
   void _updatePheromoneTrails() {
     _evaporate();
-    for (int k = 0; k < antsCount; ++k) {
-      _depositPheromone(_ants[k]);
+    for (Ant ant in _ants) {
+      _depositPheromone(ant);
     }
     _computeChoiceInformation();
   }
@@ -157,12 +205,16 @@ class AntColonyOptimization extends TSPAlgorithm {
   }
 
   void _checkBestSolution() {
-    for (int i = 0; i < antsCount; ++i) {
-      if (bestTour == null || _ants[i].tourLength < bestLength) {
-        bestTour = _ants[i].tour;
-        bestLength = _ants[i].tourLength;
+    for (Ant ant in _ants) {
+      if (bestTour == null || ant.tourLength < bestLength) {
+        bestTour = ant.tour;
+        bestLength = ant.tourLength;
       }
     }
+  }
+
+  void _3optSearch() {
+    // TODO implement
   }
 }
 

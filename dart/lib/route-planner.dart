@@ -10,6 +10,7 @@ import 'package:angular/angular.dart';
 import 'tsp.dart';
 import 'package:archive/archive.dart';
 
+// TODO remove var typees
 @NgController(
     selector: '.cities-list',
     publishAs: 'ctrl'
@@ -359,12 +360,13 @@ class CitiesListController {
     coords.add([lastCity.lat, lastCity.lon]);
 
     if (ar.distance < TSPAlgorithm.inf) {
-      var lineString = new JsObject(context['ymaps']['geometry']['LineString'],
-        [new JsObject.jsify(coords), new JsObject.jsify({
-          "coordRendering": 'shortestPath',
-          "geodesic": true
-        })]
-      );
+      var lineString = new JsObject(context['ymaps']['geometry']['LineString'], [
+          new JsObject.jsify(coords),
+          new JsObject.jsify({
+              "coordRendering": 'shortestPath',
+              "geodesic": true
+          })
+      ]);
       route = new JsObject(context['ymaps']['GeoObject'], [
           new JsObject.jsify({ "geometry": lineString })
       ]);
