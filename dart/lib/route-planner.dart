@@ -34,14 +34,11 @@ class CitiesListController {
 
   CitiesListController() {
     var options;
-    //if (firstCity == lastCity) {
-    // TODO try to remove center and zoom
     options = new JsObject.jsify({
         "behaviors": ["drag", "scrollZoom", "dblClickZoom", "multiTouch", "rightMouseButtonMagnifier"],
         "center": [53.906077, 27.554914],
         "zoom": 8
     });
-    //}
     map = new JsObject(context['ymaps']['Map'], ["map", options]);
     map['controls'].callMethod('add', ['zoomControl']);
 
@@ -270,6 +267,9 @@ class CitiesListController {
   }
 
   void updateUrl() {
+    if (result == null) {
+      window.location.hash = '#';
+    }
     List data = [
       firstCity
     ];
@@ -300,11 +300,25 @@ class CitiesListController {
       return;
     }
     if (cities.length == 0) {
-      result = new Path(<List<City>>[<City>[firstCity, lastCity]], firstCity.distanceTo(lastCity));
-
       if (route != null) {
         map["geoObjects"].callMethod("remove", [route]);
       }
+
+      bool pathExcluded = false;
+      exclusions.forEach((List<City> element) {
+        if (element[0] == firstCity && element[1] == lastCity ||
+          element[1] == firstCity && element[0] == lastCity) {
+          pathExcluded = true;
+        }
+      });
+
+      if (pathExcluded) {
+        result = null;
+        updateUrl();
+        return;
+      }
+
+      result = new Path(<List<City>>[<City>[firstCity, lastCity]], firstCity.distanceTo(lastCity));
 
       var coords = [[firstCity.lat, firstCity.lon], [lastCity.lat, lastCity.lon]];
 
@@ -449,7 +463,11 @@ class CitiesListController {
 
       map["geoObjects"].callMethod("add", [route]);
     }
-    map.callMethod("setBounds", [new JsObject.jsify([[minLat, minLon], [maxLat, maxLon]])]);
+    if (minLat == maxLat && minLon == maxLon) {
+      map.callMethod("setCenter", [new JsObject.jsify([minLat, minLon]), 8]);
+    } else {
+      map.callMethod("setBounds", [new JsObject.jsify([[minLat, minLon], [maxLat, maxLon]])]);
+    }
   }
 }
 

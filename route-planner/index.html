@@ -6,8 +6,9 @@
             <div ng-if="ctrl.result == null">
                 <ul class="list-group">
                     <li class="list-group-item">
-                        <h4 class="list-group-item-heading">Маршрут не существует
+                        <h4 class="list-group-item-heading">
                             <button class="btn btn-default btn-xs pull-right refresh-button" ng-click="ctrl.calc()" title="Обновить"><i class="glyphicon glyphicon-refresh"></i></button>
+                            Маршрут не существует
                         </h4>
                         <form>
                             <div class="checkbox">
@@ -23,8 +24,9 @@
             <div ng-if="ctrl.result != null">
                 <ul class="list-group">
                     <li class="list-group-item">
-                        <h4 class="list-group-item-heading">Маршрут {{ctrl.result.distanceRound}} км
+                        <h4 class="list-group-item-heading">
                             <button class="btn btn-default btn-xs pull-right refresh-button" ng-click="ctrl.calc()" title="Обновить"><i class="glyphicon glyphicon-refresh"></i></button>
+                            Маршрут {{ctrl.result.distanceRound}} км
                         </h4>
                         <form>
                             <div class="checkbox">
