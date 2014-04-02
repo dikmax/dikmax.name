@@ -10,7 +10,7 @@ import 'package:angular/angular.dart';
 import 'tsp.dart';
 import 'package:archive/archive.dart';
 
-// TODO remove var typees
+// TODO remove var types
 @NgController(
     selector: '.cities-list',
     publishAs: 'ctrl'
@@ -28,6 +28,7 @@ class CitiesListController {
   Path result;
   int elapsed = 0;
   bool loaded = true;
+  TSPAlgorithm _calcAlgorithm;
 
   var map;
   var route;
@@ -205,8 +206,11 @@ class CitiesListController {
   void remove(City city) {
     cities.remove(city);
     map["geoObjects"].callMethod("remove", [city.placemark]);
+    if (_calcAlgorithm != null) {
+      _calcAlgorithm.cancel();
+    }
     if (autoUpdate) {
-      calc();
+      Timer.run(calc);
     }
   }
 
@@ -218,8 +222,11 @@ class CitiesListController {
     cities.remove(city);
     firstCity = city;
     firstCity.placemark['options'].callMethod('set', ['preset', 'twirl#blueDotIcon']);
+    if (_calcAlgorithm != null) {
+      _calcAlgorithm.cancel();
+    }
     if (autoUpdate) {
-      calc();
+      Timer.run(calc);
     }
   }
 
@@ -231,8 +238,11 @@ class CitiesListController {
     cities.remove(city);
     lastCity = city;
     lastCity.placemark['options'].callMethod('set', ['preset', 'twirl#blueDotIcon']);
+    if (_calcAlgorithm != null) {
+      _calcAlgorithm.cancel();
+    }
     if (autoUpdate) {
-      calc();
+      Timer.run(calc);
     }
   }
 
@@ -247,22 +257,31 @@ class CitiesListController {
     var placemark = city.placemark;
     placemark['options'].callMethod('set', ['preset', 'twirl#blueIcon']);
     map["geoObjects"].callMethod("add", [placemark]);
+    if (_calcAlgorithm != null) {
+      _calcAlgorithm.cancel();
+    }
     if (autoUpdate) {
-      calc();
+      Timer.run(calc);
     }
   }
 
   void exclude(int index) {
     exclusions.add(result.path[index]);
+    if (_calcAlgorithm != null) {
+      _calcAlgorithm.cancel();
+    }
     if (autoUpdate) {
-      calc();
+      Timer.run(calc);
     }
   }
 
   void include(int index) {
     exclusions.removeAt(index);
+    if (_calcAlgorithm != null) {
+      _calcAlgorithm.cancel();
+    }
     if (autoUpdate) {
-      calc();
+      Timer.run(calc);
     }
   }
 
@@ -293,10 +312,8 @@ class CitiesListController {
     }
   }
 
-  bool _calcInProgress = false;
-
   void calc() {
-    if (_calcInProgress) {
+    if (_calcAlgorithm != null) {
       return;
     }
     if (cities.length == 0) {
@@ -389,15 +406,16 @@ class CitiesListController {
     Element icon = query('.route-box .refresh-button i');
     button.classes.add('disabled');
     icon.classes.add('in-progress');
-    _calcInProgress = true;
-    (new AntColonyOptimization()).solve(c).then((ar) {
+    _calcAlgorithm = new AntColonyOptimization();
+    _calcAlgorithm.solve(c).then((ar) {
       _updateResult(ar);
 
       updateUrl();
+    }).whenComplete(() {
       icon.classes.remove('in-progress');
       button.classes.remove('disabled');
-      _calcInProgress = false;
-    });
+      _calcAlgorithm = null;
+    }).catchError((_) {});
   }
 
   City _getCityByIndex(int index) {

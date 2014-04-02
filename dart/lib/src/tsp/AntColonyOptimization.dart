@@ -23,6 +23,7 @@ class AntColonyOptimization extends TSPAlgorithm {
 
   Future<AlgorithmResult> solve(List<List<double>> dist) {
     Completer<AlgorithmResult> c = new Completer<AlgorithmResult>();
+    cancelled = false;
 
     _dist = dist;
     _timeout = dist.length * 100;
@@ -32,6 +33,10 @@ class AntColonyOptimization extends TSPAlgorithm {
     int bestUpdatedIterationsAgo = 0;
 
     void process() {
+      if (cancelled) {
+        c.completeError("Cancelled");
+        return;
+      }
       if (bestUpdatedIterationsAgo < stillPeriod) {
         ++bestUpdatedIterationsAgo;
         ++wave;
@@ -53,6 +58,10 @@ class AntColonyOptimization extends TSPAlgorithm {
         Timer.run(process);
       } else {
         Timer.run(() {
+          if (cancelled) {
+            c.completeError("Cancelled");
+            return;
+          }
           _3opt();
           c.complete(new AlgorithmResult(_bestTour, _bestLength));
         });
