@@ -10,7 +10,6 @@ import 'package:angular/angular.dart';
 import 'tsp.dart';
 import 'package:archive/archive.dart';
 
-// TODO remove var types
 @NgController(
     selector: '.cities-list',
     publishAs: 'ctrl'
@@ -30,12 +29,11 @@ class CitiesListController {
   bool loaded = true;
   TSPAlgorithm _calcAlgorithm;
 
-  var map;
-  var route;
+  JsObject  map;
+  JsObject route;
 
   CitiesListController() {
-    var options;
-    options = new JsObject.jsify({
+    JsObject options = new JsObject.jsify({
         "behaviors": ["drag", "scrollZoom", "dblClickZoom", "multiTouch", "rightMouseButtonMagnifier"],
         "center": [53.906077, 27.554914],
         "zoom": 8
@@ -70,7 +68,7 @@ class CitiesListController {
     suggestions = [];
     exclusions = [];
 
-    var placemark = firstCity.placemark;
+    JsObject placemark = firstCity.placemark;
     placemark['options'].callMethod('set', ['preset', 'twirl#blueDotIcon']);
     map["geoObjects"].callMethod("add", [placemark]);
 
@@ -142,7 +140,7 @@ class CitiesListController {
       distance += prevCity.distanceTo(lastCity);
 
       for (City city in cities) {
-        var placemark = city.placemark;
+        JsObject placemark = city.placemark;
         placemark['options'].callMethod('set', ['preset', 'twirl#blueIcon']);
         map["geoObjects"].callMethod("add", [placemark]);
       }
@@ -169,7 +167,7 @@ class CitiesListController {
   }
 
   void _scrollIntoView() {
-    var element = query('.suggestions-list .suggestion-${activeSuggestion}');
+    Element element = querySelector('.suggestions-list .suggestion-${activeSuggestion}');
     Point offset = element.offsetTo(document.body);
     if (offset.y < window.scrollY + 70) {
       window.scrollTo(window.scrollX, offset.y - 70);
@@ -274,7 +272,7 @@ class CitiesListController {
     suggestions = [];
     showSuggestions = false;
     newCity = '';
-    var placemark = city.placemark;
+    JsObject placemark = city.placemark;
     placemark['options'].callMethod('set', ['preset', 'twirl#blueIcon']);
     map["geoObjects"].callMethod("add", [placemark]);
     if (_calcAlgorithm != null) {
@@ -314,7 +312,7 @@ class CitiesListController {
     ];
     int length = result.path.length - (firstCity == lastCity ? 1 : 0);
 
-    for (var i = 0; i < length; ++i) {
+    for (int i = 0; i < length; ++i) {
       data.add(result.path[i][1]);
     }
     if (firstCity == lastCity) {
@@ -324,7 +322,7 @@ class CitiesListController {
     List<int> bytes = UTF8.encode(JSON.encode(data));
     List<int> bz2 = new BZip2Encoder().encode(bytes);
 
-    var base64 = CryptoUtils.bytesToBase64(bz2);
+    String base64 = CryptoUtils.bytesToBase64(bz2);
     if (History.supportsState) {
       window.history.replaceState(null, document.title, window.location.pathname + "#" + base64);
     } else {
@@ -357,9 +355,9 @@ class CitiesListController {
 
       result = new Path(<List<City>>[<City>[firstCity, lastCity]], firstCity.distanceTo(lastCity));
 
-      var coords = [[firstCity.lat, firstCity.lon], [lastCity.lat, lastCity.lon]];
+      List<List<double>> coords = [[firstCity.lat, firstCity.lon], [lastCity.lat, lastCity.lon]];
 
-      var lineString = new JsObject(context['ymaps']['geometry']['LineString'], [
+      JsObject lineString = new JsObject(context['ymaps']['geometry']['LineString'], [
           new JsObject.jsify(coords),
           new JsObject.jsify({
               "coordRendering": 'shortestPath',
@@ -465,7 +463,7 @@ class CitiesListController {
       route = null;
     }
 
-    var coords = [];
+    List<List<double>> coords = [];
     double minLat = firstCity.lat;
     double maxLat = firstCity.lat;
     double minLon = firstCity.lon;
@@ -488,7 +486,7 @@ class CitiesListController {
     coords.add([lastCity.lat, lastCity.lon]);
 
     if (ar.distance < TSPAlgorithm.inf) {
-      var lineString = new JsObject(context['ymaps']['geometry']['LineString'], [
+      JsObject lineString = new JsObject(context['ymaps']['geometry']['LineString'], [
           new JsObject.jsify(coords),
           new JsObject.jsify({
               "coordRendering": 'shortestPath',
@@ -582,10 +580,10 @@ class Geocoder {
     HttpRequest.getString('http://geocode-maps.yandex.ru/1.x/?format=json&geocode=' + request)
     .then((String contents) {
       JsonDecoder decoder = new JsonDecoder(null);
-      var data = decoder.convert(contents);
+      Map data = decoder.convert(contents);
 
       List<City> result = <City>[];
-      for (var item in data['response']['GeoObjectCollection']['featureMember']) {
+      for (Map item in data['response']['GeoObjectCollection']['featureMember']) {
         if (item['GeoObject']['metaDataProperty']['GeocoderMetaData']['kind'] != 'locality') {
           continue;
         }
