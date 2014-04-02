@@ -43,6 +43,11 @@ class CitiesListController {
     map = new JsObject(context['ymaps']['Map'], ["map", options]);
     map['controls'].callMethod('add', ['zoomControl']);
 
+    _initialize();
+    window.onHashChange.listen(_onHashChangeListener);
+  }
+
+  void _initialize() {
     bool initialized = _initializeFromHash();
     if (!initialized) {
       City minsk = new City("Минск", 53.906077, 27.554914);
@@ -78,6 +83,21 @@ class CitiesListController {
     if (!initialized) {
       calc();
     }
+  }
+
+  void _onHashChangeListener(Event e) {
+    // Cleanup map
+    if (route != null) {
+      map["geoObjects"].callMethod("remove", [route]);
+    }
+    for (City city in cities) {
+      map["geoObjects"].callMethod("remove", [city.placemark]);
+    }
+    map["geoObjects"].callMethod("remove", [firstCity.placemark]);
+    map["geoObjects"].callMethod("remove", [lastCity.placemark]);
+
+    // Reinitialize map
+    _initialize();
   }
 
   bool _initializeFromHash() {
