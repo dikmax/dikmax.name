@@ -1,137 +1,15 @@
-<div id="map" style="width: 100%; height: 400px"></div>
+<div class="map-widget"></div>
 
-<div class="cities-list container-fluid" ng-cloak style="margin-top: 20px;">
+<div class="main-widget container-fluid hidden" style="margin-top: 20px;">
     <div class="row">
-        <div class="col-xs-12 col-md-12 col-lg-4 route-box" >
-            <div ng-if="ctrl.result == null">
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <h4 class="list-group-item-heading">
-                            <button class="btn btn-default btn-xs pull-right refresh-button" ng-click="ctrl.calc()" title="Обновить"><i class="glyphicon glyphicon-refresh"></i></button>
-                            Маршрут не существует
-                        </h4>
-                        <form>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" ng-model="ctrl.autoUpdate"/>
-                                    Автообновление
-                                </label>
-                            </div>
-                        </form>
-                    </li>
-                </ul>
-            </div>
-            <div ng-if="ctrl.result != null">
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <h4 class="list-group-item-heading">
-                            <button class="btn btn-default btn-xs pull-right refresh-button" ng-click="ctrl.calc()" title="Обновить"><i class="glyphicon glyphicon-refresh"></i></button>
-                            Маршрут {{ctrl.result.distanceRound}} км
-                        </h4>
-                        <form>
-                            <div class="checkbox">
-                                <label>
-                                    <input type="checkbox" ng-model="ctrl.autoUpdate"/>
-                                    Автообновление
-                                </label>
-                            </div>
-                        </form>
-                    </li>
-                    <li class="list-group-item" ng-repeat="segment in ctrl.result.path track by $index">
-                        <span class="badge distance pull-right">{{segment[0].distanceToRound(segment[1])}} км</span>
-                        <button class="btn btn-default btn-xs" ng-click="ctrl.exclude($index)" title="Исключить"><i class="glyphicon glyphicon-remove"></i></button>
-                        {{segment[0].name}} &mdash; {{segment[1].name}}
-                    </li>
-                </ul>
-            </div>
-        </div>
+        <div class="col-xs-12 col-md-12 col-lg-4 route-widget"></div>
 
-        <div class="col-xs-12 col-md-6 col-lg-4">
-            <ul class="list-group">
-                <li class="list-group-item">
-                    <h4 class="list-group-item-heading">Города</h4>
-                </li>
-                <li class="list-group-item" ng-if="ctrl.cities.length < 1000">
-                    <form class="form-inline">
-                        <div class="input-group">
-                            <label class="sr-only" for="searchText">Добавить город</label>
-                            <input type="search" class="form-control input-sm" id="searchText" placeholder="Добавить город" ng-model="ctrl.newCity" ng-keydown="ctrl.cityKeyDown($event)"/>
-                            <span class="input-group-btn">
-                                <button ng-if="ctrl.showSuggestions" class="btn btn-default btn-sm" ng-click="ctrl.showSuggestions = false;ctrl.newCity = ''" title="Скрыть результаты">
-                                    <i class="glyphicon glyphicon-remove"></i>
-                                </button>
-                                <button class="btn btn-default btn-sm" ng-click="ctrl.searchCity()"><i class="glyphicon glyphicon-search"></i></button>
-                            </span>
-                        </div>
-                    </form>
-                    <div ng-if="ctrl.showSuggestions">
-                        <ul ng-if="ctrl.suggestions.length > 0" class="list-group suggestions-list">
-                            <li ng-repeat="city in ctrl.suggestions" class="list-group-item suggestion-{{$index}}" ng-class="{'list-group-item-info': $index == ctrl.activeSuggestion}">
-                                <a href="#" ng-click="ctrl.addCity(city, $event)">{{city.fullName}}</a>
-                            </li>
-                        </ul>
-                        <div ng-if="ctrl.suggestions.length == 0">
-                            Ничего не найдено.
-                        </div>
-                    </div>
-                </li>
-                <li class="list-group-item">
-                    <div class="btn-group">
-                        <button class="btn btn-default btn-xs" disabled="disabled" title="Удалить"><i class="glyphicon glyphicon-remove"></i></button>
-                        <button class="btn btn-default btn-xs" disabled="disabled" title="В начало"><i class="glyphicon glyphicon-chevron-up"></i></button>
-                        <button class="btn btn-default btn-xs" ng-click="ctrl.makeLast(ctrl.firstCity)" title="В конец"><i class="glyphicon glyphicon-chevron-down"></i></button>
-                    </div>
-                    {{ctrl.firstCity.name}} <small><em>Старт</em></small>
-                </li>
-                <li class="list-group-item" ng-repeat="city in ctrl.cities">
-                    <div class="btn-group">
-                        <button class="btn btn-default btn-xs" ng-click="ctrl.remove(city)" title="Удалить"><i class="glyphicon glyphicon-remove"></i></button>
-                        <button class="btn btn-default btn-xs" ng-click="ctrl.makeFirst(city)" title="В начало"><i class="glyphicon glyphicon-chevron-up"></i></button>
-                        <button class="btn btn-default btn-xs" ng-click="ctrl.makeLast(city)" title="В конец"><i class="glyphicon glyphicon-chevron-down"></i></button>
-                    </div>
-                    {{city.name}}
-                </li>
-                <li class="list-group-item">
-                    <div class="btn-group">
-                        <button class="btn btn-default btn-xs" disabled="disabled" title="Удалить"><i class="glyphicon glyphicon-remove"></i></button>
-                        <button class="btn btn-default btn-xs" ng-click="ctrl.makeFirst(ctrl.lastCity)" title="В начало"><i class="glyphicon glyphicon-chevron-up"></i></button>
-                        <button class="btn btn-default btn-xs" disabled="disabled" title="В конец"><i class="glyphicon glyphicon-chevron-down"></i></button>
-                    </div>
-                    {{ctrl.lastCity.name}} <small><em>Финиш</em></small>
-                </li>
-            </ul>
+        <div class="col-xs-12 col-md-6 col-lg-4 cities-list-widget"></div>
 
-        </div>
-
-        <div class="col-xs-12 col-md-6 col-lg-4">
-            <div ng-if="ctrl.exclusions.length == 0">
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <h4 class="list-group-item-heading">Исключения</h4>
-                    </li>
-                    <li class="list-group-item">
-                        Нет исключений
-                    </li>
-                </ul>
-            </div>
-
-            <div ng-if="ctrl.exclusions.length > 0">
-                <ul class="list-group">
-                    <li class="list-group-item">
-                        <h4 class="list-group-item-heading">Исключения</h4>
-                    </li>
-                    <li class="list-group-item" ng-repeat="exclusion in ctrl.exclusions">
-                        <button class="btn btn-default btn-xs" ng-click="ctrl.include($index)"><i class="glyphicon glyphicon-remove"></i></button>
-                        {{exclusion[0].name}} - {{exclusion[1].name}}
-                    </li>
-                </ul>
-
-            </div>
-
-        </div>
+        <div class="col-xs-12 col-md-6 col-lg-4 exclusions-widget"></div>
     </div>
 </div>
         
 <div style="text-align: center;">
-    <p><a href="/post/route-planner/">Предложения и замечания можно оставить в комментариях в блоге.</a></p>
+    <p><a href="/post/route-planner/">Предложения и замечания можно оставить в блоге.</a></p>
 </div>        
