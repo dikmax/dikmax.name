@@ -2,18 +2,39 @@ part of routePlanner;
 
 class MapWidget {
   // TODO move placemarks from City class here.
+  Element _element;
   Model _model;
   JsObject map;
   JsObject route;
+  JsObject bounds;
 
-  MapWidget(this._model, Element el) {
+  MapWidget(this._model, this._element) {
     JsObject options = new JsObject.jsify({
         "behaviors": ["drag", "scrollZoom", "dblClickZoom", "multiTouch", "rightMouseButtonMagnifier"],
         "center": [53.906077, 27.554914],
         "zoom": 8
     });
-    map = new JsObject(context['ymaps']['Map'], [el, options]);
+    map = new JsObject(context['ymaps']['Map'], [this._element, options]);
     map['controls'].callMethod('add', ['zoomControl']);
+
+    // Adding fullscreen button
+    JsObject fullScreenButton = new JsObject(context['ymaps']['control']['Button'], [
+      new JsObject.jsify({
+        "data": {
+          "content": '<span class="glyphicon glyphicon-fullscreen"></span>',
+          "title": "На полный экран" // TODO l10n
+        }
+      }),
+      new JsObject.jsify({
+        "position": {
+          "left": 5,
+          "top": 5
+        }
+      })
+    ]);
+    fullScreenButton['events'].callMethod("add", ["select", (_) => _toggleFullScreen(true)]);
+    fullScreenButton['events'].callMethod("add", ["deselect", (_) => _toggleFullScreen(false)]);
+    map['controls'].callMethod('add', [fullScreenButton]);
 
     _model.onEndCityChange.listen(endCityChange);
     _model.onCityAdd.listen(cityAdd);
@@ -21,6 +42,19 @@ class MapWidget {
     _model.onClearCities.listen(clearCities);
     _model.onAddManyCities.listen(cityAddAll);
     _model.onPathChange.listen(pathChange);
+  }
+
+  void _toggleFullScreen(bool isFullScreen) {
+    if (bounds == null) {
+      bounds = map.callMethod("getBounds");
+    }
+    if (isFullScreen) {
+      _element.classes.add("full-screen");
+    } else {
+      _element.classes.remove("full-screen");
+    }
+    map['container'].callMethod("fitToViewport", []);
+    map.callMethod("setBounds", [bounds]);
   }
 
   void endCityChange(ChangeEvent<City> event) {
@@ -100,8 +134,10 @@ class MapWidget {
     }
     if (minLat == maxLat && minLon == maxLon) {
       map.callMethod("setCenter", [new JsObject.jsify([minLat, minLon]), 8]);
+      bounds = map.callMethod("getBounds");
     } else {
-      map.callMethod("setBounds", [new JsObject.jsify([[minLat, minLon], [maxLat, maxLon]])]);
+      bounds = new JsObject.jsify([[minLat, minLon], [maxLat, maxLon]]);
+      map.callMethod("setBounds", [bounds]);
     }
 
   }
