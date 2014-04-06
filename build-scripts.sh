@@ -7,11 +7,11 @@ cat dart/packages/browser/interop.js >> dart/s.js
 cat js/highlight.js/build/highlight.pack.js >> dart/s.js
 
 echo "Building main dart..."
-dart2js --out=dart/script.dart --minify --output-type=dart dart/main.dart
+dart2js --out=dart/script.dart --minify --output-type=dart dart/web/main.dart
 echo "Building main js..."
-dart2js --out=dart/script.dart.js --minify dart/script.dart
+dart2js --out=dart/script.dart.js --minify dart/web/main.dart
 
 echo "Building route-planner dart..."
-dart2js --out=dart/script-route-planner.dart --minify --output-type=dart dart/route-planner.dart
+dart2js --out=dart/script-route-planner.dart --minify --output-type=dart dart/web/route-planner.dart
 echo "Building route-planner js..."
-dart2js --out=dart/script-route-planner.dart.js --minify dart/route-planner.dart
+dart2js --out=dart/script-route-planner.dart.js --minify dart/web/route-planner.dart

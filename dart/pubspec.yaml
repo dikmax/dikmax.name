@@ -1,5 +1,9 @@
 name: dikmax.name
 dependencies:
-  angular: any
+  archive: any
   browser: any
+  benchmark_harness: ">=1.0.0 <2.0.0"
   cookie: any
+  crypto: any
+  observe: any
+
