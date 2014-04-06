@@ -116,12 +116,12 @@ class RoutePlannerApplication {
       window.location.hash = '#';
     }
     List data = [
-      _model.firstCity
+      _model.firstCity.toJson()
     ];
     int length = _model.path.path.length - (_model.firstCity == _model.lastCity ? 1 : 0);
 
     for (int i = 0; i < length; ++i) {
-      data.add(_model.path.path[i][1]);
+      data.add(_model.path.path[i][1].toJson());
     }
     if (_model.firstCity == _model.lastCity) {
       data.add(true);
