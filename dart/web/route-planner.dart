@@ -9,5 +9,5 @@ void main() {
   app.init();
 
   // Initializing route planner
-  context['ymaps'].callMethod('ready', [() => new CitiesListController()]);
+  context['ymaps'].callMethod('ready', [() => new RoutePlannerApplication()]);
 }

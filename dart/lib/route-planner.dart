@@ -20,14 +20,14 @@ part 'src/routePlanner/Model.dart';
 part 'src/routePlanner/Path.dart';
 part 'src/routePlanner/RouteWidget.dart';
 
-class CitiesListController {
+class RoutePlannerApplication {
   Model _model;
   MapWidget map;
   CitiesListWidget citiesList;
   ExclusionsWidget exclusions;
   RouteWidget route;
 
-  CitiesListController() {
+  RoutePlannerApplication() {
     _model = new Model();
     map = new MapWidget(_model, querySelector('.map-widget'));
     citiesList = new CitiesListWidget(_model, querySelector('.cities-list-widget'));
@@ -48,26 +48,15 @@ class CitiesListController {
       City minsk = new City("Минск", 53.906077, 27.554914);
       _model.firstCity = minsk;
       _model.lastCity = minsk;
-      /*cities = [
-        new City("Загреб", 45.807205, 15.967563),
-        new City("Братислава", 48.149248, 17.106986),
-        new City("Вена", 48.202536, 16.368796),
-        new City("Кишинёв", 47.024672, 28.832336),
-        new City("Бухарест", 44.434288, 26.102958),
-        new City("Будапешт", 47.506216, 19.06482),
-        new City("Любляна", 46.051259, 14.503067),
-        new City("Рим", 41.903044, 12.495799),
-        new City("Венеция", 45.438108, 12.318166),
-        new City("Палермо", 38.121359, 13.358433)
-      ];*/
+      _model.path = new Path(<List<City>> [[minsk, minsk]], 0.0);
     }
   }
 
   void _onHashChangeListener(Event e) {
+    route.calcWidget.autoUpdate = false;
     map.reset();
-
-    // Reinitialize map
     _initialize();
+    route.calcWidget.autoUpdate = true;
   }
 
   bool _initializeFromHash() {
