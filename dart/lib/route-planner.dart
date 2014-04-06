@@ -100,6 +100,7 @@ class RoutePlannerApplication {
         path.add(<City>[prevCity, _model.firstCity]);
       } else {
         _model.lastCity = new City.fromJson(items.last);
+        path.add(<City>[prevCity, _model.lastCity]);
       }
       distance += prevCity.distanceTo(_model.lastCity);
 

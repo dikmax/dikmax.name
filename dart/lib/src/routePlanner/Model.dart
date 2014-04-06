@@ -70,9 +70,12 @@ class Model {
     cityRemoveEvent.add(city);
     firstCity = city;
 
-    if (_cities.indexOf(oldFirstCity) == -1 && _lastCity != oldFirstCity) {
+    if (_cities.indexOf(oldFirstCity) == -1 && lastCity != oldFirstCity) {
       _cities.add(oldFirstCity);
       cityAddEvent.add(oldFirstCity);
+    } else if (lastCity == oldFirstCity) {
+      // Hack for Yandex.Maps
+      endCityChangeEvent.add(new ChangeEvent(lastCity, lastCity));
     }
   }
 
@@ -85,6 +88,9 @@ class Model {
     if (_cities.indexOf(oldLastCity) == -1 && oldLastCity != firstCity) {
       _cities.add(oldLastCity);
       cityAddEvent.add(oldLastCity);
+    } else if (oldLastCity == firstCity) {
+      // Hack for Yandex.Maps
+      endCityChangeEvent.add(new ChangeEvent(firstCity, firstCity));
     }
   }
 
