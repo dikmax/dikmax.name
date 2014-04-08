@@ -13,7 +13,6 @@ published: false
 <a href="http://www.facebook.com/dikmax" title="Facebook" class="Facebook share square"></a>
 <a href="https://www.google.com/+MaximDikun" title="Google+" class="GooglePlus share square"></a>
 <a href="http://www.linkedin.com/pub/maxim-dikun/36/389/303" title="LinkedIn" class="Linkedin share square"></a>
-<a href="http://mdikun.moikrug.ru/" title="Мой круг" class="MoiKrug share square"></a>
 <a href="http://vk.com/dikmax" title="VK" class="VK share square"></a>
 <a href="http://www.last.fm/user/dikmax" title="last.fm" class="Lastfm share square"></a>
 <a href="http://instagram.com/dikmax" title="Instagram" class="Instagram share square"></a>
