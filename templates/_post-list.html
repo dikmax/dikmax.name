@@ -2,7 +2,17 @@
     <div class="panel-body post-body">
         <h1><a href="/$url$">$title$</a></h1>
 
-        $body$
+        $if(teaser)$
+            $teaser$
+
+            $if(readmore)$
+                <p><a href="/$url$">$readmore$</a></p>
+            $else$
+                <p><a href="/$url$">Читать дальше...</a></p>
+            $endif$
+        $else$
+            $body$
+        $endif$
     </div>
     $partial("templates/_post-footer.html")$
 </div>

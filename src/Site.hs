@@ -2,20 +2,22 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TupleSections     #-}
 import           Blaze.ByteString.Builder (toByteString)
+import           Control.Applicative ((<$>))
 import           Control.Monad (forM_, filterM, liftM, msum)
 import           Data.Char
 import           Data.Function (on)
-import           Data.List (sortBy, intercalate, unfoldr, isSuffixOf, find, groupBy)
+import           Data.List (sortBy, intercalate, unfoldr, isPrefixOf, isSuffixOf, find, groupBy, dropWhileEnd)
 import qualified Data.Map as M
 import           Data.Maybe
 import           Data.Monoid (mappend, mconcat)
 import           Data.Ord (comparing)
+import qualified Data.Set as Set
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import           Data.Time.Clock (UTCTime, getCurrentTime)
 import           Data.Time.Format (formatTime, parseTime)
 import           Hakyll hiding (buildPaginateWith, chronological, dateFieldWith, getItemUTC, getTags, paginateContext,
-                    pandocCompiler, recentFirst)
+                    pandocCompiler, recentFirst, teaserField)
 import           System.FilePath (takeFileName)
 import           System.Locale
 import           Text.HTML.TagSoup (Tag(..))
@@ -561,6 +563,7 @@ postCtx =
 postWithCommentsCountCtx :: Context String
 postWithCommentsCountCtx =
     constField "commentsCount" "" `mappend`
+    teaserField "teaser" "readmore" "content" `mappend`
     postCtx
 
 pageCtx :: PageMetadata -> Context String
@@ -632,7 +635,7 @@ buildPaginateWith n makeId pattern = do
             [(makeId i, i) | i <- [1 .. nPages]]
 
     return $ Paginate (M.fromList paginatePages') (M.fromList pagPlaces') makeId
-        (PatternDependency pattern idents)
+        (PatternDependency pattern $ Set.fromList idents)
 
     where
         compareFn :: (a, Metadata) -> (a, Metadata) -> Ordering
@@ -737,6 +740,60 @@ readerOptions = def
   { readerSmart = True
   , readerParseRaw = True
   }
+
+--------------------------------------------------------------------------------
+teaserSeparatorStart :: String
+teaserSeparatorStart = "<!--more"
+
+teaserSeparatorEnd :: String
+teaserSeparatorEnd = "-->"
+
+--------------------------------------------------------------------------------
+-- | A context with "teaser" key which contain a teaser of the item.
+-- The item is loaded from the given snapshot (which should be saved
+-- in the user code before any templates are applied).
+teaserField :: String           -- ^ Key to use
+            -> String           -- ^ Read more text field
+            -> Snapshot         -- ^ Snapshot to load
+            -> Context String   -- ^ Resulting context
+teaserField key readMoreKey snapshot =
+    field key teaser `mappend`
+    field readMoreKey readMore
+    where
+        teaser item = do
+            body <- itemBody <$> loadSnapshot (itemIdentifier item) snapshot
+            case findTeaser body of
+                Nothing -> fail $
+                    "Hakyll.Web.Template.Context: no teaser defined for " ++
+                    show (itemIdentifier item)
+                Just (t, _) -> return t
+        readMore item = do
+            body <- itemBody <$> loadSnapshot (itemIdentifier item) snapshot
+            case findTeaser body of
+                Nothing -> fail $
+                    "Hakyll.Web.Template.Context: no teaser defined for " ++
+                    show (itemIdentifier item)
+                Just (_, Nothing) -> fail $
+                    "Hakyll.Web.Template.Context: no readmore defined for " ++
+                    show (itemIdentifier item)
+                Just (_, Just t) -> return t
+
+
+findTeaser :: String -> Maybe (String, Maybe String) -- Teaser, optional custom readmore text
+findTeaser str = go [] str
+    where
+       go _ [] = Nothing
+       go acc xss@(x:xs)
+           | teaserSeparatorStart `isPrefixOf` xss = Just (reverse acc, go2 [] $ drop (length teaserSeparatorStart) xss )
+           | otherwise                             = go (x : acc) xs
+
+       go2 _ [] = Nothing
+       go2 acc xss@(x:xs)
+           | teaserSeparatorEnd `isPrefixOf` xss =
+                if trim acc /= [] then Just $ reverse $ trim acc
+                else Nothing
+           | otherwise                           = go2 (x : acc) xs
+       trim str = dropWhileEnd isSpace $ dropWhile isSpace str
 
 --------------------------------------------------------------------------------
 -- | Sort pages chronologically. Uses the same method as 'dateField' for
