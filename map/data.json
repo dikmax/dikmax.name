@@ -1,0 +1,1110 @@
+{
+    "AUT": {
+        "name": "Австрия",
+        "color": "turquoise",
+        "cities": [
+            {
+                "name": "Вена",
+                "lat": 48.216667,
+                "lon": 16.373333,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 6,
+                        "link": "/post/eurotrip-2014-vienna/"
+                    },
+                    {
+                        "year": 2012,
+                        "month": 7,
+                        "link": "/post/vacation2/"
+                    }
+                ]
+            },
+            {
+                "name": "Грац",
+                "lat": 47.066667,
+                "lon": 15.433333,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 6,
+                        "link": "/post/eurotrip-2014-graz/"
+                    }
+                ]
+            }
+        ]
+    },
+    "BLR": {
+        "name": "Беларусь",
+        "color": "green",
+        "cities": [
+            {
+                "name": "Берёза",
+                "lat": 52.55,
+                "lon": 24.966667,
+                "visits": [
+                    {
+                        "year": 2013,
+                        "month": 7
+                    }
+                ]
+            },
+            {
+                "name": "Борисов",
+                "lat": 54.233333,
+                "lon": 28.5,
+                "visits": [
+                    {
+                        "year": 2010,
+                        "month": 9
+                    }
+                ]
+            },
+            {
+                "name": "Голубые озёра",
+                "lat": 54.975833,
+                "lon": 26.416667,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 7
+                    }
+                ]
+            },
+            {
+                "name": "Гомель",
+                "lat": 52.441667,
+                "lon": 30.983333,
+                "visits": [
+                    {
+                        "yearFrom": 2013,
+                        "monthFrom": 12,
+                        "yearTo": 2014,
+                        "monthTo": 1
+                    }
+                ]
+            },
+            {
+                "name": "Гродно",
+                "lat": 53.666667,
+                "lon": 23.816667,
+                "visits": [
+                    {
+                        "year": 2012,
+                        "month": 3
+                    }
+                ]
+            },
+            {
+                "name": "Заславль",
+                "lat": 54,
+                "lon": 27.283333,
+                "visits": [
+                    {
+                        "year": 2010,
+                        "month": 8
+                    }
+                ]
+            },
+            {
+                "name": "Минск",
+                "lat": 53.9,
+                "lon": 27.566667
+            },
+            {
+                "name": "Мир",
+                "lat": 53.45,
+                "lon": 26.466667,
+                "visits": [
+                    {
+                        "year": 2013,
+                        "month": 5
+                    }
+                ]
+            },
+            {
+                "name": "Могилёв",
+                "lat": 53.916667,
+                "lon": 30.35,
+                "visits": [
+                    {
+                        "year": 2012,
+                        "month": 8
+                    }
+                ]
+            },
+            {
+                "name": "Молодечно",
+                "lat": 54.313611,
+                "lon": 26.851667
+            },
+            {
+                "name": "Нарочь",
+                "lat": 54.906771,
+                "lon": 26.706599,
+                "visits": [
+                    {
+                        "year": 2011,
+                        "month": 8
+                    },
+                    {
+                        "year": 2014,
+                        "month": 7
+                    }
+                ]
+            },
+            {
+                "name": "Несвиж",
+                "lat": 53.216667,
+                "lon": 26.666667,
+                "visits": [
+                    {
+                        "year": 2013,
+                        "month": 5
+                    }
+                ]
+            },
+            {
+                "name": "Орша",
+                "lat": 54.5,
+                "lon": 30.4,
+                "visits": [
+                    {
+                        "year": 2012,
+                        "month": 9
+                    }
+                ]
+            },
+            {
+                "name": "Полоцк",
+                "lat": 55.483333,
+                "lon": 28.8,
+                "visits": [
+                    {
+                        "yearFrom": 2010,
+                        "monthFrom": 12,
+                        "yearTo": 2011,
+                        "monthTo": 1
+                    }
+                ]
+            },
+            {
+                "name": "Радошковичи",
+                "lat": 54.15,
+                "lon": 27.233333,
+                "visits": [
+                    {
+                        "year": 2010,
+                        "month": 8
+                    }
+                ]
+            },
+            {
+                "name": "Светлогорск",
+                "lat": 52.633333,
+                "lon": 29.733333
+            }
+        ]
+    },
+
+    "BCR": {
+        "name": "Бельгия",
+        "color": "turquoise",
+        "cities": [
+            {
+                "name": "Антверпен",
+                "lat": 51.216667,
+                "lon": 4.4,
+                "visits": [
+                    {
+                        "year": 2013,
+                        "month": 8,
+                        "link": "/post/eurotrip-antwerpen/"
+                    }
+                ]
+            },
+            {
+                "name": "Брюгге",
+                "lat": 51.209444,
+                "lon": 3.22,
+                "visits": [
+                    {
+                        "year": 2013,
+                        "month": 8,
+                        "link": "/post/eurotrip-brugge/"
+                    }
+                ]
+            },
+            {
+                "name": "Брюссель",
+                "lat": 50.846667,
+                "lon": 4.3525,
+                "visits": [
+                    {
+                        "year": 2013,
+                        "month": 8,
+                        "link": "/post/eurotrip-brussels/"
+                    }
+                ]
+            },
+            {
+                "name": "Гент",
+                "lat": 51.05,
+                "lon": 3.716667,
+                "visits": [
+                    {
+                        "year": 2013,
+                        "month": 8,
+                        "link": "/post/eurotrip-ghent/"
+                    }
+                ]
+            }
+        ]
+
+    },
+    "BFR": {
+        "name": "Бельгия",
+        "color": "turquoise"
+    },
+    "BWR": {
+        "name": "Бельгия",
+        "color": "turquoise"
+    },
+
+    "CZE": {
+        "name": "Чехия",
+        "color": "pink",
+        "cities": [
+            {
+                "name": "Прага",
+                "lat": 50.088611,
+                "lon": 14.421389,
+                "visits": [
+                    {
+                        "year": 2012,
+                        "month": 7,
+                        "link": "/post/vacation2/"
+                    }
+                ]
+            }
+        ]
+    },
+    "DEU": {
+        "name": "Германия",
+        "color": "orange",
+        "cities": [
+            {
+                "name": "Бад-Шандау",
+                "lat": 50.916667,
+                "lon": 14.15,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 4,
+                        "link": "/post/saxon-switzerland-2014/"
+                    }
+                ]
+            },
+            {
+                "name": "Берлин",
+                "lat": 52.516667,
+                "lon": 13.383333,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 4,
+                        "link": "/post/berlin-2014/"
+                    },
+                    {
+                        "year": 2013,
+                        "month": 8,
+                        "link": "/post/eurotrip-berlin/"
+                    }
+                ]
+            },
+            {
+                "name": "Ганновер",
+                "lat": 52.374444,
+                "lon": 9.738611,
+                "visits": [
+                    {
+                        "year": 2013,
+                        "month": 8,
+                        "link": "/post/eurotrip-hannover/"
+                    }
+                ]
+            },
+            {
+                "name": "Дрезден",
+                "lat": 51.033333,
+                "lon": 13.733333,
+                "visits": [
+                    {
+                        "year": 2012,
+                        "month": 7,
+                        "link": "/post/vacation2/"
+                    }
+                ]
+            },
+            {
+                "name": "Дюссельдорф",
+                "lat": 51.216667,
+                "lon": 6.816667,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 4,
+                        "link": "/post/dusseldorf-2014/"
+                    },
+                    {
+                        "year": 2013,
+                        "month": 4,
+                        "link": "/post/dusseldorf/"
+                    },
+                    {
+                        "year": 2012,
+                        "month": 4
+                    }
+                ]
+            },
+            {
+                "name": "Кёльн",
+                "lat": 50.942222,
+                "lon": 6.957778,
+                "visits": [
+                    {
+                        "year": 2013,
+                        "month": 4,
+                        "link": "/post/dusseldorf/"
+                    }
+                ]
+            },
+            {
+                "name": "Потсдам",
+                "lat": 52.4,
+                "lon": 13.066667,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 4,
+                        "link": "/post/potsdam-2014/"
+                    }
+                ]
+            }
+        ]
+    },
+    "ESP": {
+        "name": "Испания",
+        "color": "yellow",
+        "cities": [
+            {
+                "name": "Барселона",
+                "lat": 41.383333,
+                "lon": 2.183333,
+                "visits": [
+                    {
+                        "year": 2013,
+                        "month": 8,
+                        "link": "/post/eurotrip-barcelona/"
+                    }
+                ]
+            },
+            {
+                "name": "Гранольерс",
+                "lat": 41.616667,
+                "lon": 2.3,
+                "visits": [
+                    {
+                        "year": 2013,
+                        "month": 8,
+                        "link": "/post/eurotrip-barcelona/"
+                    }
+                ]
+            }
+        ]
+    },
+    "EST": {
+        "name": "Эстония",
+        "color": "turquoise",
+        "cities": [
+            {
+                "name": "Таллинн",
+                "lat": 59.437222,
+                "lon": 24.745278,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 5,
+                        "link": "/post/tallinn-2014/"
+                    }
+                ]
+            }
+        ]
+    },
+    "FIN": {
+        "name": "Финляндия",
+        "color": "blue",
+        "cities": [
+            {
+                "name": "Хельсинки",
+                "lat": 60.170833,
+                "lon": 24.9375,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 5,
+                        "link": "/post/helsinki-2014/"
+                    }
+                ]
+            }
+        ]
+    },
+    "FXX": {
+        "name": "Франция",
+        "color": "red",
+        "cities": [
+            {
+                "name": "Париж",
+                "lat": 48.8567,
+                "lon": 2.3508,
+                "visits": [
+                    {
+                        "year": 2013,
+                        "month": 8,
+                        "link": "/post/eurotrip-paris/"
+                    }
+                ]
+            }
+        ]
+    },
+    "HRV": {
+        "name": "Хорватия",
+        "color": "yellow",
+        "cities": [
+            {
+                "name": "Загреб",
+                "lat": 45.8,
+                "lon": 15.95,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 6,
+                        "link": "/post/eurotrip-2014-zagreb/"
+                    }
+                ]
+            },
+            {
+                "name": "Плитвицкие озёра",
+                "lat": 44.880556,
+                "lon": 15.616111,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 6,
+                        "link": "/post/eurotrip-2014-plitvice-lakes/"
+                    }
+                ]
+            }
+        ]
+    },
+    "HUN": {
+        "name": "Венгрия",
+        "color": "orange",
+        "cities": [
+            {
+                "name": "Будапешт",
+                "lat": 47.516667,
+                "lon": 19.083333,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 6,
+                        "link": "/post/eurotrip-2014-budapest/"
+                    }
+                ]
+            }
+        ]
+    },
+    "ITA": {
+        "name": "Италия",
+        "color": "green",
+        "cities": [
+            {
+                "name": "Бергамо",
+                "lat": 45.7,
+                "lon": 9.666667,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 7,
+                        "link": "/post/eurotrip-2014-milan-and-bergamo/"
+                    }
+                ]
+            },
+            {
+                "name": "Болонья",
+                "lat": 44.5,
+                "lon": 11.35,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 6,
+                        "link": "/post/eurotrip-2014-bologna/"
+                    }
+                ]
+            },
+            {
+                "name": "Везувий",
+                "lat": 40.821389,
+                "lon": 14.425556,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 6,
+                        "link": "/post/eurotrip-2014-vesuvius-and-pompeii/"
+                    }
+                ]
+            },
+            {
+                "name": "Верона",
+                "lat": 45.433333,
+                "lon": 10.983333,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 6,
+                        "link": "/post/eurotrip-2014-verona/"
+                    }
+                ]
+            },
+            {
+                "name": "Капри",
+                "lat": 40.550833,
+                "lon": 14.243333,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 7,
+                        "link": "/post/eurotrip-2014-capri/"
+                    }
+                ]
+            },
+            {
+                "name": "Милан",
+                "lat": 45.466667,
+                "lon": 9.166667,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 7,
+                        "link": "/post/eurotrip-2014-milan-and-bergamo/"
+                    }
+                ]
+            },
+            {
+                "name": "Неаполь",
+                "lat": 40.833333,
+                "lon": 14.25,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 7,
+                        "link": "/post/eurotrip-2014-naples/"
+                    }
+                ]
+            },
+            {
+                "name": "Падуя",
+                "lat": 45.416667,
+                "lon": 11.866667,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 6,
+                        "link": "/post/eurotrip-2014-padua/"
+                    }
+                ]
+            },
+            {
+                "name": "Помпеи",
+                "lat": 40.75,
+                "lon": 14.486111,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 6,
+                        "link": "/post/eurotrip-2014-vesuvius-and-pompeii/"
+                    }
+                ]
+            },
+            {
+                "name": "Рим",
+                "lat": 41.9,
+                "lon": 12.5,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 7,
+                        "link": "/post/eurotrip-2014-rome/"
+                    }
+                ]
+            },
+            {
+                "name": "Флоренция",
+                "lat": 43.783333,
+                "lon": 11.25,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 6,
+                        "link": "/post/eurotrip-2014-florence/"
+                    }
+                ]
+            }
+        ]
+    },
+    "LTU": {
+        "name": "Литва",
+        "color": "blue",
+        "cities": [
+            {
+                "name": "Вильнюс",
+                "lat": 54.683333,
+                "lon": 25.283333,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 3,
+                        "link": "/post/vilnius/"
+                    },
+                    {
+                        "year": 2013,
+                        "month": 3
+                    },
+                    {
+                        "year": 2013,
+                        "month": 1
+                    }
+                ]
+            }
+        ]
+    },
+    "LVA": {
+        "name": "Латвия",
+        "color": "pink",
+        "cities": [
+            {
+                "name": "Рига",
+                "lat": 56.9475,
+                "lon": 24.106944,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 2,
+                        "link": "/post/riga/"
+                    }
+                ]
+            },
+            {
+                "name": "Юрмала",
+                "lat": 56.972222,
+                "lon": 23.796944,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 2,
+                        "link": "/post/riga/"
+                    }
+                ]
+            }
+        ]
+    },
+    "MDA": {
+        "name": "Молдова",
+        "color": "turquoise",
+        "cities": [
+            {
+                "name": "Кишинёв",
+                "lat": 47.00556,
+                "lon": 28.85750,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 6,
+                        "link": "/post/eurotrip-2014-chisinau/"
+                    }
+                ]
+            },
+            {
+                "name": "Кожушна",
+                "lat": 47.0930555556,
+                "lon": 28.6583333333,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 6,
+                        "link": "/post/eurotrip-2014-chisinau/"
+                    }
+                ]
+            }
+        ]
+    },
+    "NLD": {
+        "name": "Нидерланды",
+        "color": "purple",
+        "cities": [
+            {
+                "name": "Амстердам",
+                "lat": 52.383333,
+                "lon": 4.9,
+                "visits": [
+                    {
+                        "year": 2013,
+                        "month": 8,
+                        "link": "/post/eurotrip-amsterdam/"
+                    }
+                ]
+            }
+        ]
+    },
+    "NOR": {
+        "name": "Норвегия",
+        "color": "yellow",
+        "cities": [
+            {
+                "name": "Осло",
+                "lat": 59.95,
+                "lon": 10.75,
+                "visits": [
+                    {
+                        "year": 2013,
+                        "month": 11,
+                        "link": "/post/oslo/"
+                    }
+                ]
+            }
+        ]
+    },
+    "POL": {
+        "name": "Польша",
+        "color": "yellow",
+        "cities": [
+            {
+                "name": "Варшава",
+                "lat": 52.216667,
+                "lon": 21.033333,
+                "visits": [
+                    {
+                        "year": 2013,
+                        "month": 8,
+                        "link": "/post/eurotrip-warsaw/"
+                    },
+                    {
+                        "year": 2013,
+                        "month": 4,
+                        "link": "/post/dusseldorf/"
+                    }
+                ]
+            },
+            {
+                "name": "Вроцлав",
+                "lat": 51.116667,
+                "lon": 17.033333,
+                "visits": [
+                    {
+                        "year": 2013,
+                        "month": 8,
+                        "link": "/post/eurotrip-wroclaw/"
+                    }
+                ]
+            },
+            {
+                "name": "Краков",
+                "lat": 50.066667,
+                "lon": 19.95,
+                "visits": [
+                    {
+                        "year": 2013,
+                        "month": 8,
+                        "link": "/post/eurotrip-krakow/"
+                    }
+                ]
+            },
+            {
+                "name": "Кудова-Здруй",
+                "lat": 50.433333,
+                "lon": 16.233333,
+                "visits": [
+                    {
+                        "year": 2012,
+                        "month": 7,
+                        "link": "/post/vacation2/"
+                    }
+                ]
+            }
+        ]
+    },
+    "ROU": {
+        "name": "Румыния",
+        "color": "purple",
+        "cities": [
+            {
+                "name": "Бран",
+                "lat": 45.51306,
+                "lon": 25.36389,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 6,
+                        "link": "/post/eurotrip-2014-bran-rasnov-brasov/"
+                    }
+                ]
+            },
+            {
+                "name": "Брашов",
+                "lat": 45.666667,
+                "lon": 25.616667,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 6,
+                        "link": "/post/eurotrip-2014-bran-rasnov-brasov/"
+                    }
+                ]
+            },
+            {
+                "name": "Бухарест",
+                "lat": 44.400,
+                "lon": 26.083,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 6,
+                        "link": "/post/eurotrip-2014-bucharest/"
+                    }
+                ]
+            },
+            {
+                "name": "Рашнов",
+                "lat": 45.593333,
+                "lon": 25.460278,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 6,
+                        "link": "/post/eurotrip-2014-bran-rasnov-brasov/"
+                    }
+                ]
+            },
+            {
+                "name": "Сигишоара",
+                "lat": 46.216944,
+                "lon": 24.791111,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 6,
+                        "link": "/post/eurotrip-2014-sighisoara/"
+                    }
+                ]
+            }
+        ]
+    },
+    "RUS": {
+        "name": "Россия",
+        "color": "red",
+        "cities": [
+            {
+                "name": "Москва",
+                "lat": 55.751667,
+                "lon": 37.617778,
+                "visits": [
+                    {
+                        "year": 2012,
+                        "month": 6
+                    },
+                    {
+                        "year": 2012,
+                        "month": 10
+                    }
+                ]
+            }
+        ]
+    },
+    "SVK": {
+        "name": "Словакия",
+        "color": "red",
+        "cities": [
+            {
+                "name": "Братислава",
+                "lat": 48.144722,
+                "lon": 17.112778,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 6,
+                        "link": "/post/eurotrip-2014-bratislava/"
+                    }
+                ]
+            }
+        ]
+    },
+    "SVN": {
+        "name": "Словения",
+        "color": "purple",
+        "cities": [
+            {
+                "name": "Блед",
+                "lat": 46.366667,
+                "lon": 14.116667,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 6,
+                        "link": "/post/eurotrip-2014-bled-bohinj/"
+                    }
+                ]
+            },
+            {
+                "name": "Бохинь",
+                "lat": 46.273886,
+                "lon": 13.950578,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 6,
+                        "link": "/post/eurotrip-2014-bled-bohinj/"
+                    }
+                ]
+            },
+            {
+                "name": "Любляна",
+                "lat": 46.05,
+                "lon": 14.5,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 6,
+                        "link": "/post/eurotrip-2014-ljubljana/"
+                    }
+                ]
+            },
+            {
+                "name": "Постойна",
+                "lat": 45.766667,
+                "lon": 14.216667,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 6,
+                        "link": "/post/eurotrip-2014-postojna-skocjan/"
+                    }
+                ]
+            },
+            {
+                "name": "Шкотьян",
+                "lat": 45.662222,
+                "lon": 13.988333,
+                "visits": [
+                    {
+                        "year": 2014,
+                        "month": 6,
+                        "link": "/post/eurotrip-2014-postojna-skocjan/"
+                    }
+                ]
+            }
+        ]
+    },
+    "UKR": {
+        "name": "Украина",
+        "color": "pink",
+        "cities": [
+            {
+                "name": "Балаклава",
+                "lat": 44.5,
+                "lon": 33.6,
+                "visits": [
+                    {
+                        "year": 2011,
+                        "monthFrom": 7,
+                        "monthTo": 8
+                    }
+                ]
+            },
+            {
+                "name": "Бахчисарай",
+                "lat": 44.752778,
+                "lon": 33.860833,
+                "visits": [
+                    {
+                        "year": 2011,
+                        "month": 7
+                    }
+                ]
+            },
+            {
+                "name": "Киев",
+                "lat": 50.4505,
+                "lon": 30.523,
+                "visits": [
+                    {
+                        "year": 2012,
+                        "month": 4
+                    },
+                    {
+                        "year": 2013,
+                        "month": 10
+                    }
+                ]
+            },
+            {
+                "name": "Львов",
+                "lat": 49.833333,
+                "lon": 24,
+                "visits": [
+                    {
+                        "yearFrom": 2011,
+                        "monthFrom": 12,
+                        "yearTo": 2012,
+                        "monthTo": 1
+                    }
+                ]
+            },
+            {
+                "name": "Севастополь",
+                "lat": 44.6,
+                "lon": 33.533333,
+                "visits": [
+                    {
+                        "year": 2011,
+                        "monthFrom": 7,
+                        "monthTo": 8
+                    }
+                ]
+            },
+            {
+                "name": "Симферополь",
+                "lat": 44.948056,
+                "lon": 34.104167,
+                "visits": [
+                    {
+                        "year": 2011,
+                        "monthFrom": 7,
+                        "monthTo": 8
+                    }
+                ]
+            },
+            {
+                "name": "Форос",
+                "lat": 44.391667,
+                "lon": 33.788889,
+                "visits": [
+                    {
+                        "year": 2011,
+                        "month": 8
+                    }
+                ]
+            }
+        ]
+    }
+}

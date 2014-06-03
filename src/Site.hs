@@ -63,6 +63,8 @@ postTemplateName :: Identifier
 postTemplateName = "templates/post-development.html"
 routePlannerTemplateName :: Identifier
 routePlannerTemplateName = "templates/route-planner-development.html"
+visitedCountriesTemplateName :: Identifier
+visitedCountriesTemplateName = "templates/map-development.html"
 
 #else
 
@@ -78,6 +80,8 @@ postTemplateName :: Identifier
 postTemplateName = "templates/post.html"
 routePlannerTemplateName :: Identifier
 routePlannerTemplateName = "templates/route-planner.html"
+visitedCountriesTemplateName :: Identifier
+visitedCountriesTemplateName = "templates/map.html"
 
 #endif
 
@@ -231,15 +235,37 @@ staticFilesRules = do
         route   idRoute
         compile copyFileCompiler
 
-#else
-
-    match (fromList ["dart/script.dart", "dart/script.dart.js", "dart/s.js", "dart/script-route-planner.dart", "dart/script-route-planner.dart.js"]) $ do
+    match "js/**" $ do
         route   idRoute
         compile copyFileCompiler
 
+#else
+
+    -- TODO d3, topojson and others
+    match (fromList
+        [ "dart/script.dart"
+        , "dart/script.dart.js"
+        , "dart/s.js"
+        , "dart/script-route-planner.dart"
+        , "dart/script-route-planner.dart.js"
+        , "dart/script-map.dart"
+        , "dart/script-map.dart.js"
+        , "dart/smap.js"
+        ]) $ do
+            route   idRoute
+            compile copyFileCompiler
+
 #endif
 
-    match (fromList ["favicon.ico", "robots.txt", "css/style.css", "js/html5shiv.js", "js/respond.min.js"]) $ do
+    match (fromList
+        [ "favicon.ico"
+        , "robots.txt"
+        , "css/style.css"
+        , "js/html5shiv.js"
+        , "js/respond.min.js"
+        , "map/world.json"
+        , "map/data.json"
+        ]) $ do
         route   idRoute
         compile copyFileCompiler
 
@@ -437,6 +463,17 @@ staticPagesRules = do
                     , metaDescription = "Расчет оптимального маршрута путешествия по городам"
                     , metaUrl = "/route-planner/"
                     }))
+
+    match "map/index.html" $ do
+            route idRoute
+            compile $ do
+                getResourceBody
+                    >>= loadAndApplyTemplate "templates/_post-without-footer.html" postCtx
+                    >>= loadAndApplyTemplate visitedCountriesTemplateName (pageCtx (defaultMetadata
+                        { metaTitle = Just "Карта стран"
+                        , metaDescription = "Карта посещённых стран и городов"
+                        , metaUrl = "/map/"
+                        }))
 
 
     match (fromList ["about.md", "404.md"]) $ do
