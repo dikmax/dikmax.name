@@ -5,6 +5,6 @@ published: true
 tags: "кулинария, мохито, фотки"
 ---
 
-![Двамохито и драники](/images/photos/two-mojito.jpg "Двамохито и драники")
+![Двамохито и\ драники](/images/photos/two-mojito.jpg "Двамохито и драники")
 
 **UPD**: [Версия v2.0](/post/twomojito2/)
