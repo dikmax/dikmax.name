@@ -2,7 +2,7 @@
 title: "Отладка событий в ExtJS/Sencha Touch"
 date: "2013-07-27T06:02:44+03:00"
 published: true
-tags: "extjs, javascript, sencha touch, программирование"
+tags: "debug, extjs, javascript, sencha touch, программирование"
 ---
 
 Иногда, когда пишешь приложение на Sencha Touch или Ext JS, очень нужно отследить порядок событий в различных
