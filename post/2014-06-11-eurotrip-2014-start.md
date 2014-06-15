@@ -2,7 +2,7 @@
 title: "Eurotrip 2014"
 date: "2014-06-11T19:45:00+03:00"
 published: true
-tags: "eurotrip, лытдыбр, отпуск, путешествие, фотки"
+tags: "eurotrip, eurotrip-2014, лытдыбр, отпуск, путешествие, фотки"
 thread: 2755970864
 ---
 
@@ -15,5 +15,7 @@ thread: 2755970864
 ![](/images/travel/2014-06-eurotrip/start-packing.jpg)
 
 Берегите себя!  
+
+Читать дальше: [Кишинёв](/post/eurotrip-2014-chisinau/).
 
 [contest]: /post/two-years-contest/
