@@ -3,6 +3,7 @@ title: "Eurotrip 2014: Бран, Рашнов, Брашов"
 date: "2014-06-18T14:15:00+02:00"
 published: true
 tags: "eurotrip, eurotrip-2014, румыния, отпуск, путешествие, фотки"
+thread: 2774940920
 ---
 
 # Бран
