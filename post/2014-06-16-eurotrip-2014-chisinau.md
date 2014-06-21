@@ -24,7 +24,7 @@ thread: 2768801852
 
 ![Робот](/images/travel/2014-06-eurotrip/chisinau-robot.jpg "Робот")
 
-![Какой-то советский памятник](/images/travel/2014-06-eurotrip/chisinau-soviet-monument.jpg "Какой-то советский памятник")
+![Памятник освободителям от фашизма](/images/travel/2014-06-eurotrip/chisinau-soviet-monument.jpg "Памятник освободителям от фашизма")
 
 ![Одна из немногочисленных церквей](/images/travel/2014-06-eurotrip/chisinau-church-1.jpg "Одна из немногочисленных церквей")
 
