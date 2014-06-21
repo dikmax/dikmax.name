@@ -85,4 +85,4 @@ tags: "eurotrip, eurotrip-2014, отпуск, путешествие, румын
 
 ![Флюгер](/images/travel/2014-06-eurotrip/sighisoara-weathercock.jpg "Флюгер")
 
-Продолжение следует...
+Читать дальше: [Будапешт](/post/eurotrip-2014-budapest/).
