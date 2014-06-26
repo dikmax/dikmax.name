@@ -106,7 +106,7 @@ thread: 2789638545
 
 На\ этом мы\ прощаемся со\ Словакией. Она была мила с\ нами, и\ мы\ ей\ за\ это благодарны.
 
-Продолжение следует... 
+Читать дальше: [Вена](/post/eurotrip-2014-vienna/).
 
 [botel]: http://www.booking.com/hotel/sk/botel-marina.html
 [EuroTrip]: http://www.imdb.com/title/tt0356150/
