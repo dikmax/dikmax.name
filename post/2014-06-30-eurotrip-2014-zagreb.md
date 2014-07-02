@@ -118,4 +118,4 @@ tags: "eurotrip, eurotrip-2014, отпуск, путешествие, фотки
 
 ![Окно ресторана](/images/travel/2014-06-eurotrip/zagreb-window.jpg "Окно ресторана")
 
-Продолжение следует...
+Читать дальше: [Плитвицкие озёра](/post/eurotrip-2014-plitvice-lakes/).
