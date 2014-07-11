@@ -151,4 +151,4 @@ tags: "eurotrip, eurotrip-2014, италия, отпуск, путешестви
 
 ![Сердце Вероны](/images/travel/2014-06-eurotrip/verona-heart.jpg "Сердце Вероны")
 
-Продолжение следует...
+Читать дальше: [Болонья](/post/eurotrip-2014-bologna/).
