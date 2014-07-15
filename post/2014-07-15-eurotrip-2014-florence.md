@@ -83,7 +83,7 @@ tags: "eurotrip, eurotrip-2014, италия, отпуск, путешестви
 
 ![](/images/travel/2014-06-eurotrip/florence-dante-museum-2.jpg)
 
-![Схема рая, по версии Данте](/images/travel/2014-06-eurotrip/florence-paradise.jpg "Схема рая, по версии Данте")
+![Схема рая по версии Данте](/images/travel/2014-06-eurotrip/florence-paradise.jpg "Схема рая, по версии Данте")
 
 ![Я\ решил почитать Божественную Комедию](/images/travel/2014-06-eurotrip/florence-divine-comedy.jpg "Я решил почитать Божественную Комедию")
 
