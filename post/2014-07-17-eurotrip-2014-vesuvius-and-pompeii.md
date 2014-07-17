@@ -84,7 +84,7 @@ tags: "eurotrip, eurotrip-2014, италия, отпуск, путешестви
 
 ![](/images/travel/2014-06-eurotrip/pompeii-i-3.jpg)
 
-![](/images/travel/2014-06-eurotrip/pompeii-i-4.jpg)
+![Помпеи со своим убийцей на фоне](/images/travel/2014-06-eurotrip/pompeii-i-4.jpg "Помпеи со своим убийцей на фоне")
 
 ![](/images/travel/2014-06-eurotrip/pompeii-i-5.jpg)
 
