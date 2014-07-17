@@ -105,17 +105,17 @@ tags: "eurotrip, eurotrip-2014, италия, отпуск, путешестви
 
 Идём дальше.
 
-![](/images/travel/2014-06-eurotrip/pompeii-ii-1.JPG)
+![](/images/travel/2014-06-eurotrip/pompeii-ii-1.jpg)
 
-![](/images/travel/2014-06-eurotrip/pompeii-ii-2.JPG)
+![](/images/travel/2014-06-eurotrip/pompeii-ii-2.jpg)
 
-![](/images/travel/2014-06-eurotrip/pompeii-ii-3.JPG)
+![](/images/travel/2014-06-eurotrip/pompeii-ii-3.jpg)
 
-![](/images/travel/2014-06-eurotrip/pompeii-ii-4.JPG)
+![](/images/travel/2014-06-eurotrip/pompeii-ii-4.jpg)
 
-![](/images/travel/2014-06-eurotrip/pompeii-ii-5.JPG)
+![](/images/travel/2014-06-eurotrip/pompeii-ii-5.jpg)
 
-![](/images/travel/2014-06-eurotrip/pompeii-ii-6.JPG)
+![](/images/travel/2014-06-eurotrip/pompeii-ii-6.jpg)
 
 Некоторые особенно интересные дома очень хорошо отреставрированы. В\ них можно зайти и\ посмотреть, как они были 
 устроены, и\ даже частично оценить живопись, которой раньше были покрыты стены.
