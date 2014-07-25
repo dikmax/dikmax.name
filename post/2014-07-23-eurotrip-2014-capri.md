@@ -220,7 +220,7 @@ CitySightseeing Bus, в\ котором поместились, не\ счита
 
 ![Привет](/images/travel/2014-06-eurotrip/capri-hello.jpg "Привет")
 
-Продолжение следует...
+Читать дальше: [Рим](/post/eurotrip-2014-rome/).
 
 [bologna]: /post/eurotrip-2014-bologna/
 [capri-pants]: http://ru.wikipedia.org/wiki/%D0%9A%D0%B0%D0%BF%D1%80%D0%B8_(%D0%B1%D1%80%D1%8E%D0%BA%D0%B8)
