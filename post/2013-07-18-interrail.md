@@ -2,7 +2,7 @@
 title: "InterRail"
 date: "2013-07-18T11:57:31+03:00"
 published: true
-tags: "eurotrip, вопрос, лытдыбр, отпуск, путешествие"
+tags: "eurotrip, eurotrip-2013, вопрос, лытдыбр, отпуск, путешествие"
 thread: 1509195133
 ---
 

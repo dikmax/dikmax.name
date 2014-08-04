@@ -2,7 +2,7 @@
 title: "Eurotrip: Антверпен"
 date: "2013-08-31T22:45:10+03:00"
 published: true
-tags: "eurotrip, бельгия, отпуск, путешествие, фотки"
+tags: "eurotrip, eurotrip-2013, бельгия, отпуск, путешествие, фотки"
 thread: 1680530670
 ---
 

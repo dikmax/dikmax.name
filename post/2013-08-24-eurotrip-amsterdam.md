@@ -2,7 +2,7 @@
 title: "Eurotrip: Амстердам"
 date: "2013-08-24T00:08:02+03:00"
 published: true
-tags: "eurotrip, нидерланды, отпуск, путешествие, фотки"
+tags: "eurotrip, eurotrip-2013, нидерланды, отпуск, путешествие, фотки"
 thread: 1635102307
 ---
 

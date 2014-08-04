@@ -2,7 +2,7 @@
 title: "Eurotrip: Итоги"
 date: "2013-10-22T10:56:45+03:00"
 published: true
-tags: "booking, eurotrip, interrail, lonely planet, отпуск, путешествие, фотки"
+tags: "booking, eurotrip, eurotrip-2013, interrail, lonely planet, отпуск, путешествие, фотки"
 thread: 1885559170
 ---
 
