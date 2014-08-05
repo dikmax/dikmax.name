@@ -127,4 +127,4 @@ tags: "eurotrip, eurotrip-2014, отпуск, путешествие, слове
 
 ![](/images/travel/2014-06-eurotrip/skocjan-road-2.jpg)
 
-Читать дальше: [озёра Блед и Бохинь](/post/eurotrip-2014-bled-bohinj/).
+Читать дальше: [озёра Блед и Бохинь](/post/eurotrip-2014-bled-bohinj/). [Вернуться к\ оглавлению](/post/eurotrip-2014/).

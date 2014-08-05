@@ -81,4 +81,4 @@ tags: "eurotrip, eurotrip-2014, италия, отпуск, путешестви
 
 ![](/images/travel/2014-06-eurotrip/bologna-ducati.jpg)
 
-Читать дальше: [Флоренция](/post/eurotrip-2014-florence/).
+Читать дальше: [Флоренция](/post/eurotrip-2014-florence/). [Вернуться к\ оглавлению](/post/eurotrip-2014/).

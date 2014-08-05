@@ -152,6 +152,6 @@ tags: "eurotrip, eurotrip-2014, италия, отпуск, путешестви
 
 ![Коренной помпеянец](/images/travel/2014-06-eurotrip/pompeii-citizen.jpg "Коренной помпеянец")
 
-Читать дальше: [Неаполь](/post/eurotrip-2014-naples/).
+Читать дальше: [Неаполь](/post/eurotrip-2014-naples/). [Вернуться к\ оглавлению](/post/eurotrip-2014/).
 
 [contest]: /post/two-years-contest-results/

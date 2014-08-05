@@ -88,7 +88,7 @@ Hauptbahnhof (главный железнодорожный вокзал) пре
 
 В\ общем, где&#8209;то тут мы\ сочли Вену скучной и\ отправились на\ вокзал, чтобы на\ ближайшем поезде укатить дальше.
 
-Читать дальше: [Грац](/post/eurotrip-2014-graz/).
+Читать дальше: [Грац](/post/eurotrip-2014-graz/). [Вернуться к\ оглавлению](/post/eurotrip-2014/).
 
 [bratislava]: /post/eurotrip-2014-bratislava/
 [corpus]: http://ru.wikipedia.org/wiki/%D0%9F%D1%80%D0%B0%D0%B7%D0%B4%D0%BD%D0%B8%D0%BA_%D0%A2%D0%B5%D0%BB%D0%B0_%D0%B8_%D0%9A%D1%80%D0%BE%D0%B2%D0%B8_%D0%A5%D1%80%D0%B8%D1%81%D1%82%D0%BE%D0%B2%D1%8B%D1%85

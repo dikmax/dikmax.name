@@ -16,6 +16,6 @@ thread: 2755970864
 
 Берегите себя!  
 
-Читать дальше: [Кишинёв](/post/eurotrip-2014-chisinau/).
+Читать дальше: [Кишинёв](/post/eurotrip-2014-chisinau/). [Вернуться к\ оглавлению](/post/eurotrip-2014/).
 
 [contest]: /post/two-years-contest/

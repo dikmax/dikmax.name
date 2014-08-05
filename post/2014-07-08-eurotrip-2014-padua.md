@@ -79,7 +79,7 @@ tags: "eurotrip, eurotrip-2014, италия, отпуск, путешестви
 
 ![Мальчик](/images/travel/2014-06-eurotrip/padua-boy.jpg)
 
-Читать дальше: [Верона](/post/eurotrip-2014-verona/).
+Читать дальше: [Верона](/post/eurotrip-2014-verona/). [Вернуться к\ оглавлению](/post/eurotrip-2014/).
 
 [tram]: http://ru.wikipedia.org/wiki/%D0%A2%D1%80%D0%B0%D0%BD%D1%81%D0%BB%D1%91%D1%80
 [budapest]: /post/eurotrip-2014-budapest/

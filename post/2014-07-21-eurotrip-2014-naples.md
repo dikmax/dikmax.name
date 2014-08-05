@@ -187,7 +187,7 @@ San Francesco di\ Paolo:
 и\ не\ знаю, хочется ли\ мне сюда вернуться. С\ одной стороны здесь неповторимый колорит, а\ с\ другой\ --- не\ хочется 
 повторения истории с\ телефоном.
 
-Читать дальше: [Капри](/post/eurotrip-2014-capri/).
+Читать дальше: [Капри](/post/eurotrip-2014-capri/). [Вернуться к\ оглавлению](/post/eurotrip-2014/).
 
 [movie]: http://www.imdb.com/title/tt0879870/
 [pompeii]: /post/eurotrip-2014-vesuvius-and-pompeii/

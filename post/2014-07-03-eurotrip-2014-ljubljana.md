@@ -119,7 +119,8 @@ tags: "eurotrip, eurotrip-2014, отпуск, путешествие, слове
 
 ![Любляница](/images/travel/2014-06-eurotrip/ljubljana-river.jpg "Любляница")
 
-Читать дальше: [Постойнские и Шкотьянские пещеры](/post/eurotrip-2014-postojna-skocjan/).
+Читать дальше: [Постойнские и Шкотьянские пещеры](/post/eurotrip-2014-postojna-skocjan/). 
+[Вернуться к\ оглавлению](/post/eurotrip-2014/).
 
 [berlin]: /post/eurotrip-berlin/
 [ghent]: /post/eurotrip-ghent/

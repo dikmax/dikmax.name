@@ -190,4 +190,4 @@ tags: "eurotrip, eurotrip-2014, отпуск, путешествие, слове
 
 ![](/images/travel/2014-06-eurotrip/bohinj-road-back-6.jpg)
 
-Читать дальше: [Падуя](/post/eurotrip-2014-padua/).
+Читать дальше: [Падуя](/post/eurotrip-2014-padua/). [Вернуться к\ оглавлению](/post/eurotrip-2014/).
