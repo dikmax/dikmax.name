@@ -260,8 +260,8 @@ writeInline (Image inline target) = do
         [ Element "div" [("class", "figure-inner")]
           ( Element "img"
             [ ("src", T.pack $ fst target)
-            , ("title", T.pack $ snd target)
-            , ("alt", T.pack $ snd target)
+            , ("title", T.pack $ fixImageTitle $ snd target)
+            , ("alt", T.pack $ fixImageTitle $ snd target)
             , ("class", "img-polaroid")
             ] []
           : [ Element "p" [("class", "figure-description")] inlines | inline /= []])
@@ -350,8 +350,8 @@ writeRawInline (Image inline target) = do
     (if inline /= [] then "<p class=\"figure-description\">" `T.append` inlines `T.append` "</p>" else "")
     `T.append` "<img " `T.append`
     writeRawAttr ("", [], [ ("src", fst target)
-        , ("title", snd target)
-        , ("alt", snd target)
+        , ("title", fixImageTitle $ snd target)
+        , ("alt", fixImageTitle $ snd target)
         , ("class", "img-polaroid")
         ]) `T.append` " />"
     )
@@ -387,4 +387,7 @@ getFooter = do
       : transformNotes ns (i+1) prefix
     transformNotes [] _ _ = []
 
-
+fixImageTitle :: String -> String
+fixImageTitle title
+    | take 4 title == "fig:" = drop 4 title
+    | otherwise = title
