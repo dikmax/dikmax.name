@@ -236,25 +236,22 @@ writeInline (Link inline target) = do
   return [
     Element "a" 
       [("href", T.pack $ fst target), ("title", T.pack $ snd target)] inlines]
-  --writeInline (Image _ _) = [TextNode "Image not implemented"]
 writeInline (Image inline target) = do
   inlines <- concatInlines inline
   return $ if "http://www.youtube.com/watch?v=" `T.isPrefixOf` T.pack (fst target) ||
         "https://www.youtube.com/watch?v=" `T.isPrefixOf` T.pack (fst target)
     then
       [ Element "div" [("class", "figure")]
-        [ Element "div" [("class", "figure-inner")]
-          ( Element "iframe"
-            [ ("width", "560")
-            , ("height", "315")
-            , ("src", "https://www.youtube.com/embed/" `T.append`
+        ( Element "div" [("class", "embed-responsive embed-responsive-16by9")]
+          [ Element "iframe"
+            [ ("src", "https://www.youtube.com/embed/" `T.append`
                 videoId (T.pack $ fst target) `T.append` "?wmode=transparent")
-            , ("frameborder", "0")
             , ("allowfullscreen", "allowfullscreen")
-            , ("class", "img-polaroid")
+            , ("class", "img-polaroid embed-responsive-item")
             ] []
-          : [ Element "p" [("class", "figure-description")] inlines | inline /= []])
-        ]
+          ]
+        : [ Element "p" [("class", "figure-description")] inlines | inline /= [] ]
+        )
       ]
     else
       [ Element "div" [("class", "figure")]
