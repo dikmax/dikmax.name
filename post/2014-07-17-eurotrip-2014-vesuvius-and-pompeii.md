@@ -3,6 +3,7 @@ title: "Eurotrip 2014: Везувий и Помпеи"
 date: "2014-07-17T23:35:00+03:00"
 published: true
 tags: "eurotrip, eurotrip-2014, италия, отпуск, путешествие, фотки"
+thread: 2852026800
 ---
 
 ![](/images/travel/2014-06-eurotrip/pompeii-cover.jpg)
