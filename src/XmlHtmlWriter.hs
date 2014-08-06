@@ -239,14 +239,15 @@ writeInline (Link inline target) = do
   --writeInline (Image _ _) = [TextNode "Image not implemented"]
 writeInline (Image inline target) = do
   inlines <- concatInlines inline
-  return $ if "http://www.youtube.com/watch?v=" `T.isPrefixOf` T.pack (fst target)
+  return $ if "http://www.youtube.com/watch?v=" `T.isPrefixOf` T.pack (fst target) ||
+        "https://www.youtube.com/watch?v=" `T.isPrefixOf` T.pack (fst target)
     then
       [ Element "div" [("class", "figure")]
         [ Element "div" [("class", "figure-inner")]
           ( Element "iframe"
             [ ("width", "560")
             , ("height", "315")
-            , ("src", "http://www.youtube.com/embed/" `T.append`
+            , ("src", "https://www.youtube.com/embed/" `T.append`
                 videoId (T.pack $ fst target) `T.append` "?wmode=transparent")
             , ("frameborder", "0")
             , ("allowfullscreen", "allowfullscreen")
@@ -268,7 +269,9 @@ writeInline (Image inline target) = do
         ]
       ]
   where
-    videoId url = T.takeWhile (/= '&') $ T.replace "http://www.youtube.com/watch?v=" "" url
+    videoId url = T.takeWhile (/= '&') $ T.replace "http://www.youtube.com/watch?v=" "" $
+        T.replace "https://www.youtube.com/watch?v=" "" url
+
 writeInline (Note block) = do
   blocks <- concatBlocks block
   writerState <- get
