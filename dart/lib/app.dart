@@ -36,7 +36,7 @@ class App {
     openButton.onClick.listen((event) {
       jumbotron.style.display = 'block';
       jumbotronFolded.style.display = 'none';
-      cookie.set('closeJumbotron', '1', expires: 180);
+      cookie.set('closeJumbotron', '0', expires: 180);
       event.stopPropagation();
     });
 
