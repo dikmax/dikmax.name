@@ -15,6 +15,9 @@ site.o
 /dart/packages
 /dart/benchmark/packages
 /dart/web/packages
+/map/countries.json
+/map/regions.json
+/map/subunits.json
 *.dart.deps
 *.dart.js.deps
 *.dart.js.map

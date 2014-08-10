@@ -71,10 +71,17 @@ class MapApplication {
     visited = visitedData;
     countries = context['topojson']
       .callMethod('feature', [new JsObject.jsify(world), new JsObject.jsify(world['objects']['countries'])])['features'];
+    var subunits = context['topojson']
+      .callMethod('feature', [new JsObject.jsify(world), new JsObject.jsify(world['objects']['subunits'])])['features'];
+    countries.addAll(subunits);
+    var regions = context['topojson']
+      .callMethod('feature', [new JsObject.jsify(world), new JsObject.jsify(world['objects']['regions'])])['features'];
+    countries.addAll(regions);
     cities = [];
-    countries.forEach((d) {
-      if (visited[d['id']] != null && visited[d['id']]['cities'] != null) {
-        cities.addAll(visited[d['id']]['cities']);
+
+    visited.forEach((_, v) {
+      if (v['cities'] != null) {
+        cities.addAll(v['cities']);
       }
     });
     initCountries();
@@ -85,7 +92,7 @@ class MapApplication {
   void initBackground() {
     // D3 code
     projection = context['d3']['geo']['polyhedron'].callMethod('waterman')
-      .callMethod('scale', [135])
+      .callMethod('scale', [0.121841155 * width])
       .callMethod('translate', [new JsObject.jsify([width / 2, height / 2])])
       .callMethod('rotate', [new JsObject.jsify([20, 0])]);
 
@@ -143,13 +150,26 @@ class MapApplication {
       .callMethod("attr", ["d", path])
       .callMethod("attr", ["id", (d, i, [_]) => d['id']])
       .callMethod("style", ["fill", (d, i, [_]) {
-        var c = visited[d['id']];
+        String regionId;
+        String countryId = d['id'];
+        if (countryId.length > 3) {
+          regionId = countryId;
+          countryId = countryId.substring(0, 3);
+        }
+        var c = visited[countryId];
         if (c == null) {
           return LAND_COLOR;
         }
 
         var color = c['color'];
         if (color == null || COLORS[color] == null) {
+          return LAND_COLOR;
+        }
+
+        if (regionId != null) {
+          if (visited[countryId]['regions'] != null && visited[countryId]['regions'][regionId] != null) {
+            return COLORS[color];
+          }
           return LAND_COLOR;
         }
         return COLORS[color];
@@ -163,10 +183,14 @@ class MapApplication {
     country.callMethod("on", ["mousemove", (d, i, [_]) {
       var mouse = context['d3'].callMethod("mouse", [svg.callMethod("node")]);
 
-      String name = "Неизведанная территория";
-      if (visited[d['id']] != null && visited[d['id']]['name'] != null) {
-        name = visited[d['id']]['name'];
+      var regionId;
+      var countryId = d['id'];
+      if (countryId.length > 3) {
+        regionId = countryId;
+        countryId = countryId.substring(0, 3);
       }
+
+      String name = getCountryName(countryId, regionId);
       tooltip
         ..classes.remove("hidden")
         ..style.left = "${mouse[0] + offsetLeft}px"
@@ -175,25 +199,40 @@ class MapApplication {
     }]);
     country.callMethod("on", ["mouseout", (d, i, [_]) => tooltip.classes.add('hidden')]);
     country.callMethod("on", ["click", (d, i, [_]) {
-      String id = d['id'];
-      if (id == "BFR" || id == "BWR") { // Special mapping for Belgium
-        id = "BCR";
+      var regionId;
+      var countryId = d['id'];
+      if (countryId.length > 3) {
+        regionId = countryId;
+        countryId = countryId.substring(0, 3);
       }
 
-      if (visited[id] == null || visited[id]['name'] == null) {
+      if (visited[countryId] == null || visited[countryId]['name'] == null) {
         hidePopOver();
         return;
       }
-      String name = visited[id]['name'];
+      String name = visited[countryId]['name'];
 
       var mouse = context['d3'].callMethod("mouse", [svg.callMethod("node")]);
 
-      List cities = visited[id]['cities'];
+      List cities = visited[countryId]['cities'];
       cities.sort((a, b) => a['name'].compareTo(b['name']));
       Iterable content = cities.map((e) => "<li>${formatCityString(e)}</li>");
 
       showPopOver(name, '<ul class="list-unstyled">${content.join('')}</ul>', mouse);
     }]);
+  }
+
+  String getCountryName(countryId, regionId) {
+    String name = "Неизведанная территория";
+    if (visited[countryId] != null && visited[countryId]['name'] != null) {
+      name = visited[countryId]['name'];
+      if (regionId != null) {
+        if (visited[countryId]['regions'] != null && visited[countryId]['regions'][regionId] != null) {
+          name = visited[countryId]['regions'][regionId] + ' &mdash; ' + name;
+        }
+      }
+    }
+    return name;
   }
 
   void initCities() {

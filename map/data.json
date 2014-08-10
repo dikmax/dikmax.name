@@ -34,6 +34,63 @@
             }
         ]
     },
+
+    "BEL": {
+        "name": "Бельгия",
+        "color": "turquoise",
+        "cities": [
+            {
+                "name": "Антверпен",
+                "lat": 51.216667,
+                "lon": 4.4,
+                "visits": [
+                    {
+                        "year": 2013,
+                        "month": 8,
+                        "link": "/post/eurotrip-antwerpen/"
+                    }
+                ]
+            },
+            {
+                "name": "Брюгге",
+                "lat": 51.209444,
+                "lon": 3.22,
+                "visits": [
+                    {
+                        "year": 2013,
+                        "month": 8,
+                        "link": "/post/eurotrip-brugge/"
+                    }
+                ]
+            },
+            {
+                "name": "Брюссель",
+                "lat": 50.846667,
+                "lon": 4.3525,
+                "visits": [
+                    {
+                        "year": 2013,
+                        "month": 8,
+                        "link": "/post/eurotrip-brussels/"
+                    }
+                ]
+            },
+            {
+                "name": "Гент",
+                "lat": 51.05,
+                "lon": 3.716667,
+                "visits": [
+                    {
+                        "year": 2013,
+                        "month": 8,
+                        "link": "/post/eurotrip-ghent/"
+                    }
+                ]
+            }
+        ]
+
+    },
+
     "BLR": {
         "name": "Беларусь",
         "color": "green",
@@ -207,70 +264,6 @@
         ]
     },
 
-    "BCR": {
-        "name": "Бельгия",
-        "color": "turquoise",
-        "cities": [
-            {
-                "name": "Антверпен",
-                "lat": 51.216667,
-                "lon": 4.4,
-                "visits": [
-                    {
-                        "year": 2013,
-                        "month": 8,
-                        "link": "/post/eurotrip-antwerpen/"
-                    }
-                ]
-            },
-            {
-                "name": "Брюгге",
-                "lat": 51.209444,
-                "lon": 3.22,
-                "visits": [
-                    {
-                        "year": 2013,
-                        "month": 8,
-                        "link": "/post/eurotrip-brugge/"
-                    }
-                ]
-            },
-            {
-                "name": "Брюссель",
-                "lat": 50.846667,
-                "lon": 4.3525,
-                "visits": [
-                    {
-                        "year": 2013,
-                        "month": 8,
-                        "link": "/post/eurotrip-brussels/"
-                    }
-                ]
-            },
-            {
-                "name": "Гент",
-                "lat": 51.05,
-                "lon": 3.716667,
-                "visits": [
-                    {
-                        "year": 2013,
-                        "month": 8,
-                        "link": "/post/eurotrip-ghent/"
-                    }
-                ]
-            }
-        ]
-
-    },
-    "BFR": {
-        "name": "Бельгия",
-        "color": "turquoise"
-    },
-    "BWR": {
-        "name": "Бельгия",
-        "color": "turquoise"
-    },
-
     "CZE": {
         "name": "Чехия",
         "color": "pink",
@@ -289,6 +282,7 @@
             }
         ]
     },
+
     "DEU": {
         "name": "Германия",
         "color": "orange",
@@ -393,6 +387,7 @@
             }
         ]
     },
+
     "ESP": {
         "name": "Испания",
         "color": "yellow",
@@ -423,6 +418,7 @@
             }
         ]
     },
+
     "EST": {
         "name": "Эстония",
         "color": "turquoise",
@@ -441,6 +437,7 @@
             }
         ]
     },
+
     "FIN": {
         "name": "Финляндия",
         "color": "blue",
@@ -459,6 +456,7 @@
             }
         ]
     },
+
     "FXX": {
         "name": "Франция",
         "color": "red",
@@ -477,6 +475,7 @@
             }
         ]
     },
+
     "HRV": {
         "name": "Хорватия",
         "color": "yellow",
@@ -507,6 +506,7 @@
             }
         ]
     },
+
     "HUN": {
         "name": "Венгрия",
         "color": "orange",
@@ -525,6 +525,7 @@
             }
         ]
     },
+
     "ITA": {
         "name": "Италия",
         "color": "green",
@@ -663,6 +664,7 @@
             }
         ]
     },
+
     "LTU": {
         "name": "Литва",
         "color": "blue",
@@ -689,6 +691,7 @@
             }
         ]
     },
+
     "LVA": {
         "name": "Латвия",
         "color": "pink",
@@ -719,6 +722,7 @@
             }
         ]
     },
+
     "MDA": {
         "name": "Молдова",
         "color": "turquoise",
@@ -749,6 +753,7 @@
             }
         ]
     },
+
     "NLD": {
         "name": "Нидерланды",
         "color": "purple",
@@ -767,6 +772,7 @@
             }
         ]
     },
+
     "NOR": {
         "name": "Норвегия",
         "color": "yellow",
@@ -785,6 +791,7 @@
             }
         ]
     },
+
     "POL": {
         "name": "Польша",
         "color": "yellow",
@@ -844,6 +851,7 @@
             }
         ]
     },
+
     "ROU": {
         "name": "Румыния",
         "color": "purple",
@@ -910,9 +918,14 @@
             }
         ]
     },
+
     "RUS": {
         "name": "Россия",
         "color": "red",
+        "regions": {
+            "RUS-2364": "Московская область",
+            "RUS-2365": "Москва"
+        },
         "cities": [
             {
                 "name": "Москва",
@@ -931,6 +944,7 @@
             }
         ]
     },
+
     "SVK": {
         "name": "Словакия",
         "color": "red",
@@ -949,6 +963,7 @@
             }
         ]
     },
+
     "SVN": {
         "name": "Словения",
         "color": "purple",
@@ -1015,6 +1030,7 @@
             }
         ]
     },
+
     "UKR": {
         "name": "Украина",
         "color": "pink",
