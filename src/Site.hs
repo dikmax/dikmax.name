@@ -3,6 +3,7 @@
 {-# LANGUAGE TupleSections     #-}
 import           Blaze.ByteString.Builder (toByteString)
 import           Control.Applicative ((<$>))
+import           Control.Exception
 import           Control.Monad (forM_, filterM, liftM, msum)
 import           Data.Char
 import           Data.Function (on)
@@ -17,8 +18,11 @@ import           Data.Time.Clock (UTCTime, getCurrentTime)
 import           Data.Time.Format (formatTime, parseTime)
 import           Hakyll hiding (chronological, dateFieldWith, getItemUTC, getTags, paginateContext,
                     pandocCompiler, recentFirst, teaserField)
+import           System.Directory
 import           System.FilePath (takeFileName)
+import           System.IO.Error
 import           System.Locale
+import           System.Process
 import           Text.HTML.TagSoup (Tag(..))
 import qualified Text.HTML.TagSoup as TS
 import           Text.Pandoc
@@ -32,6 +36,7 @@ main :: IO ()
 main = hakyll $ do
     staticFilesRules
     lessCompilerRules
+    mapCompilerRules
     commentsRules
     postsRules
     tagsPagesRules
@@ -262,7 +267,6 @@ staticFilesRules = do
         , "css/style.css"
         , "js/html5shiv.js"
         , "js/respond.min.js"
-        , "map/world.json"
         , "map/data.json"
         ]) $ do
         route   idRoute
@@ -270,10 +274,12 @@ staticFilesRules = do
 
 
 --------------------------------------------------------------------------------
--- LESS files
+-- Styles
 --------------------------------------------------------------------------------
 
--- Runs command: lessc --clean-css -O2 --include-path=less less/style.less css/style.css
+{-
+lessc --clean-css -O2 --include-path=less less/style.less css/style.css
+-}
 
 lessCompilerRules :: Rules ()
 lessCompilerRules = do
@@ -287,6 +293,49 @@ lessCompilerRules = do
             >>= makeItem
             >>= withItemBody
               (unixFilter "lessc" ["--clean-css","-O2", "--include-path=less","-"])
+
+
+--------------------------------------------------------------------------------
+-- Map
+--------------------------------------------------------------------------------
+
+{-
+rm map/subunits.json
+rm map/countries.json
+rm map/regions.json
+ogr2ogr -f GeoJSON map/subunits.json -where "ADM0_A3 = 'FRA'" map/ne_10m_admin_0_map_subunits/ne_10m_admin_0_map_subunits.shp
+ogr2ogr -f GeoJSON map/countries.json -where "ADM0_A3 != 'FRA' and ADM0_A3 != 'RUS' and ADM0_A3 != 'USA'" map/ne_10m_admin_0_countries_lakes/ne_10m_admin_0_countries_lakes.shp
+ogr2ogr -f GeoJSON map/regions.json -where "ADM0_A3 = 'RUS' or ADM0_A3 = 'USA'" map/ne_10m_admin_1_states_provinces_lakes/ne_10m_admin_1_states_provinces_lakes.shp
+topojson -o map/world.json --id-property ADM_A3,SU_A3,adm1_code --simplify 1e-6 -- map/countries.json map/subunits.json map/regions.json
+-}
+
+mapCompilerRules :: Rules ()
+mapCompilerRules = do
+    countries <- makePatternDependency "map/ne_10m_admin_0_countries_lakes/*"
+    subunits <- makePatternDependency "map/ne_10m_admin_0_map_subunits/*"
+    regions <- makePatternDependency "map/ne_10m_admin_1_states_provinces_lakes/*"
+    rulesExtraDependencies [countries, subunits, regions] $ create ["map/world.json"] $ do
+        route idRoute
+        compile $ do
+            mapData <- unsafeCompiler $ do
+                removeIfExists "map/subunits.json"
+                removeIfExists "map/countries.json"
+                removeIfExists "map/regions.json"
+
+                _ <- rawSystem "ogr2ogr" ["-f", "GeoJSON", "map/subunits.json",
+                        "-where", "ADM0_A3 = 'FRA'",
+                        "map/ne_10m_admin_0_map_subunits/ne_10m_admin_0_map_subunits.shp"]
+                _ <- rawSystem "ogr2ogr" ["-f", "GeoJSON", "map/countries.json",
+                        "-where", "ADM0_A3 != 'FRA' and ADM0_A3 != 'RUS' and ADM0_A3 != 'USA'",
+                        "map/ne_10m_admin_0_countries_lakes/ne_10m_admin_0_countries_lakes.shp"]
+                _ <- rawSystem "ogr2ogr" ["-f", "GeoJSON", "map/regions.json",
+                        "-where", "ADM0_A3 = 'RUS' or ADM0_A3 = 'USA'",
+                        "map/ne_10m_admin_1_states_provinces_lakes/ne_10m_admin_1_states_provinces_lakes.shp"]
+                readProcess "topojson" ["--id-property", "ADM_A3,SU_A3,adm1_code",
+                        "--simplify", "1e-6",
+                        "--", "map/countries.json", "map/subunits.json", "map/regions.json"] ""
+            makeItem mapData
+
 
 --------------------------------------------------------------------------------
 -- Posts
@@ -896,3 +945,8 @@ getWeight minCount maxCount count =
         fromIntegral maxCount - fromIntegral minCount) /
         (fromIntegral maxCount - fromIntegral minCount))
 
+removeIfExists :: FilePath -> IO ()
+removeIfExists fileName = removeFile fileName `catch` handleExists
+  where handleExists e
+          | isDoesNotExistError e = return ()
+          | otherwise = throwIO e
