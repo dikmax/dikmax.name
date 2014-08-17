@@ -273,6 +273,8 @@ staticFilesRules = do
 -- LESS files
 --------------------------------------------------------------------------------
 
+-- Runs command: lessc --clean-css -O2 --include-path=less less/style.less css/style.css
+
 lessCompilerRules :: Rules ()
 lessCompilerRules = do
     match "less/*.less" $
@@ -284,7 +286,7 @@ lessCompilerRules = do
         compile $ loadBody "less/style.less"
             >>= makeItem
             >>= withItemBody
-              (unixFilter "lessc" ["--clean-css","-O2", "--include-path=less","-"]) -- TODO replace with --compress or --clean-css
+              (unixFilter "lessc" ["--clean-css","-O2", "--include-path=less","-"])
 
 --------------------------------------------------------------------------------
 -- Posts
