@@ -108,13 +108,13 @@ archiveRules = do
                 route idRoute
                 compile $ do
                     posts <- recentFirst =<< loadAllSnapshots (fromList list) "content"
-                    months <- mapM monthsMap posts
+                    months' <- mapM monthsMap posts
                     let yearCtx =
                             field "active" (\i -> if itemBody i == year then return "active" else fail "") `mappend`
                             field "href" (return . fp' . itemBody) `mappend`
                             bodyField "year"
 
-                        mm = groupBy ((==) `on` fst) months
+                        mm = groupBy ((==) `on` fst) months'
 
                         postsList i = do
                             tpl <- loadBody "templates/_post-archive.html"
@@ -123,7 +123,7 @@ archiveRules = do
                                 >>= loadAndApplyTemplate "templates/_post-list-archive.html" postCtx
                             return $ itemBody item
                             where
-                                items = map snd $ filter (\m -> fst m == itemBody i) months
+                                items = map snd $ filter (\m -> fst m == itemBody i) months'
                                 ctx = field "day" daysField `mappend` postCtx
 
                         monthsCtx =
@@ -321,7 +321,7 @@ postsRules =
 
 
 imagesMap :: Tag String -> Maybe String
-imagesMap (TagOpen "img" attrs) = fmap snd $ find (\attr -> fst attr == "src") attrs
+imagesMap (TagOpen "img" attrs) = snd <$> find (\attr -> fst attr == "src") attrs
 imagesMap _ = Nothing
 
 --------------------------------------------------------------------------------
@@ -472,7 +472,7 @@ staticPagesRules :: Rules ()
 staticPagesRules = do
     match "route-planner/index.html" $ do
         route idRoute
-        compile $ do
+        compile $
             getResourceBody
                 >>= loadAndApplyTemplate "templates/_post-without-footer.html" postCtx
                 >>= loadAndApplyTemplate routePlannerTemplateName (pageCtx (defaultMetadata
@@ -483,7 +483,7 @@ staticPagesRules = do
 
     match "map/index.html" $ do
             route idRoute
-            compile $ do
+            compile $
                 getResourceBody
                     >>= loadAndApplyTemplate "templates/_post-without-footer.html" postCtx
                     >>= loadAndApplyTemplate visitedCountriesTemplateName (pageCtx (defaultMetadata
@@ -599,7 +599,7 @@ postWithCommentsCountCtx =
 
 pageCtx :: PageMetadata -> Context String
 pageCtx (PageMetadata title url description keywords fType)=
-    constField "meta.title" (escapeHtml $ metaTitle title) `mappend`
+    constField "meta.title" (escapeHtml $ metaTitle' title) `mappend`
     constField "meta.url" (escapeHtml $ "http://dikmax.name" ++ url) `mappend`
     constField "meta.description" (escapeHtml description) `mappend`
     constField "meta.keywords" (escapeHtml $ intercalate ", " keywords) `mappend`
@@ -607,13 +607,13 @@ pageCtx (PageMetadata title url description keywords fType)=
     facebookFields fType `mappend`
     defaultContext
     where
-        metaTitle Nothing = "[dikmax's blog]"
-        metaTitle (Just title) = title ++ " :: [dikmax's blog]"
+        metaTitle' Nothing = "[dikmax's blog]"
+        metaTitle' (Just title') = title' ++ " :: [dikmax's blog]"
 
-        facebookFields (FacebookArticle published keywords images) =
+        facebookFields (FacebookArticle published keywords' images) =
                 constField "meta.facebook.article" "" `mappend`
                 constField "meta.facebook.published" (formatTime defaultTimeLocale "%Y-%m-%dT%H:%M:%SZ" published) `mappend`
-                listField "meta.facebook.tags" defaultContext (mapM makeItem keywords) `mappend`
+                listField "meta.facebook.tags" defaultContext (mapM makeItem keywords') `mappend`
                 listField "meta.facebook.images" defaultContext (mapM makeItem images)
         -- TODO Facebook profile
         facebookFields _ = constField "meta.facebook.nothing" ""
@@ -788,7 +788,7 @@ teaserField key readMoreKey snapshot =
 
 
 findTeaser :: String -> Maybe (String, Maybe String) -- Teaser, optional custom readmore text
-findTeaser str = go [] str
+findTeaser = go []
     where
        go _ [] = Nothing
        go acc xss@(x:xs)
@@ -798,10 +798,10 @@ findTeaser str = go [] str
        go2 _ [] = Nothing
        go2 acc xss@(x:xs)
            | teaserSeparatorEnd `isPrefixOf` xss =
-                if trim acc /= [] then Just $ reverse $ trim acc
+                if trim' acc /= [] then Just $ reverse $ trim' acc
                 else Nothing
            | otherwise                           = go2 (x : acc) xs
-       trim str = dropWhileEnd isSpace $ dropWhile isSpace str
+       trim' str = dropWhileEnd isSpace $ dropWhile isSpace str
 
 --------------------------------------------------------------------------------
 -- | Sort pages chronologically. Uses the same method as 'dateField' for
@@ -850,10 +850,10 @@ getPageIdentifier pageNum
     | otherwise = fromFilePath $ "page/" ++ show pageNum ++ "/"
 
 addIndexRoute :: Routes
-addIndexRoute = customRoute (\id ->
-    if toFilePath id == ""
+addIndexRoute = customRoute (\id' ->
+    if toFilePath id' == ""
         then "index.html"
-        else toFilePath id ++ "/index.html")
+        else toFilePath id' ++ "/index.html")
 
 -- | Transforms 'something/something.md' into 'something/something/index.html'
 -- and 'something/YYYY-MM-DD-something.md' into 'something/something/index.html'
