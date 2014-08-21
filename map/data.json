@@ -213,13 +213,13 @@
                 "lon": 26.706599,
                 "visits": [
                     {
-                        "year": 2011,
-                        "month": 8
-                    },
-                    {
                         "year": 2014,
                         "month": 7,
                         "link": "/post/land-of-lakes/"
+                    },
+                    {
+                        "year": 2011,
+                        "month": 8
                     }
                 ]
             },
