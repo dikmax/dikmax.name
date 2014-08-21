@@ -489,28 +489,6 @@ staticPagesRules = do
                     , metaDescription = unwrap $ fromMaybe "" description
                     , metaUrl = '/' : identifierToUrl (toFilePath identifier)
                     }))
-
-    match "shoutbox.md" $ do
-        route removeExtension
-        compile $ do
-            identifier <- getUnderlying
-            -- Comments
-            thread <- getMetadataField identifier "thread"
-            comments <- getComments thread
-            -- Metadata
-            title <- getMetadataField identifier "title"
-            description <- getMetadataField identifier "description"
-            pandocCompiler
-                >>= loadAndApplyTemplate "templates/_post-shoutbox.html"
-                    (constField "disqus" "shoutbox" `mappend`
-                    commentsField comments `mappend`
-                    postCtx)
-                >>= loadAndApplyTemplate defaultTemplateName (pageCtx (defaultMetadata
-                    { metaTitle = fmap unwrap title
-                    , metaDescription = unwrap $ fromMaybe "" description
-                    , metaUrl = '/' : identifierToUrl (toFilePath identifier)
-                    }))
-
 --------------------------------------------------------------------------------
 -- Sitemap
 --------------------------------------------------------------------------------
@@ -536,7 +514,6 @@ sitemapRules = do
         staticItems =
             [ SitemapItem "http://dikmax.name/" "0.5"
             , SitemapItem "http://dikmax.name/about/" "0.8"
-            , SitemapItem "http://dikmax.name/shoutbox/" "0.5"
             ]
 
 sitemapField :: [SitemapItem] -> Context String
