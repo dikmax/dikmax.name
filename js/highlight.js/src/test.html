@@ -47,8 +47,14 @@
   <link rel="alternate stylesheet" title="Atelier Seaside - Light" href="styles/atelier-seaside.light.css">
   <link rel="alternate stylesheet" title="Paraíso - Dark" href="styles/paraiso.dark.css">
   <link rel="alternate stylesheet" title="Paraíso - Light" href="styles/paraiso.light.css">
+  <link rel="alternate stylesheet" title="Colorbrewer" href="styles/color-brewer.css">
+  <link rel="alternate stylesheet" title="Codepen.io Embed" href="styles/codepen-embed.css">
+  <link rel="alternate stylesheet" title="Kimbie - Dark" href="styles/kimbie.dark.css">
+  <link rel="alternate stylesheet" title="Kimbie - Light" href="styles/kimbie.light.css">
+  <link rel="alternate stylesheet" title="Hybrid" href="styles/hybrid.css">
 
   <style>
+    /* Base styles */
     body {
       font: small Arial, sans-serif;
     }
@@ -58,7 +64,9 @@
       margin-bottom: 0.5em;
     }
     table {
-      width: 100%; padding: 0; border-collapse: collapse;
+      width: 100%;
+      padding: 0;
+      border-collapse: collapse;
     }
     th {
       width: 12em;
@@ -72,22 +80,42 @@
       text-align: left;
     }
     pre {
-      margin: 0; font-size: medium;
+      margin: 0;
+      font-size: medium;
     }
-    #switch {
-      overflow: auto; width: 67em;
+    .hljs-debug {
+      color: red;
+    }
+    /* Style switcher */
+    ul#switch {
+      width: 66em;
+      -webkit-column-width: 15em;
+      -webkit-column-gap: 2em;
+      -moz-column-width: 15em;
+      -moz-column-gap: 2em;
+      -o-column-width: 15em;
+      -o-column-gap: 2em;
+      column-width: 15em;
+      column-gap: 2em;
       list-style: none;
-      padding: 0; margin: 0;
+      overflow: auto;
+      padding: 0;
+      margin: 0;
     }
-    #switch li {
-      float: left; width: 12em;
-      padding: 0.1em; margin: 0.1em 1em 0.1em 0;
+    ul#switch li {
+      -webkit-column-break-inside: avoid;
+      -moz-column-break-inside: avoid;
+      -o-column-break-inside: avoid;
+      column-break-inside: avoid;
+      padding: 0.1em;
+      margin: 0.1em 1em 0.1em 0;
       background: #EEE;
       cursor: pointer;
     }
-    #switch li.current {
+    ul#switch li.current {
       background: #CCC;
     }
+    /* Tests */
     .test {
       color: #888;
       font-weight: normal;
@@ -99,7 +127,7 @@
     .passed {
       color: green;
     }
-    .failed {
+    .failed, .failed a {
       color: red;
     }
     .code {
@@ -108,6 +136,7 @@
     .code .hljs-keyword {
       font-weight: bold;
     }
+    /* Export form */
     #export_from, #export_to {
       width: 98%;
     }
@@ -148,12 +177,11 @@
 
           for (var i = 0; (link = links[i]); i++) {
               if ((link.getAttribute('rel').indexOf('style') != -1) && link.title) {
-
                   var title = link.title;
 
                   info[title] = {
-                  'link': link,
-                  'li': document.createElement('li')
+                      'link': link,
+                      'li': document.createElement('li')
                   };
 
                   ul.appendChild(info[title].li);
@@ -162,6 +190,7 @@
                   info[title].link.disabled = true;
 
                   info[title].li.appendChild(document.createTextNode(title));
+
                   attach(info[title].li, 'click', (function (el) {
                       return function() {
                           current.li.className = '';
@@ -169,7 +198,8 @@
                           current = el;
                           current.li.className = 'current';
                           current.link.disabled = false;
-                      }})(info[title]));
+                      }
+                  })(info[title]));
               }
           }
 
@@ -194,25 +224,27 @@
       var table = document.getElementById('autotest');
       var tds = table.getElementsByTagName('TD');
       var failed = [];
+      var passed, result
       for (var i = 0; i < tds.length; i++) {
           var tdClass = tds[i].className;
-          if (!hljs.getLanguage(tdClass)) {
+          tds[i].id = 'anchor-' + tdClass.replace(/[^\w]/, '-');
+          if (hljs.getLanguage(tdClass)) {
+              var code = tds[i].getElementsByTagName('CODE')[0];
+              var langClass = code.className.replace('hljs', '').trim();
+              passed = (tdClass == langClass);
+              result = document.createElement('DIV');
+              result.className = 'test';
+              result.innerHTML = '<var class="'+ (passed ? 'passed' : 'failed') +'">' + langClass + '</var>';
+              result.innerHTML += ' (' + code.result.re + ')';
+              if (code.second_best) {
+                  result.innerHTML += '<br>' + code.second_best.language + ' (' + code.second_best.re + ')';
+              }
+              tds[i].parentNode.getElementsByTagName('th')[0].appendChild(result);
+	      if (!passed) {
+	          failed.push('<a href="#' + tds[i].id + '">' + tdClass + '</a>');
+	      }
+          } else {
               tds[i].parentNode.style.display = 'none';
-              continue;
-          }
-          var code = tds[i].getElementsByTagName('CODE')[0];
-          var langClass = code.className.replace('hljs', '').trim();
-          var passed = (tdClass == langClass);
-          var result = document.createElement('DIV');
-          result.className = 'test';
-          result.innerHTML = '<var class="'+ (passed ? 'passed' : 'failed') +'">' + langClass + '</var>';
-          result.innerHTML += ' (' + code.result.re + ')';
-          if (code.second_best) {
-              result.innerHTML += '<br>' + code.second_best.language + ' (' + code.second_best.re + ')';
-          }
-          tds[i].parentNode.getElementsByTagName('th')[0].appendChild(result);
-          if (!passed) {
-              failed.push(tdClass);
           }
       }
       var summary = document.getElementById('summary');
@@ -256,7 +288,7 @@
   </script>
 <body>
 
-<p>This is a demo/test page showing all languages supported by <a href="http://highlightjs.org/">highlight.js</a>.
+<p>This is a demo/test page showing all languages supported by <a href="https://highlightjs.org/">highlight.js</a>.
 Most snippets do not contain working code :-).
 
 <div id="styleswitcher">
@@ -278,7 +310,8 @@ def somefunc(param1='', param2=0):
         print 'Gre\'ater'
     return (param2 - param1 + 1 + 0b10l) or None
 
-class SomeClass:<br>    pass
+class SomeClass:
+    pass
 
 &gt;&gt;&gt; message = '''interpreter
 ... prompt'''
@@ -319,6 +352,15 @@ module ABC::DEF
   def ==(other) other == self end
 end
 
+class Car < ActiveRecord::Base
+  has_many :wheels, :class_name => 'Wheel', :foreign_key => 'car_id'
+  has_many :wheels, class_name: 'Wheel', foreign_key: 'car_id'
+  scope :available, -> { where(available: true) }
+end
+omega = -> { 'alpha' }
+alpha = ->(arg) { arg*2 }
+hash = {1 => 'one', 2 => 'two'}
+
 anIdentifier = an_identifier
 Constant = 1
 render action: :new
@@ -328,6 +370,26 @@ str =~ %r{foo|bar|buz$}
 str =~ %r!foo|bar$!
 str =~ %r[foo|bar$]
 str =~ %r(\(foo|bar\)$)
+
+2.0.0p0 :001 > ['some']
+ => ["some"]
+2.0.0p0 :002 > if true
+2.0.0p0 :003?>   "yop"
+2.0.0p0 :004?>   end
+ => "yop"
+
+>> obj = OpenStruct.new :integer => 987, :symbol => :so_great
+=> #&lt;OpenStruct integer=987, symbol=:so_great&gt;
+>> [obj,obj,obj]
+=> [#&lt;OpenStruct integer=987, symbol=:so_great>, #&lt;OpenStruct integer=987, symbol=:so_great>, #&lt;OpenStruct integer=987, symbol=:so_great>]
+>> {1 => obj, 2 => obj}
+=> {1=>#&lt;OpenStruct integer=987, symbol=:so_great>, 2=>#&lt;OpenStruct integer=987, symbol=:so_great>}
+>> if 10 > 20
+>> "YEAH"
+>> else
+?> "NO"
+>> end
+=> "NO"
 </code></pre>
 
   <tr>
@@ -370,7 +432,7 @@ in stdenv.mkDerivation rec {
 
   postInstall = ''
     ${ if true then "--${test}" else false }
-  '';  
+  '';
 
   meta = with stdenv.lib; {
     homepage = https://nixos.org;
@@ -404,6 +466,10 @@ sub load
     }
   }
   $o-&gt;save if delete $o-&gt;{'_save_after_load'};
+
+  # GH-117
+  my $g = glob("/usr/bin/*");
+
   return $o;
 }
 
@@ -427,6 +493,11 @@ abstract class URI extends BaseURI implements Factory
 {
     abstract function test();
 
+    public static $st1 = 1;
+    const ME = "Yo";
+    var $list = NULL;
+    private $var;
+
     /**
      * Returns a URI
      *
@@ -445,12 +516,17 @@ line description';
             throw new Zend_Uri_Exception('Illegal scheme');
         }
 
+       	$this-&gt;var = 0 - self::$st;
+        $this-&gt;list = list(Array("1"=&gt; 2, 2=&gt;self::ME));
+
         return [
             'uri'   => $uri,
             'value' => null,
         ];
     }
 }
+
+echo URI::ME . URI::$st1;
 
 __halt_compiler () ; datahere
 datahere
@@ -460,37 +536,110 @@ datahere</code></pre>
   <tr>
     <th>Scala
     <td class="scala">
-<pre><code>object abstractTypes extends Application {
-  abstract class SeqBuffer {
-    type T; val element: Seq[T]; def length = element.length
-  }
+<pre><code>case class Person(name: String, age: Int)
+
+def absoluteValue(n: Int): Int =
+  if (n < 0) -n else n
+
+val hux = "hux"
+def mux = "mux"
+def qux: String = "qux"
+
+type ξ[A] = (A, A)
+
+trait Hist { lhs =>
+  def ⊕(rhs: Hist): Hist
 }
 
-/** Turn command line arguments to uppercase */
-object Main {
-  def main(args: Array[String]) {
-    val res = for (a &lt;- args) yield a.toUpperCase
-    println("Arguments: " + res.toString)
-  }
+def gsum[A: Ring](as: Seq[A]): A =
+  as.foldLeft(Ring[A].zero)(_ + _)
+
+sealed trait Compass
+case object North extends Compass
+case object South extends Compass
+case object East extends Compass
+case object West extends Compass
+
+trait Cake {
+  type T;
+  val things: Seq[T]
+
+  abstract class Spindler
+
+  def spindle(s: Spindler, ts: Seq[T], reversed: Boolean = false): Seq[T]
 }
 
-/** Maps are easy to use in Scala. */
-object Maps {
-  val colors = Map("red" -&gt; 0xFF0000,
-                   "turquoise" -&gt; 0x00FFFF,
-                   "black" -&gt; 0x000000,
-                   "orange" -&gt; 0xFF8040,
-                   "brown" -&gt; 0x804000)
-  def main(args: Array[String]) {
-    for (name &lt;- args) println(
-      colors.get(name) match {
-        case Some(code) =&gt;
-          name + " has code: " + code
-        case None =&gt;
-          "Unknown color: " + name
-      }
-    )
-  }
+val colors = Map(
+  "red" -&gt; 0xFF0000,
+  "turquoise" -&gt; 0x00FFFF,
+  "black" -&gt; 0x000000,
+  "orange" -&gt; 0xFF8040,
+  "brown" -&gt; 0x804000)
+
+lazy val ns = for {
+  x <- 0 until 100
+  y <- 0 until 100
+} yield (x + y) * 33.33
+</code></pre>
+
+  <tr>
+      <th>Groovy</th>
+      <td class="groovy">
+<pre><code>#!/usr/bin/env groovy
+package model
+
+import groovy.transform.CompileStatic
+import java.util.List as MyList
+
+trait Distributable {
+    void distribute(String version) {}
+}
+
+@CompileStatic
+class Distribution implements Distributable {
+    double number = 1234.234 / 567
+    def otherNumber = 3 / 4
+    boolean archivable = condition ?: true
+    def ternary = a ? b : c
+    String name = "Guillaume"
+    Closure description = null
+    List&lt;DownloadPackage&gt; packages = []
+    String regex = ~/.*foo.*/
+    String multi = '''
+        multi line string
+    ''' + """
+        now with double quotes and ${gstring}
+    """ + $/
+        even with dollar slashy strings
+    /$
+
+    /**
+     * description method
+     * @param cl the closure
+     */
+    void description(Closure cl) { this.description = cl }
+
+    void version(String name, Closure versionSpec) {
+        def closure = { println "hi" } as Runnable
+
+        MyList ml = [1, 2, [a: 1, b:2,c :3]]
+        for (ch in "name") {}
+
+        // single line comment
+        DownloadPackage pkg = new DownloadPackage(version: name)
+
+        check that: true
+
+        label:
+        def clone = versionSpec.rehydrate(pkg, pkg, pkg)
+        /*
+            now clone() in a multiline comment
+        */
+        clone()
+        packages.add(pkg)
+
+        assert 4 / 2 == 2
+    }
 }
 </code></pre>
 
@@ -628,6 +777,8 @@ you can write text [with links](http://example.com) inline or [link references][
 * one _thing_ has *em*phasis
 * two __things__ are **bold**
 
+[1]: http://example.com
+
 ---
 
 hello world
@@ -642,7 +793,6 @@ hello world
 1. one thing (yeah!)
 2. two thing `i can write code`, and `more` wipee!
 
-[1]: http://example.com
 </code></pre>
 
 	<tr>
@@ -746,6 +896,19 @@ Markup is &lt;em&gt;not&lt;/em&gt; highlighted within comments.
   {{#each content.users}}
   &lt;li {{bindAttr hello="world"}}&gt;{{firstName}}&lt;/li&gt;
   {{/each}}
+&lt;/ul&gt;
+</code></pre>
+
+  <tr>
+    <th>Dust.js
+    <td class="dust">
+<pre>
+<code>&lt;h3&gt;Hours&lt;/h3&gt;
+
+&lt;ul&gt;
+  {#users}
+  &lt;li {hello}}&gt;{firstName}&lt;/li&gt;{~n}
+  {/users}
 &lt;/ul&gt;
 </code></pre>
 
@@ -894,6 +1057,26 @@ a {
 }</code></pre>
 
   <tr>
+    <th>TypeScript
+    <td class="typescript">
+<pre><code>class MyClass {
+    public static myValue: string;
+    constructor(init: string) {
+      this.myValue = init;
+    }
+  }
+  import fs = require("fs");
+  module MyModule {
+    export interface MyInterface extends OtherInterface {
+      myProperty: any;
+    }
+  }
+  declare magicNumber number;
+  myArray.forEach(() => {
+    // fat arrow syntax
+  });</code></pre>
+
+  <tr>
     <th>CoffeeScript
     <td class="coffeescript">
 <pre><code># Divisions
@@ -906,6 +1089,9 @@ x = f / foo / gm
 x = f /foo * 2/6
 
 # Regexps
+x = /\//
+x = /\n/
+x = /ab\/ ab/
 x = f /6 * 2/ - 3
 x = f /foo * 2/gm
 x = if true then /\n/ else /[.,]+/
@@ -955,6 +1141,43 @@ OPERATOR = /// ^ (
 ) ///</code></pre>
 
 <tr>
+  <th>Dart</th>
+  <td class="dart">
+<pre><code>library app;
+import 'dart:html';
+
+part 'app2.dart';
+
+/**
+ * Class description and [link](http://dartlang.org/).
+ */
+@Awesome('it works!')
+class SomeClass&lt;S extends Iterable&gt; extends BaseClass&lt;S&gt; implements Comparable {
+  factory SomeClass(num param);
+  SomeClass._internal(int q) : super() {
+    assert(q != 1);
+    double z = 0.0;
+  }
+
+  /// **Sum** function
+  int sum(int a, int b) =&gt; a + b;
+
+  ElementList els() => querySelectorAll('.dart');
+}
+
+String str = ' (${'parameter' + 'zxc'})';
+String str = " (${true ? 2 + 2 / 2 : null})";
+String str = r'\nraw\';
+String str = r"\nraw\";
+var str = '''
+Something ${2+3}
+''';
+var str = r"""
+Something ${2+3}
+""";
+</code></pre>
+
+<tr>
     <th>ActionScript
     <td class="actionscript">
 <pre><code>package org.example.dummy {
@@ -981,6 +1204,40 @@ OPERATOR = /// ^ (
         }
     }
 }</code></pre>
+
+  <tr>
+     <th>Haxe</th>
+     <td class="haxe">
+<pre><code>
+// quicksort example from http://haxe.org/doc/snip/quicksort
+class Quicksort {
+
+    static var arr = [4,8,0,3,9,1,5,2,6,7];
+
+    static function quicksort( lo : Int, hi : Int ) : Void {
+        var i = lo;
+        var j = hi;
+        var buf = arr;
+        var p = buf[(lo+hi)>>1];
+        while( i <= j ) {
+            while( arr[i] > p ) i++;
+            while( arr[j] < p ) j--;
+            if( i <= j ) {
+                var t = buf[i];
+                buf[i++] = buf[j];
+                buf[j--] = t;
+            }
+        }
+        if( lo < j ) quicksort( lo, j );
+        if( i < hi ) quicksort( i, hi );
+    }
+
+    static function main() {
+        quicksort( 0, arr.length-1 );
+        trace(arr);
+    }
+}
+</code></pre>
 
   <tr>
     <th>VBScript
@@ -1087,6 +1344,109 @@ message Customer {
 service CustomerSearch {
   rpc FirstMatch(CustomerRequest) returns (CustomerResponse);
   rpc AllMatches(CustomerRequest) returns (CustomerResponse);
+}</code></pre>
+
+  <tr>
+  <th>Cap’n Proto
+  <td class="capnproto">
+<pre><code>@0xdbb9ad1f14bf0b36;  # unique file ID, generated by `capnp id`
+
+struct Person {
+  name @0 :Text;
+  birthdate @3 :Date;
+
+  email @1 :Text;
+  phones @2 :List(PhoneNumber);
+
+  struct PhoneNumber {
+    number @0 :Text;
+    type @1 :Type;
+
+    enum Type {
+      mobile @0;
+      home @1;
+      work @2;
+    }
+  }
+}
+
+struct Date {
+  year @0 :Int16;
+  month @1 :UInt8;
+  day @2 :UInt8;
+  flags @3 :List(Bool) = [ true, false, false, true ];
+}
+
+interface Node {
+  isDirectory @0 () -&gt; (result :Bool);
+}
+
+interface Directory extends(Node) {
+  list @0 () -&gt; (list: List(Entry));
+  struct Entry {
+    name @0 :Text;
+    node @1 :Node;
+  }
+
+  create @1 (name :Text) -&gt; (file :File);
+  mkdir @2 (name :Text) -&gt; (directory :Directory)
+  open @3 (name :Text) -&gt; (node :Node);
+  delete @4 (name :Text);
+  link @5 (name :Text, node :Node);
+}
+
+interface File extends(Node) {
+  size @0 () -&gt; (size: UInt64);
+  read @1 (startAt :UInt64 = 0, amount :UInt64 = 0xffffffffffffffff)
+       -&gt; (data: Data);
+  # Default params = read entire file.
+
+  write @2 (startAt :UInt64, data :Data);
+  truncate @3 (size :UInt64);
+}</code></pre>
+
+  <tr>
+    <th>Thrift
+    <td class="thrift">
+<pre><code>namespace * thrift.test
+
+/**
+ * Docstring!
+ */
+enum Numberz
+{
+  ONE = 1,
+  TWO,
+  THREE,
+  FIVE = 5,
+  SIX,
+  EIGHT = 8
+}
+
+const Numberz myNumberz = Numberz.ONE;
+// the following is expected to fail:
+// const Numberz urNumberz = ONE;
+
+typedef i64 UserId
+
+struct Msg
+{
+  1: string message,
+  2: i32 type
+}
+struct NestedListsI32x2
+{
+  1: list&lt;list&lt;i32&gt;&gt; integerlist
+}
+struct NestedListsI32x3
+{
+  1: list&lt;list&lt;list&lt;i32&gt;&gt;&gt; integerlist
+}
+service ThriftTest
+{
+  void        testVoid(),
+  string      testString(1: string thing),
+  oneway void testInit()
 }</code></pre>
 
   <tr>
@@ -1299,6 +1659,8 @@ public abstract class L2Character extends L2Object {
   public class NotifyAITask implements Runnable {
     private final CtrlEvent _evt;
 
+    List&lt;String&gt; mList = new ArrayList&lt;String&gt;()
+
     public void run() {
       try {
         getAI().notifyEvent(_evt, _evt.class, null);
@@ -1479,10 +1841,6 @@ let checkList alist =
     | _ -&gt; failwith "List is too big!"
 
 
-type IEncoding =
-    abstract Encode : string -&gt; string
-    abstract Decode : string -&gt; string
-
 let text = "Some text..."
 let text2 = @"A ""verbatim"" string..."
 let catalog = """
@@ -1512,6 +1870,9 @@ type Point = {X: float; Y: float;}
 type s
 let minutte = 60&lt;s&gt;
 
+type DefaultMailbox&lt;'a&gt;() =
+    let mutable inbox = ConcurrentQueue&lt;'a&gt;()
+    let awaitMsg = new AutoResetEvent(false)
 </code></pre>
 
   <tr>
@@ -1830,6 +2191,38 @@ heapExample
     (cons chunk (lazy-seq (chunk-seq rdr)))))
 </code></pre>
 
+<tr>
+  <th>Scheme
+  <td class="scheme">
+<pre><code>;; Calculation of Hofstadter's male and female sequences as a list of pairs
+
+(define (hofstadter-male-female n)
+(letrec ((female (lambda (n)
+           (if (= n 0)
+           1
+           (- n (male (female (- n 1)))))))
+     (male (lambda (n)
+         (if (= n 0)
+             0
+             (- n (female (male (- n 1))))))))
+  (let loop ((i 0))
+    (if (> i n)
+    '()
+    (cons (cons (female i)
+            (male i))
+      (loop (+ i 1)))))))
+
+(hofstadter-male-female 8)
+
+(define (find-first func lst)
+(call-with-current-continuation
+ (lambda (return-immediately)
+   (for-each (lambda (x)
+       (if (func x)
+           (return-immediately x)))
+         lst)
+   #f)))</code></pre>
+
   <tr>
     <th>Ini file
     <td class="ini">
@@ -1899,7 +2292,12 @@ http {
     #lingering_time 30;
 
     server {
-        server_name   one.example.com  www.one.example.com;
+        server_name www.example.com;
+        return 301 http://www.example.com$request_uri;
+    }
+
+    server {
+        server_name   example.com;
         access_log   /var/log/nginx.access_log  main;
 
         rewrite (.*) /index.php?page=$1 break;
@@ -2451,11 +2849,20 @@ pingUDPPort s a = sendTo s (Strict.singleton 0) a &gt;&gt; return ()
 %% backwards compatibility
 -export([listen/1, listen/2, listen/3, listen/4, stop/1]).
 
+if L =/= [] ->      % If L is not empty
+    sum(L) / count(L);
+true ->
+    error
+end.
+
 %% state
 -record(state, {
     cm,
     channel
    }).
+
+-spec foo(integer()) -&gt; integer().
+foo(X) -&gt; 1 + X.
 
 test(Foo)-&gt;Foo.
 
@@ -2588,9 +2995,6 @@ greeter.("Bob")
 <pre>
 <code>use std;
 
-import std::io;
-export fac, test1;
-
 123;                               // type int
 123u;                              // type uint
 123_u;                             // type uint
@@ -2603,6 +3007,16 @@ export fac, test1;
 0.1f32;                            // type f32
 12E+99_f64;                        // type f64
 
+'a';
+'\n';
+'\x1A';
+'\u12AS';
+'\U1234ASDF';
+
+r"hello";
+r###"world"###;
+r##" "### "# "##;
+
 /* Factorial */
 fn fac(n: int) -&gt; int {
     let s: str = "This is
@@ -2610,12 +3024,14 @@ a multi-line string.
 
 It ends with an unescaped '\"'.";
     let c: char = 'Ф';
+    let r: str = r##" raw string "##;
 
     let result = 1, i = 1;
     while i &lt;= n { // No parens around the condition
         result *= i;
         i += 1;
     }
+    assert!(i == n);
     ret result;
 }
 
@@ -2628,11 +3044,7 @@ let x = id::&lt;int&gt;(10);
 #[path = "foo.rs"]
 mod foo;
 
-iface seq&lt;T&gt; {
-    fn len() -&gt; uint;
-}
-
-impl &lt;T&gt; of seq&lt;T&gt; for [T] {
+impl &lt;T&gt; Seq&lt;T&gt; for [T] {
     fn len() -&gt; uint { vec::len(self) }
     fn iter(b: fn(T)) {
         for elt in self { b(elt); }
@@ -2640,11 +3052,23 @@ impl &lt;T&gt; of seq&lt;T&gt; for [T] {
 }
 
 enum list&lt;T&gt; {
-    nil;
-    cons(T, @list&lt;T&gt;);
+    Nil;
+    Cons(T, @list&lt;T&gt;);
 }
 
-let a: list&lt;int&gt; = cons(7, @cons(13, @nil));
+let a: list&lt;int&gt; = Cons(7, @cons(13, @nil));
+
+struct Baz<'a> {
+    baz: &'a str,
+}
+
+'h: for i in range(0,10) {
+    'g: loop {
+        if i % 2 == 0 { continue 'h; }
+        if i == 9 { break 'h; }
+        break 'g;
+    }
+}
 </code></pre>
 
   <tr>
@@ -2977,43 +3401,240 @@ caption:db      'SEGV',0
 section .drectve info
         db      '/defaultlib:user32.lib /defaultlib:msvcrt.lib '
 </code></pre>
+<tr>
+    <th>Q/KDB+
+    <td class="q">
+<pre><code>
+select time, price by date,stock from quote where price=(max;price)fby stock
+data:raze value flip trade
+select vwap:size wavg price by 5 xbar time.minute from aapl where date within (.z.d-10;.z.d)
+f1:{[x;y;z] show (x;y+z);sum 1 2 3}
+.z.pc:{[handle] show -3!(`long$.z.p;"Closed";handle)}
+// random normal distribution, e.g. nor 10
+nor:{$[x=2*n:x div 2;raze sqrt[-2*log n?1f]*/:(sin;cos)@\:(2*pi)*n?1f;-1_.z.s 1+x]}
+
+mode:{where g=max g:count each group x}		// mode function
+</code></pre>
+
+
 
   <tr>
-  <th>Dart</th>
-  <td class="dart">
+  <th>Monkey
+      <td class="monkey">
 <pre>
-<code>library app;
-import 'dart:html';
+<code>#IMAGE_FILES="*.png|*.jpg"
+#SOUND_FILES="*.wav|*.ogg"
+#MUSIC_FILES="*.wav|*.ogg"
+#BINARY_FILES="*.bin|*.dat"
 
-part 'app2.dart';
+Import mojo
 
-/**
- * Class description and [link](http://dartlang.org/).
- */
-@Awesome('it works!')
-class SomeClass&lt;S extends Iterable&gt; extends BaseClass&lt;S&gt; implements Comparable {
-  factory SomeClass(num param);
-  SomeClass._internal(int q) : super() {
-    assert(q != 1);
-    double z = 0.0;
-  }
+' The main class which expends Mojo's 'App' class:
+Class GameApp Extends App
+    Field player:Player
 
-  /// **Sum** function
-  int sum(int a, int b) =&gt; a + b;
+    Method OnCreate:Int()
+        Local img:Image = LoadImage("player.png")
+        Self.player = New Player()
+        SetUpdateRate(60)
 
-  ElementList els() => querySelectorAll('.dart');
+        Return 0
+    End
+
+    Method OnUpdate:Int()
+        player.x += HALFPI
+
+        If (player.x > 100) Then
+            player.x = 0
+        Endif
+
+        Return 0
+    End
+
+    Method OnRender:Int()
+        Cls(32, 64, 128)
+        player.Draw()
+
+        player = Null
+        Return 0
+    End
+End
+</code></pre>
+
+  <tr>
+    <th>Gherkin
+    <td class="gherkin">
+<pre><code># language: en
+Feature: Addition
+  In order to avoid silly mistakes
+  As a math idiot
+  I want to be told the sum of two numbers
+
+  @this_is_a_tag
+  Scenario Outline: Add two numbers
+    * I have a calculator
+    Given I have entered &lt;input_1&gt; into the calculator
+    And I have entered &lt;input_2&gt; into the calculator
+    When I press &lt;button&gt;
+    Then the result should be &lt;output&gt; on the screen
+    And I have a string like
+    """
+    Here is
+    some
+    multiline text
+    """
+
+  Examples:
+    | input_1 | input_2 | button | output |
+    | 20      | 30      | add    | 50     |
+    | 2       | 5       | add    | 7      |
+    | 0       | 40      | add    | 40     |
+</code></pre>
+
+  <tr>
+    <th>Nimrod
+    <td class="nimrod">
+<pre><code>
+import module1, module2, module3
+from module4 import nil
+
+type
+  TFoo = object ## Doc comment
+    a: int32
+  PFoo = ref TFoo
+
+proc do_stuff314(param_1: TFoo, par2am: var PFoo): PFoo {.exportc: "dostuff" .} =
+  # Regular comment
+  discard """
+  dfag
+sdfg""
+"""
+  result = nil
+
+method abc(a: TFoo) = discard 1u32 + 0xabcdefABCDEFi32 + 0o01234567i8 + 0b010
+
+discard rawstring"asdf""adfa"
+var normalstring = "asdf"
+let a: uint32 = 0xFFaF'u32
+</code></pre>
+
+  <tr>
+    <th>Swift
+    <td class="swift">
+<pre><code>extension MyClass : Interface {
+    class func unarchiveFromFile&lt;A&gt;(file : A, (Int,Int) -> B) -> SKNode? {
+        let path: String = bundle.pathForResource(file, ofType: "file\(name + 5).txt")
+        let funnyNumber = 3 + 0xC2.15p2 * (1_000_000.000_000_1 - 000123.456) + 0o21
+        var sceneData = NSData.dataWithContentsOfFile(path, options: .DataReadingMappedIfSafe, error: nil)
+        /* a comment /* with a nested comment */ and the end */
+    }
+    @objc override func shouldAutorotate() {
+        return true
+    }
+}
+</code></pre>
+
+  <tr>
+    <th>Gradle
+    <td class="gradle">
+<pre><code>
+apply plugin: 'android'
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "19.1"
+
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 19
+        versionCode 5
+        versionName "0.4.4"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+    signingConfigs {
+        release
+    }
+    buildTypes {
+        release {
+            // runProguard true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+            signingConfig signingConfigs.release
+        }
+    }
 }
 
-String str = ' (${'parameter' + 'zxc'})';
-String str = " (${true ? 2 + 2 / 2 : null})";
-String str = r'\nraw\';
-String str = r"\nraw\";
-var str = '''
-Something ${2+3}
-''';
-var str = r"""
-Something ${2+3}
-""";
+dependencies {
+    compile fileTree(dir: 'libs', include: ['*.jar'])
+
+    compile 'com.example:example-lib:1.0.0'
+}
+
+
+def propFile = file('../signing.properties')
+if( propFile.canRead() ) {
+    def Properties p = new Properties()
+    p.load(new FileInputStream(propFile))
+
+    if( p!=null
+    &&  p.containsKey("STORE_FILE")
+    &&  p.containsKey('STORE_PASSWORD')
+    &&  p.containsKey('KEY_ALIAS')
+    &&  p.containsKey('KEY_PASSWORD')
+    ) {
+        println "RELEASE_BUILD: Signing..."
+
+        android.signingConfigs.release.storeFile = file( p['STORE_FILE'] )
+        android.signingConfigs.release.storePassword = p['STORE_PASSWORD']
+        android.signingConfigs.release.keyAlias = p['KEY_ALIAS']
+        android.signingConfigs.release.keyPassword = p['KEY_PASSWORD']
+    } else {
+        println "RELEASE_BUILD: Required properties in signing.properties are missing"
+        android.buildTypes.release.signingConfig = null
+    }
+} else {
+    println "RELEASE_BUILD: signing.properties not found"
+    android.buildTypes.release.signingProperties = null
+}
+</code></pre>
+
+  <tr>
+    <th>G-code</th>
+    <td class="gcode">
+<pre><code>O003 (DIAMOND SQUARE)
+N2 G54 G90 G49 G80
+N3 M6 T1 (1.ENDMILL)
+N4 M3 S1800
+N5 G0 X-.6 Y2.050
+N6 G43  H1  Z.1
+N7 G1 Z-.3 F50.
+N8 G41 D1 Y1.45
+N9 G1 X0 F20.
+N10 G2 J-1.45
+(CUTTER COMP CANCEL)
+N11 G1 Z-.2 F50.
+N12 Y-.990
+N13 G40
+N14 G0 X-.6 Y1.590
+N15 G0 Z.1
+N16 M5 G49 G28 G91 Z0
+N17 CALL O9456
+N18 #500=0.004
+N19 #503=[#500+#501]
+N20 VC45=0.0006
+VS4=0.0007
+N21 G90 G10 L20 P3 X5.Y4. Z6.567
+N22 G0 X5000
+N23 IF [#1 LT 0.370] GOTO 49
+N24 X-0.678 Y+.990
+N25 G84.3 X-0.1
+N26 #4=#5*COS[45]
+N27 #4=#5*SIN[45]
+N28 VZOFZ=652.9658
+%
 </code></pre>
 
 </table>
@@ -3068,14 +3689,6 @@ Something ${2+3}
 </code></pre>
 
   <tr>
-    <th>Non-pre container
-    <td>
-<div id="codecontainer" class="code">for x in [1, 2, 3]:<br>
-&nbsp;&nbsp;count(x)<br>
-</div>
-<script>hljs.highlightBlock(document.getElementById('codecontainer'), null, true);</script>
-
-  <tr>
     <th>Language alias
     <td>
       <pre><code class="language-js">var x = '&lt;p&gt;this should &lt;b&gt;not&lt;/b&gt; be highlighted as &lt;em&gt;HTML&lt;/em&gt;';</code></pre>
@@ -3089,7 +3702,7 @@ Something ${2+3}
   <tr>
     <th>Disabled highlighting
     <td>
-<pre><code class="no-highlight">&lt;div id="contents"&gt;
+<pre><code class="nohighlight">&lt;div id="contents"&gt;
   &lt;p&gt;Hello, World!c
 &lt;/div&gt;
 </code></pre>
@@ -3136,5 +3749,5 @@ Something ${2+3}
     Stylesheet switcher: <a href="mailto:voldmar@voldmar.ru">Vladimir Epifanov</a><br>
     Test result detection: <a href="mailto:maniac@softwaremaniacs.org">Ivan Sagalaev</a><br>
     Export script: <a href="mailto:xonixx@gmail.com">Vladimir Gubarkov</a><br>
-    Highlighting: <a href="http://highlightjs.org/">highlight.js</a>
+    Highlighting: <a href="https://highlightjs.org/">highlight.js</a>
 </address>

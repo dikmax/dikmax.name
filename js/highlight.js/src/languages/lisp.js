@@ -28,7 +28,7 @@ function(hljs) {
   var STRING = hljs.inherit(hljs.QUOTE_STRING_MODE, {illegal: null});
   var COMMENT = {
     className: 'comment',
-    begin: ';', end: '$'
+    begin: ';', end: '$', relevance: 0
   };
   var VARIABLE = {
     className: 'variable',
@@ -51,9 +51,13 @@ function(hljs) {
       },
       {
         begin: '\\(quote ', end: '\\)',
-        keywords: {title: 'quote'}
+        keywords: 'quote'
       }
     ]
+  };
+  var QUOTED_ATOM = {
+    className: 'quoted',
+    begin: '\'' + LISP_IDENT_RE
   };
   var LIST = {
     className: 'list',
@@ -63,8 +67,8 @@ function(hljs) {
     endsWithParent: true,
     relevance: 0
   };
-  LIST.contains = [{className: 'title', begin: LISP_IDENT_RE}, BODY];
-  BODY.contains = [QUOTED, LIST, LITERAL, NUMBER, STRING, COMMENT, VARIABLE, KEYWORD];
+  LIST.contains = [{className: 'keyword', begin: LISP_IDENT_RE}, BODY];
+  BODY.contains = [QUOTED, QUOTED_ATOM, LIST, LITERAL, NUMBER, STRING, COMMENT, VARIABLE, KEYWORD];
 
   return {
     illegal: /\S/,
@@ -75,6 +79,7 @@ function(hljs) {
       STRING,
       COMMENT,
       QUOTED,
+      QUOTED_ATOM,
       LIST
     ]
   };

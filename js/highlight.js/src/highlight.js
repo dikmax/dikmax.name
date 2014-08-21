@@ -1,6 +1,6 @@
 /*
 Syntax highlighting with language autodetection.
-http://highlightjs.org/
+https://highlightjs.org/
 */
 
 function() {
@@ -23,7 +23,7 @@ function() {
   function blockLanguage(block) {
     var classes = (block.className + ' ' + (block.parentNode ? block.parentNode.className : '')).split(/\s+/);
     classes = classes.map(function(c) {return c.replace(/^lang(uage)?-/, '');});
-    return classes.filter(function(c) {return getLanguage(c) || c == 'no-highlight';})[0];
+    return classes.filter(function(c) {return getLanguage(c) || /no(-?)highlight/.test(c);})[0];
   }
 
   function inherit(parent, obj) {
@@ -44,8 +44,6 @@ function() {
       for (var child = node.firstChild; child; child = child.nextSibling) {
         if (child.nodeType == 3)
           offset += child.nodeValue.length;
-        else if (tag(child) == 'br')
-          offset += 1;
         else if (child.nodeType == 1) {
           result.push({
             event: 'start',
@@ -53,11 +51,16 @@ function() {
             node: child
           });
           offset = _nodeStream(child, offset);
-          result.push({
-            event: 'stop',
-            offset: offset,
-            node: child
-          });
+          // Prevent void elements from having an end tag that would actually
+          // double them in the output. There are more void elements in HTML
+          // but we list only those realistically expected in code display.
+          if (!tag(child).match(/br|hr|img|input/)) {
+            result.push({
+              event: 'stop',
+              offset: offset,
+              node: child
+            });
+          }
         }
       }
       return offset;
@@ -162,7 +165,7 @@ function() {
       if (mode.keywords) {
         var compiled_keywords = {};
 
-        function flatten(className, str) {
+        var flatten = function(className, str) {
           if (language.case_insensitive) {
             str = str.toLowerCase();
           }
@@ -170,7 +173,7 @@ function() {
             var pair = kw.split('|');
             compiled_keywords[pair[0]] = [className, pair[1] ? Number(pair[1]) : 1];
           });
-        }
+        };
 
         if (typeof mode.keywords == 'string') { // string
           flatten('keyword', mode.keywords);
@@ -228,8 +231,6 @@ function() {
         .map(reStr)
         .filter(Boolean);
       mode.terminators = terminators.length ? langRe(terminators.join('|'), true) : {exec: function(s) {return null;}};
-
-      mode.continuation = {};
     }
 
     compileMode(language);
@@ -308,7 +309,7 @@ function() {
       if (top.subLanguage && !languages[top.subLanguage]) {
         return escape(mode_buffer);
       }
-      var result = top.subLanguage ? highlight(top.subLanguage, mode_buffer, true, top.continuation.top) : highlightAuto(mode_buffer);
+      var result = top.subLanguage ? highlight(top.subLanguage, mode_buffer, true, subLanguageTop) : highlightAuto(mode_buffer);
       // Counting embedded language score towards the host language may be disabled
       // with zeroing the containing mode relevance. Usecase in point is Markdown that
       // allows XML everywhere and makes every XML snippet to have a much larger Markdown
@@ -317,7 +318,7 @@ function() {
         relevance += result.relevance;
       }
       if (top.subLanguageMode == 'continuous') {
-        top.continuation.top = result.top;
+        subLanguageTop = result.top;
       }
       return buildSpan(result.language, result.value, false, true);
     }
@@ -399,10 +400,11 @@ function() {
 
     compileLanguage(language);
     var top = continuation || language;
+    var subLanguageTop;
     var result = '';
     for(var current = top; current != language; current = current.parent) {
       if (current.className) {
-        result += buildSpan(current.className, result, true);
+        result = buildSpan(current.className, '', true) + result;
       }
     }
     var mode_buffer = '';
@@ -503,18 +505,25 @@ function() {
   two optional parameters for fixMarkup.
   */
   function highlightBlock(block) {
-    var text = options.useBR ? block.innerHTML
-      .replace(/\n/g,'').replace(/<br>|<br [^>]*>/g, '\n').replace(/<[^>]*>/g,'')
-      : block.textContent;
     var language = blockLanguage(block);
-    if (language == 'no-highlight')
+    if (/no(-?)highlight/.test(language))
         return;
+
+    var node;
+    if (options.useBR) {
+      node = document.createElementNS('http://www.w3.org/1999/xhtml', 'div');
+      node.innerHTML = block.innerHTML.replace(/\n/g, '').replace(/<br[ \/]*>/g, '\n');
+    } else {
+      node = block;
+    }
+    var text = node.textContent;
     var result = language ? highlight(language, text, true) : highlightAuto(text);
-    var original = nodeStream(block);
-    if (original.length) {
-      var pre = document.createElementNS('http://www.w3.org/1999/xhtml', 'pre');
-      pre.innerHTML = result.value;
-      result.value = mergeStreams(original, nodeStream(pre), text);
+
+    var originalStream = nodeStream(node);
+    if (originalStream.length) {
+      var resultNode = document.createElementNS('http://www.w3.org/1999/xhtml', 'div');
+      resultNode.innerHTML = result.value;
+      result.value = mergeStreams(originalStream, nodeStream(resultNode), text);
     }
     result.value = fixMarkup(result.value);
 

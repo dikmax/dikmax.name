@@ -1,28 +1,127 @@
-## Master
+## Version 8.2
 
-New features:
+We've finally got [real tests][test] and [continuous testing on Travis][ci]
+thanks to [Jeremy Hull][] and [Chris Eidhof][]. The tests designed to cover
+everything: language detection, correct parsing of individual language features
+and various special cases. This is a very important change that gives us
+confidence in extending language definitions and refactoring library core.
 
-- Add `listLanguages()` API method.
-- export.html merged into test.html.
-- Added a bunch of aliases for languages and document current ones.
-  Thanks to [Sindre Sorhus][] for background research.
-- Added phrasal English words to boost relevance in comments.
-- Include docs into the browser download and node.js package.
+We're going to redesign the old [demo/test suite][demo] into an interactive
+demo web app. If you're confident front-end developer or designer and want to
+help us with it, drop a comment into [the issue][#542] on GitHub.
 
-New languages and styles:
+[test]: https://github.com/isagalaev/highlight.js/tree/master/test
+[demo]: https://highlightjs.org/static/test.html
+[#542]: https://github.com/isagalaev/highlight.js/issues/542
+[ci]: https://travis-ci.org/isagalaev/highlight.js
+[Jeremy Hull]: https://github.com/sourrust
+[Chris Eidhof]: https://github.com/chriseidhof
 
+As usually there's a handful of new languages in this release:
+
+- *Groovy* by [Guillaume Laforge][]
+- *Dart* by [Maxim Dikun][]
+- *Dust* by [Michael Allen][]
+- *Scheme* by [JP Verkamp][]
+- *G-Code* by [Adam Joseph Cook][]
+- *Q* from Kx Systems by [Sergey Vidyuk][]
+
+[Guillaume Laforge]: https://github.com/glaforge
+[Maxim Dikun]: https://github.com/dikmax
+[Michael Allen]: https://github.com/bfui
+[JP Verkamp]: https://github.com/jpverkamp
+[Adam Joseph Cook]: https://github.com/adamjcook
+[Sergey Vidyuk]: https://github.com/sv
+
+Other improvements:
+
+- [Erik Osheim][] heavily reworked Scala definitions making it richer.
+- [Lucas Mazza][] fixed Ruby hashes highlighting
+- Lisp variants (Lisp, Clojure and Scheme) are unified in regard to naming
+  the first symbol in parentheses: it's "keyword" in general case and also
+  "built_in" for built-in functions in Clojure and Scheme.
+
+[Erik Osheim]: https://github.com/non
+[Lucas Mazza]: https://github.com/lucasmazza
+
+## Version 8.1
+
+New languages:
+
+- *Gherkin* by [Sam Pikesley][]
 - *Elixir* by [Josh Adams][]
 - *NSIS* by [Jan T. Sott][]
 - *VIM script* by [Jun Yang][]
 - *Protocol Buffers* by [Dan Tao][]
 - *Nix* by [Domen Kožar][]
+- *x86asm* by [innocenat][]
+- *Cap’n Proto* and *Thrift* by [Oleg Efimov][]
+- *Monkey* by [Arthur Bikmullin][]
+- *TypeScript* by [Panu Horsmalahti][]
+- *Nimrod* by [Flaviu Tamas][]
+- *Gradle* by [Damian Mee][]
+- *Haxe* by [Christopher Kaster][]
+- *Swift* by [Chris Eidhof][] and [Nate Cook][]
 
+New styles:
+
+- *Kimbie*, light and dark variants by [Jan T. Sott][]
+- *Color brewer* by [Fabrício Tavares de Oliveira][]
+- *Codepen.io embed* by [Justin Perry][]
+- *Hybrid* by [Nic West][]
+
+[Sam Pikesley]: https://github.com/pikesley
 [Sindre Sorhus]: https://github.com/sindresorhus
 [Josh Adams]: https://github.com/knewter
 [Jan T. Sott]: https://github.com/idleberg
 [Jun Yang]: https://github.com/harttle
 [Dan Tao]: https://github.com/dtao
 [Domen Kožar]: https://github.com/iElectric
+[innocenat]: https://github.com/innocenat
+[Oleg Efimov]: https://github.com/Sannis
+[Arthur Bikmullin]: https://github.com/devolonter
+[Panu Horsmalahti]: https://github.com/panuhorsmalahti
+[Flaviu Tamas]: https://github.com/flaviut
+[Damian Mee]: https://github.com/chester1000
+[Christopher Kaster]: http://christopher.kaster.ws
+[Fabrício Tavares de Oliveira]: https://github.com/fabriciotav
+[Justin Perry]: https://github.com/ourmaninamsterdam
+[Nic West]: https://github.com/nicwest
+[Chris Eidhof]: https://github.com/chriseidhof
+[Nate Cook]: https://github.com/natecook1000
+
+Other improvements:
+
+- The README is heavily reworked and brought up to date by [Jeremy Hull][].
+- Added [`listLanguages()`][ll] method in the API.
+- Improved C/C++/C# detection.
+- Added a bunch of new language aliases, documented the existing ones. Thanks to
+  [Sindre Sorhus][] for background research.
+- Added phrasal English words to boost relevance in comments.
+- Many improvements to SQL definition made by [Heiko August][],
+  [Nikolay Lisienko][] and [Travis Odom][].
+- The shorter `lang-` prefix for language names in HTML classes supported
+  alongside `language-`. Thanks to [Jeff Escalante][].
+- Ruby's got support for interactive console sessions. Thanks to
+  [Pascal Hurni][].
+- Added built-in functions for R language. Thanks to [Artem A. Klevtsov][].
+- Rust's got definition for lifetime parameters and improved string syntax.
+  Thanks to [Roman Shmatov][].
+- Various improvements to Objective-C definition by [Matt Diephouse][].
+- Fixed highlighting of generics in Java.
+
+[ll]: http://highlightjs.readthedocs.org/en/latest/api.html#listlanguages
+[Sindre Sorhus]: https://github.com/sindresorhus
+[Heiko August]: https://github.com/auge8472
+[Nikolay Lisienko]: https://github.com/neor-ru
+[Travis Odom]: https://github.com/Burstaholic
+[Jeff Escalante]: https://github.com/jenius
+[Pascal Hurni]: https://github.com/phurni
+[Jiyin Yiyong]: https://github.com/jiyinyiyong
+[Artem A. Klevtsov]: https://github.com/unikum
+[Roman Shmatov]: https://github.com/shmatov
+[Jeremy Hull]: https://github.com/sourrust
+[Matt Diephouse]: https://github.com/mdiep
 
 ## Version 8.0
 
@@ -73,7 +172,7 @@ New features:
   aliases can be specified in the class attribute of the code container in your
   HTML as well as in various API calls. For now there are only a few very common
   aliases but we'll expand it in the future. All of them are listed in the
-  [class reference][].
+  [class reference][cr].
 
 - Language detection can now be restricted to a subset of languages relevant in
   a given context — a web page or even a single highlighting call. This is
@@ -94,7 +193,7 @@ New languages and styles:
 - *Atelier* family of styles in 10 variants by [Bram de Haan][]
 - *Paraíso* styles by [Jan T. Sott][]
 
-Miscelleanous improvements:
+Miscellaneous improvements:
 
 - Highlighting `=>` prompts in Clojure.
 - [Jeremy Hull][] fixed a lot of styles for consistency.
@@ -144,7 +243,7 @@ Improvements:
 - Haskell's got new keywords and now recognizes more things like pragmas,
   preprocessors, modules, containers, FFIs etc. Thanks to [Zena Treep][treep]
   for the implementation and to [Jeremy Hull][sourrust] for guiding it.
-- Miscelleanous fixes in PHP, Brainfuck, SCSS, Asciidoc, CMake, Python and F#.
+- Miscellaneous fixes in PHP, Brainfuck, SCSS, Asciidoc, CMake, Python and F#.
 
 [mehdid]: https://github.com/mehdid
 [nbraud]: https://github.com/nbraud
@@ -182,7 +281,7 @@ This long overdue version is a snapshot of the current source tree with all the
 changes that happened during the past year. Sorry for taking so long!
 
 Along with the changes in code highlight.js has finally got its new home at
-<http://highlightjs.org/>, moving from its craddle on Software Maniacs which it
+<http://highlightjs.org/>, moving from its cradle on Software Maniacs which it
 outgrew a long time ago. Be sure to report any bugs about the site to
 <mailto:info@highlightjs.org>.
 
@@ -421,7 +520,7 @@ recent beta release][beta].
 
 [beta]: http://softwaremaniacs.org/blog/2011/04/25/highlight-js-60-beta/en/
 
-P.S. New version is not yet available on a Yandex' CDN, so for now you have to
+P.S. New version is not yet available on a Yandex CDN, so for now you have to
 download [your own copy][d].
 
 [d]: /soft/highlight/en/download/
@@ -448,7 +547,7 @@ developers.
 - Description of HTML has got new tags from [HTML 5][].
 - CSS-styles have been unified to use consistent padding and also have lost
   pop-outs with names of detected languages.
-- [Igor Kalnitsky][ik] has sent two new language descriptions: CMake и VHDL.
+- [Igor Kalnitsky][ik] has sent two new language descriptions: CMake & VHDL.
 
 This makes total number of languages supported by highlight.js to reach 35.
 
@@ -588,7 +687,8 @@ Also in this version:
 
 ## Version 5.2
 
-- at last it's possible to replace indentation TABs with something sensible (e.g. 2 or 4 spaces)
+- at last it's possible to replace indentation TABs with something sensible
+  (e.g. 2 or 4 spaces)
 - new keywords and built-ins for 1C by Sergey Baranov
 - a couple of small fixes to Apache highlighting
 

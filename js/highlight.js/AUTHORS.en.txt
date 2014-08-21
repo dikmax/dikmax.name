@@ -1,6 +1,6 @@
 Syntax highlighting with language autodetection.
 
-URL:   http://highlightjs.org/
+URL:   https://highlightjs.org/
 
 Core developers (in order of appearance):
 
@@ -107,4 +107,24 @@ Contributors:
 - Domen Kožar <domen@dev.si>
 - Travis Odom <travis.a.odom@gmail.com>
 - innocenat <innocenat@gmail.com>
+- Arthur Bikmullin <devolonter@gmail.com>
+- Pascal Hurni <phi@ruby-reactive.org>
+- Roman Shmatov <romanshmatov@gmail.com>
+- Nic West <nic@letolab.com>
+- Panu Horsmalahti <panu.horsmalahti@iki.fi>
+- Flaviu Tamas <tamas.flaviu@gmail.com>
+- Damian Mee <mee.damian@gmail.com>
+- Christopher Kaster <ikasoki@gmail.com>
+- Chris Eidhof <chris@eidhof.nl>
+- Nate Cook <natecook@gmail.com>
+- Matt Diephouse <matt@diephouse.com>
+- Erik Osheim <d_m@plastic-idolatry.com>
+- Guillaume Laforge <glaforge@gmail.com>
+- Lucas Mazza <lucastmazza@gmail.com>
 - Maxim Dikun <dikmax@gmail.com>
+- Henrik Feldt <henrik@haf.se>
+- Anton Kochkov <anton.kochkov@gmail.com>
+- Michael Allen <Michael.Allen@benefitfocus.com>
+- JP Verkamp <me@jverkamp.com>
+- Adam Joseph Cook <adam.joseph.cook@gmail.com>
+- Sergey Vidyuk <svidyuk@gmail.com>

@@ -8,14 +8,15 @@ Music: Aphex Twin / Xtal
 */
 
 .hljs {
-  display: block; padding: 0.5em;
+  display: block;
+  overflow-x: auto;
+  padding: 0.5em;
   background-color: #f4f4f4;
+  -webkit-text-size-adjust: none;
 }
 
 .hljs,
-.hljs-subst,
-.lisp .hljs-title,
-.clojure .hljs-built_in {
+.hljs-subst {
   color: black;
 }
 

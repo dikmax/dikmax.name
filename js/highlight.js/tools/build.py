@@ -112,8 +112,11 @@ def compress_content(tools_path, content, filetype='js'):
             content = mapnonstrings(content, partial(re.sub, r'\b%s\b' % s, r))
         content = re.sub(r'(block|parentNode)\.cN', r'\1.className', content)
 
-    args = ['java', '-jar', os.path.join(tools_path, 'yuicompressor.jar'), '--type', filetype]
-    p = subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    try:
+        args = ['java', '-jar', os.path.join(tools_path, 'yuicompressor.jar'), '--type', filetype]
+        p = subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.PIPE)
+    except FileNotFoundError as e:
+        raise RuntimeError('Couldn\'t find "%s" which is required for compression to work. You can skip compression with the `-n` option.' % args[0]) from e
     p.stdin.write(content.encode('utf-8'))
     p.stdin.close()
     content = p.stdout.read().decode('utf-8')
@@ -266,6 +269,15 @@ def build_node(root, build_path, filenames, options):
     if options.compress:
         print('Notice: not compressing files for "node" target.')
 
+    print('Copying styles...')
+    build_style_path = os.path.join(build_path, 'styles')
+    src_style_path = os.path.join(src_path, 'styles')
+    os.mkdir(build_style_path)
+    styles = [os.path.join(src_style_path, f) for f in os.listdir(src_style_path) if f.endswith('.css')]
+    for style in styles:
+        print(style)
+        shutil.copy(style, build_style_path)
+
     print('Copying over Metafiles...')
     filenames = ['LICENSE', 'README.md']
     for filename in filenames:
@@ -274,7 +286,7 @@ def build_node(root, build_path, filenames, options):
         shutil.copyfile(source, dest)
 
     print('Adding package.json...')
-    package = json.load(utf8_open(os.path.join(src_path, 'package.json')))
+    package = json.load(utf8_open(os.path.join(root, 'package.json')))
     authors = utf8_open(os.path.join(root, 'AUTHORS.en.txt'))
     matches = (re.match('^- (?P<name>.*) <(?P<email>.*)>$', a) for a in authors)
     package['contributors'] = [m.groupdict() for m in matches if m]
