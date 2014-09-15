@@ -689,6 +689,10 @@
                 "visits": [
                     {
                         "year": 2014,
+                        "month": 9
+                    },
+                    {
+                        "year": 2014,
                         "month": 3,
                         "link": "/post/vilnius/"
                     },
