@@ -1,6 +1,6 @@
 ---
 title: "Парсер для CommonMark"
-date: "2014-10-02T23:45:00+03:00"
+date: "2014-10-02T23:15:00+03:00"
 published: true
 tags: "commonmark, dart, markdown, программирование"
 ---
