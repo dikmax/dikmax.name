@@ -6,7 +6,7 @@ tags: "commonmark, markdown, программирование"
 ---
 
 ![](/images/3rd-party/markdown-logo.png "Markdown logo")
-                                                  dist
+
 Пару недель назад в\ блоге [Coding Horror][coding-horror] появилась запись о\ том, что объединённые усилия GitHub,
 StackOverflow и ещё нескольких компаний увенчались успехом и\ они готовы представить общественности точную [спецификацию
 стандарта Markdown][spec].
