@@ -7,6 +7,7 @@ import 'package:cookie/cookie.dart' as cookie;
 
 class App {
   void init() {
+    _setupMaxImageHeight();
     _setupJumbotron();
     _setupTopNavBar();
     _fixTimeZones();
@@ -15,6 +16,22 @@ class App {
     _inlineFootnotes();
     _setupKeyboardNavigation();
     _setupMath();
+  }
+
+  void _setupMaxImageHeight() {
+    StyleElement styleElement = new StyleElement();
+    styleElement.type = 'text/css';
+    document.head.append(styleElement);
+    final CssStyleSheet styleSheet = styleElement.sheet as CssStyleSheet;
+
+    var height = window.innerHeight - querySelector('.navbar').clientHeight - 60;
+    if (height < 200) {
+      height = 200;
+    }
+
+    final rule = '.img-responsive, .thumbnail>img, .thumbnail a>img, .post-body .figure .figure-inner>img, '
+      '.post-body .figure .figure-inner a>img { max-height: ${height}px; }';
+    styleSheet.insertRule(rule, 0);
   }
 
   void _setupJumbotron() {

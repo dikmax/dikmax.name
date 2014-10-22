@@ -1302,6 +1302,13 @@ return new Function(y+H.d(t)+"}")()},
 qm:function(a,b,c,d,e,f){b.fixed$length=init
 c.fixed$length=init
 return H.iA(a,b,c,!!d,e,f)},
+SE:function(a,b){var z=J.U6(b)
+throw H.b(H.aq(H.lh(a),z.Nj(b,3,z.gB(b))))},
+Go:function(a,b){var z
+if(a!=null)z=typeof a==="object"&&J.x(a)[b]
+else z=!0
+if(z)return a
+H.SE(a,b)},
 ag:function(a){throw H.b(P.Gz("Cyclic initialization for static "+H.d(a)))},
 KT:function(a,b,c){return new H.tD(a,b,c,null)},
 N7:function(){return C.KZ},
@@ -1707,9 +1714,14 @@ y.fixed$length=init
 x=y
 for(y=x.length,w=0;w<y;++w){v=x[w]
 if(z[v]===a)return v}}}},
+Vr:{
+"^":"Ge;G1",
+bu:function(a){return this.G1},
+$isGe:true,
+static:{aq:function(a,b){return new H.Vr("CastError: Casting value of type "+H.d(a)+" to incompatible type "+H.d(b))}}},
 mh:{
 "^":"Ge;G1",
-bu:function(a){return"RuntimeError: "+this.G1},
+bu:function(a){return"RuntimeError: "+H.d(this.G1)},
 static:{Ef:function(a){return new H.mh(a)}}},
 lb:{
 "^":"a;"},
@@ -4624,6 +4636,10 @@ if(d==null)d=""
 a.setProperty(b,c,d)
 if(!!a.setAttribute)a.setAttribute(b,c)}catch(z){H.Ru(z)}},
 "%":"CSS2Properties|CSSStyleDeclaration|MSStyleCSSProperties"},
+zC:{
+"^":"xr;",
+$iszC:true,
+"%":"CSSStyleSheet"},
 QF:{
 "^":"KV;",
 Wk:function(a,b){return a.querySelector(b)},
@@ -4763,7 +4779,7 @@ wP:{
 "^":"qE;P:value=",
 "%":"HTMLLIElement"},
 Og:{
-"^":"qE;LU:href},t5:type}",
+"^":"qE;LU:href},Jj:sheet=,t5:type}",
 "%":"HTMLLinkElement"},
 cS:{
 "^":"Gv;",
@@ -4866,8 +4882,11 @@ zD:{
 "^":"ea;kc:error=",
 "%":"SpeechRecognitionError"},
 fq:{
-"^":"qE;t5:type}",
+"^":"qE;Jj:sheet=,t5:type}",
 "%":"HTMLStyleElement"},
+xr:{
+"^":"Gv;",
+"%":";StyleSheet"},
 Tb:{
 "^":"qE;",
 r6:function(a,b,c,d){var z,y
@@ -5860,8 +5879,20 @@ GS:{
 $1:function(a){return J.Mp(a)},
 $isEH:true}}],["","",,F,{
 "^":"",
-QL:[function(){var z,y,x
+QL:[function(){var z,y,x,w,v,u,t
 z=new G.Vy()
+y=document.createElement("style",null)
+x=J.RE(y)
+x.st5(y,"text/css")
+document.head.appendChild(y)
+w=H.Go(x.gJj(y),"$iszC")
+x=window.innerHeight
+v=document.querySelector(".navbar")
+v.toString
+v=C.CD.yu(C.CD.UD(v.clientHeight))
+if(typeof x!=="number")return x.W()
+u=x-v-60
+w.insertRule(".img-responsive, .thumbnail>img, .thumbnail a>img, .post-body .figure .figure-inner>img, .post-body .figure .figure-inner a>img { max-height: "+(u<200?200:u)+"px; }",0)
 z.MH()
 z.KW()
 z.FK()
@@ -5869,12 +5900,12 @@ z.M7()
 if(z.KO())z.nK()
 z.TR()
 z.kH()
-if(W.vD(document.querySelectorAll("span.math"),null).Wf.length>0){y=document.createElement("script",null)
-x=J.RE(y)
-x.st5(y,"text/javascript")
-x.sQo(y,!0)
-x.sLA(y,"http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML")
-document.body.appendChild(y)}},"$0","HA",0,0,14]},1],])
+if(W.vD(document.querySelectorAll("span.math"),null).Wf.length>0){t=document.createElement("script",null)
+x=J.RE(t)
+x.st5(t,"text/javascript")
+x.sQo(t,!0)
+x.sLA(t,"http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML")
+document.body.appendChild(t)}},"$0","HA",0,0,14]},1],])
 I.$finishClasses($$,$,null)
 $$=null
 ;(function(){var z=!0,y
