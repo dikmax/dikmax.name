@@ -283,7 +283,7 @@ lessc --clean-css -O2 --include-path=less less/style.less css/style.css
 
 lessCompilerRules :: Rules ()
 lessCompilerRules = do
-    match "less/*.less" $
+    match "less/**" $
         compile getResourceBody
 
     d <- makePatternDependency "less/**"
