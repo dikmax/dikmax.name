@@ -6,24 +6,22 @@ import           Control.Applicative ((<$>))
 import           Control.Monad (forM_, filterM, liftM, msum)
 import           Data.Char
 import           Data.Function (on)
-import           Data.List (sortBy, intercalate, unfoldr, isPrefixOf, isSuffixOf, find, groupBy, dropWhileEnd)
+import           Data.List (sortBy, intercalate, isPrefixOf, find, groupBy, dropWhileEnd)
 import qualified Data.Map as M
 import           Data.Maybe
 import           Data.Monoid (mappend, mconcat)
 import           Data.Ord (comparing)
-import qualified Data.Set as Set
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import           Data.Time.Clock (UTCTime, getCurrentTime)
 import           Data.Time.Format (formatTime, parseTime)
-import           Hakyll hiding (buildPaginateWith, chronological, dateFieldWith, getItemUTC, getTags, paginateContext,
+import           Hakyll hiding (chronological, dateFieldWith, getItemUTC, getTags, paginateContext,
                     pandocCompiler, recentFirst, teaserField)
 import           System.FilePath (takeFileName)
 import           System.Locale
 import           Text.HTML.TagSoup (Tag(..))
 import qualified Text.HTML.TagSoup as TS
 import           Text.Pandoc
-import           Text.Printf (printf)
 import           Text.Regex (mkRegex, subRegex)
 import           Text.XmlHtml
 import           XmlHtmlWriter
@@ -352,7 +350,7 @@ indexPagesRules = do
     match "index.md" $
         compile pandocCompiler
 
-    paginate <- buildPaginateWith 5 getPageIdentifier "post/**"
+    paginate <- buildPaginateWith (\ids -> return $ paginateEvery 5 $ reverse ids) "post/**" getPageIdentifier
     d <- makePatternDependency "post/**"
     rulesExtraDependencies [d] $ paginateRules paginate $ \page ids -> do
         route addIndexRoute
@@ -363,7 +361,7 @@ indexPagesRules = do
                 let postsCtx =
                         constField "body" topPost `mappend`
                         listField "posts" postWithCommentsCountCtx (return posts) `mappend`
-                        paginateContext paginate `mappend`
+                        paginateContext paginate page `mappend`
                         pageCtx (defaultMetadata
                             { metaDescription = "Мой персональный блог. "
                                 ++ "Я рассказываю о программировании и иногда о своей жизни."
@@ -374,7 +372,7 @@ indexPagesRules = do
                 posts <- recentFirst =<< loadAllSnapshots ids "content"
                 let postsCtx =
                         listField "posts" postWithCommentsCountCtx (return posts) `mappend`
-                        paginateContext paginate `mappend`
+                        paginateContext paginate page `mappend`
                         pageCtx (defaultMetadata
                             { metaTitle = Just $ show page ++ "-я страница"
                             , metaDescription = "Мой персональный блог, записи с " ++ show ((page - 1) * 5 + 1)
@@ -413,14 +411,14 @@ tagsPagesRules = do
                 >>= loadAndApplyTemplate defaultTemplateName ctx
 
     rulesExtraDependencies [d] $ tagsRules tags $ \tag identifiers -> do
-        paginate <- buildPaginateWith 5 (getTagIdentifier tag) identifiers
+        paginate <- buildPaginateWith (\ids -> return $ paginateEvery 5 $ reverse ids) identifiers (getTagIdentifier tag)
         paginateRules paginate $ \page ids -> do
             route addIndexRoute
             compile $ do
                 posts <- recentFirst =<< loadAllSnapshots ids "content"
                 let postsCtx =
                         listField "posts" postWithCommentsCountCtx (return posts) `mappend`
-                        paginateContext paginate `mappend`
+                        paginateContext paginate page `mappend`
                         pageCtx (defaultMetadata
                             { metaTitle = Just $ "\"" ++ tag ++
                                 (if page == 1 then "\""
@@ -632,75 +630,50 @@ defaultMetadata = PageMetadata
 -- Replacement of Hakyll functions
 --------------------------------------------------------------------------------
 
-buildPaginateWith :: MonadMetadata m
-                  => Int
-                  -> (PageNumber -> Identifier)
-                  -> Pattern
-                  -> m Paginate
-buildPaginateWith n makeId pattern = do
-    metadata <- getAllMetadata pattern
-    let idents         = fst $ unzip $ sortBy compareFn $ filter filterFn metadata
-        pages          = flip unfoldr idents $ \xs ->
-            if null xs then Nothing else Just (splitAt n xs)
-        nPages         = length pages
-        paginatePages' = zip [1..] pages
-        pagPlaces'     =
-            [(ident, idx) | (idx,ids) <- paginatePages', ident <- ids] ++
-            [(makeId i, i) | i <- [1 .. nPages]]
 
-    return $ Paginate (M.fromList paginatePages') (M.fromList pagPlaces') makeId
-        (PatternDependency pattern $ Set.fromList idents)
-
-    where
-        compareFn :: (a, Metadata) -> (a, Metadata) -> Ordering
-        compareFn (_, a) (_, b)
-            | isNothing (M.lookup "date" a) && isNothing (M.lookup "date" b) = EQ
-            | isNothing (M.lookup "date" a) = GT
-            | isNothing (M.lookup "date" b) = LT
-            | otherwise = compare (unwrap $ b M.! "date") (unwrap $ a M.! "date")
-        filterFn :: (a, Metadata) -> Bool
-        filterFn (_, metadata)
-            | M.lookup "published" metadata == Just "false" = False
-            | otherwise = True
+paginateNumPages :: Paginate -> Int
+paginateNumPages = M.size . paginateMap
 
 
--- | Takes first, current, last page and produces index of next page
-type RelPage = PageNumber -> PageNumber -> PageNumber -> Maybe PageNumber
+paginatePage :: Paginate -> PageNumber -> Maybe Identifier
+paginatePage pag pageNumber
+    | pageNumber < 1                      = Nothing
+    | pageNumber > (paginateNumPages pag) = Nothing
+    | otherwise                           = Just $ paginateMakeId pag pageNumber
 
-paginateField :: Paginate -> String -> RelPage -> Context a
-paginateField pag fieldName relPage = field fieldName $ \item ->
-    let identifier = itemIdentifier item
-    in case M.lookup identifier (paginatePlaces pag) of
-        Nothing -> fail $ printf
-            "Hakyll.Web.Paginate: there is no page %s in paginator map."
-            (show identifier)
-        Just pos -> case relPage 1 pos nPages of
-            Nothing   -> fail "Hakyll.Web.Paginate: No page here."
-            Just pos' -> do
-                let nextId = paginateMakeId pag pos'
-                mroute <- getRoute nextId
-                case mroute of
-                    Nothing -> fail $ printf
-                        "Hakyll.Web.Paginate: unable to get route for %s."
-                        (show nextId)
-                    Just rt -> return $ removeIndex $ toUrl rt
-  where
-    nPages = M.size (paginatePages pag)
-    removeIndex url
-        | "index.html" `isSuffixOf` url = take (length url - 10) url
-        | otherwise = url
 
-paginateContext :: Paginate -> Context a
-paginateContext pag = mconcat
-    [ paginateField pag "firstPage"
-        (\f c _ -> if c <= f then Nothing else Just f)
-    , paginateField pag "previousPage"
-        (\f c _ -> if c <= f then Nothing else Just (c - 1))
-    , paginateField pag "nextPage"
-        (\_ c l -> if c >= l then Nothing else Just (c + 1))
-    , paginateField pag "lastPage"
-        (\_ c l -> if c >= l then Nothing else Just l)
+paginateContext :: Paginate -> PageNumber -> Context a
+paginateContext pag currentPage = mconcat
+    [ field "firstPageNum"    $ \_ -> otherPage 1                 >>= num
+    , field "firstPageUrl"    $ \_ -> otherPage 1                 >>= url
+    , field "previousPageNum" $ \_ -> otherPage (currentPage - 1) >>= num
+    , field "previousPageUrl" $ \_ -> otherPage (currentPage - 1) >>= url
+    , field "nextPageNum"     $ \_ -> otherPage (currentPage + 1) >>= num
+    , field "nextPageUrl"     $ \_ -> otherPage (currentPage + 1) >>= url
+    , field "lastPageNum"     $ \_ -> otherPage lastPage          >>= num
+    , field "lastPageUrl"     $ \_ -> otherPage lastPage          >>= url
+    , field "currentPageNum"  $ \i -> thisPage i                  >>= num
+    , field "currentPageUrl"  $ \i -> thisPage i                  >>= url
+    , constField "numPages"   $ show $ paginateNumPages pag
     ]
+  where
+    lastPage = paginateNumPages pag
+
+    thisPage i = return (currentPage, itemIdentifier i)
+    otherPage n
+        | n == currentPage = fail $ "This is the current page: " ++ show n
+        | otherwise        = case paginatePage pag n of
+            Nothing -> fail $ "No such page: " ++ show n
+            Just i  -> return (n, i)
+
+    num :: (Int, Identifier) -> Compiler String
+    num = return . show . fst
+
+    url :: (Int, Identifier) -> Compiler String
+    url (n, i) = getRoute i >>= \mbR -> case mbR of
+        Just r  -> return $ simplifiedUrl ('/' : r)
+        Nothing -> fail $ "No URL for page: " ++ show n
+
 
 getItemUTC :: MonadMetadata m
            => TimeLocale        -- ^ Output time locale
@@ -740,6 +713,7 @@ dateFieldWith locale key format = field key $ \i -> do
     time <- getItemUTC locale $ itemIdentifier i
     return $ formatTime locale format time
 
+
 pandocCompiler :: Compiler (Item String)
 pandocCompiler = do
     post <- getResourceBody
@@ -748,6 +722,7 @@ pandocCompiler = do
         , debugOutput = False
         }
         (readMarkdown readerOptions $ itemBody post)
+
 
 readerOptions :: ReaderOptions
 readerOptions = def
@@ -875,6 +850,9 @@ identifierToUrl :: String -> String
 identifierToUrl filepath = subRegex (mkRegex "^(.*)\\.md$")
                                         (subRegex (mkRegex "/[0-9]{4}-[0-9]{2}-[0-9]{2}-(.*)\\.md$") filepath "/\\1/")
                                         "\\1/"
+
+simplifiedUrl :: String -> String
+simplifiedUrl url = subRegex (mkRegex "/index\\.html$") url "/"
 
 identifierToDisqus :: String -> String
 identifierToDisqus filepath = subRegex (mkRegex "^post/[0-9]{4}-[0-9]{2}-[0-9]{2}-(.*)\\.md$") filepath  "\\1"

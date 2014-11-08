@@ -1,8 +1,8 @@
 <ul class="pager">
-    $if(nextPage)$
-    <li class="previous" title="На страницу назад"><a href="$nextPage$">&larr; Старше</a></li>
+    $if(nextPageUrl)$
+    <li class="previous" title="На страницу назад"><a href="$nextPageUrl$">&larr; Старше</a></li>
     $endif$
-    $if(previousPage)$
-    <li class="next" title="На страницу вперед"><a href="$previousPage$">Моложе &rarr;</a></li>
+    $if(previousPageUrl)$
+    <li class="next" title="На страницу вперед"><a href="$previousPageUrl$">Моложе &rarr;</a></li>
     $endif$
 </ul>
