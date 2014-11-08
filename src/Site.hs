@@ -311,6 +311,13 @@ topojson -o map/world.json --id-property ADM_A3,SU_A3,adm1_code --simplify 1e-6 
 
 mapCompilerRules :: Rules ()
 mapCompilerRules = do
+    match "map/ne_10m_admin_0_countries_lakes/*" $
+        compile copyFileCompiler
+    match "map/ne_10m_admin_0_map_subunits/*" $
+        compile copyFileCompiler
+    match "map/ne_10m_admin_1_states_provinces_lakes/*" $
+        compile copyFileCompiler
+
     countries <- makePatternDependency "map/ne_10m_admin_0_countries_lakes/*"
     subunits <- makePatternDependency "map/ne_10m_admin_0_map_subunits/*"
     regions <- makePatternDependency "map/ne_10m_admin_1_states_provinces_lakes/*"
