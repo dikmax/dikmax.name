@@ -28,66 +28,66 @@ tags: "блог, конкурс, фотки"
 
 <div class="table-responsive">
 <table class="table table-striped table-hover table-bordered">
-    <thead>
-        <tr class="header">
-            <th></th>
-            <th class="text-center">Угадано</th>
-            <th class="text-center">Не угадано</th>
-            <th class="text-center">Лишние</th>
-            <th class="text-center">Сумма</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td>Феня Макарова</td>
-            <td class="text-center">6</td>
-            <td class="text-center">-6</td>
-            <td class="text-center">-2</td>
-            <td class="text-center">**-2**</td>
-        </tr>
-        <tr>
-            <td>Надежда Мирошина</td>
-            <td class="text-center">5</td>
-            <td class="text-center">-7</td>
-            <td class="text-center">-12</td>
-            <td class="text-center">**-14**</td>
-        </tr>
-        <tr>
-            <td>Виктор</td>
-            <td class="text-center">3</td>
-            <td class="text-center">-9</td>
-            <td class="text-center">-7</td>
-            <td class="text-center">**-13**</td>
-        </tr>
-        <tr class="success">
-            <td>Yuliya Marozava</td>
-            <td class="text-center">9</td>
-            <td class="text-center">-3</td>
-            <td class="text-center">-3</td>
-            <td class="text-center">**3**</td>
-        </tr>
-        <tr>
-            <td>Александра Дикун</td>
-            <td class="text-center">7</td>
-            <td class="text-center">-5</td>
-            <td class="text-center">-5</td>
-            <td class="text-center">**-3**</td>
-        </tr>
-        <tr>
-            <td>dnnx</td>
-            <td class="text-center">1</td>
-            <td class="text-center">-11</td>
-            <td class="text-center">-1</td>
-            <td class="text-center">**-11**</td>
-        </tr>
-        <tr>
-            <td>Bumbarashka</td>
-            <td class="text-center">8</td>
-            <td class="text-center">-4</td>
-            <td class="text-center">-6</td>
-            <td class="text-center">**-2**</td>
-        </tr>
-    </tbody>
+<thead>
+<tr class="header">
+<th></th>
+<th class="text-center">Угадано</th>
+<th class="text-center">Не угадано</th>
+<th class="text-center">Лишние</th>
+<th class="text-center">Сумма</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Феня Макарова</td>
+<td class="text-center">6</td>
+<td class="text-center">-6</td>
+<td class="text-center">-2</td>
+<td class="text-center">**-2**</td>
+</tr>
+<tr>
+<td>Надежда Мирошина</td>
+<td class="text-center">5</td>
+<td class="text-center">-7</td>
+<td class="text-center">-12</td>
+<td class="text-center">**-14**</td>
+</tr>
+<tr>
+<td>Виктор</td>
+<td class="text-center">3</td>
+<td class="text-center">-9</td>
+<td class="text-center">-7</td>
+<td class="text-center">**-13**</td>
+</tr>
+<tr class="success">
+<td>Yuliya Marozava</td>
+<td class="text-center">9</td>
+<td class="text-center">-3</td>
+<td class="text-center">-3</td>
+<td class="text-center">**3**</td>
+</tr>
+<tr>
+<td>Александра Дикун</td>
+<td class="text-center">7</td>
+<td class="text-center">-5</td>
+<td class="text-center">-5</td>
+<td class="text-center">**-3**</td>
+</tr>
+<tr>
+<td>dnnx</td>
+<td class="text-center">1</td>
+<td class="text-center">-11</td>
+<td class="text-center">-1</td>
+<td class="text-center">**-11**</td>
+</tr>
+<tr>
+<td>Bumbarashka</td>
+<td class="text-center">8</td>
+<td class="text-center">-4</td>
+<td class="text-center">-6</td>
+<td class="text-center">**-2**</td>
+</tr>
+</tbody>
 </table>
 </div>
 
