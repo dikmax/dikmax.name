@@ -4,7 +4,7 @@
 import           Blaze.ByteString.Builder (toByteString)
 import           Control.Applicative ((<$>))
 import           Control.Exception
-import           Control.Monad (forM_, filterM, liftM, msum)
+import           Control.Monad (forM_, filterM, liftM, msum, foldM)
 import           Data.Char
 import           Data.Function (on)
 import           Data.List (sortBy, intercalate, isPrefixOf, find, groupBy, dropWhileEnd)
@@ -37,6 +37,7 @@ main = hakyll $ do
     staticFilesRules
     lessCompilerRules
     mapCompilerRules
+    scriptsCompilerRules
     commentsRules
     postsRules
     tagsPagesRules
@@ -243,22 +244,6 @@ staticFilesRules = do
         route   idRoute
         compile copyFileCompiler
 
-#else
-
-    -- TODO d3, topojson and others
-    match (fromList
-        [ "dart/script.dart"
-        , "dart/script.dart.js"
-        , "dart/s.js"
-        , "dart/script-route-planner.dart"
-        , "dart/script-route-planner.dart.js"
-        , "dart/script-map.dart"
-        , "dart/script-map.dart.js"
-        , "dart/smap.js"
-        ]) $ do
-            route   idRoute
-            compile copyFileCompiler
-
 #endif
 
     match (fromList
@@ -324,6 +309,7 @@ mapCompilerRules = do
     rulesExtraDependencies [countries, subunits, regions] $ create ["map/world.json"] $ do
         route idRoute
         compile $ do
+            -- TODO logging
             mapData <- unsafeCompiler $ do
                 removeIfExists "map/subunits.json"
                 removeIfExists "map/countries.json"
@@ -342,6 +328,115 @@ mapCompilerRules = do
                         "--simplify", "1e-6",
                         "--", "map/countries.json", "map/subunits.json", "map/regions.json"] ""
             makeItem mapData
+
+
+--------------------------------------------------------------------------------
+-- Scripts
+--------------------------------------------------------------------------------
+
+{-
+echo "Building highlight.js..."
+python3.4 js/highlight.js/tools/build.py bash css haskell javascript markdown sql xml dart
+cp dart/packages/browser/dart.js dart/s.js
+cat js/highlight.js/build/highlight.pack.js >> dart/s.js
+
+echo "Building main dart..."
+dart2js --out=dart/script.dart --minify --output-type=dart dart/web/main.dart
+echo "Building main js..."
+dart2js --out=dart/script.dart.js --minify dart/web/main.dart
+
+echo "Building route-planner dart..."
+dart2js --out=dart/script-route-planner.dart --minify --output-type=dart dart/web/route-planner.dart
+echo "Building route-planner js..."
+dart2js --out=dart/script-route-planner.dart.js --minify dart/web/route-planner.dart
+
+cp dart/packages/browser/dart.js dart/smap.js
+cat js/d3/d3.min.js >> dart/smap.js
+cat js/topojson/topojson.min.js >> dart/smap.js
+cat js/waterman.js >> dart/smap.js
+
+echo "Building map dart..."
+dart2js --out=dart/script-map.dart --minify --output-type=dart dart/web/map.dart
+echo "Building map js..."
+dart2js --out=dart/script-map.dart.js --minify dart/web/map.dart
+
+-}
+
+highlightLanguages :: [String]
+highlightLanguages = ["bash", "css", "haskell", "javascript", "markdown", "sql", "xml", "dart"]
+
+buildDart :: String -> String -> Rules ()
+buildDart input output = do
+    create [fromFilePath $ "dart/" ++ output ++ ".dart"] $ do
+        route idRoute
+        compile $ do
+            dart <- unsafeCompiler $ do
+                _ <- rawSystem "dart2js" ["--out=_temp/" ++ output ++ ".dart", "--minify", "--output-type=dart",
+                    "dart/web/" ++ input ++ ".dart"]
+                readFile $ "_temp/" ++ output ++ ".dart"
+            makeItem dart
+    -- Building main js...
+    create [fromFilePath $ "dart/" ++ output ++ ".dart.js"] $ do
+        route idRoute
+        compile $ do
+            dart <- unsafeCompiler $ do
+                _ <- rawSystem "dart2js" ["--out=_temp/" ++ output ++ ".dart.js", "--minify",
+                    "dart/web/" ++ input ++ ".dart"]
+                readFile $ "_temp/" ++ output ++ ".dart.js"
+            makeItem dart
+
+
+concatResources :: Identifier -> [Identifier] -> Rules ()
+concatResources out inputs = do
+    create [out] $ do
+        route idRoute
+        compile $ do
+            res <- foldM (\buffer input -> do
+                a <- loadBody input
+                return $ buffer ++ a) ("" :: String) inputs
+            makeItem $ res
+
+
+scriptsCompilerRules :: Rules ()
+scriptsCompilerRules = do
+    match (fromList ["dart/packages/browser/dart.js", "js/d3/d3.min.js", "js/topojson/topojson.min.js",
+        "js/waterman.js"]) $ compile getResourceBody
+
+    -- Building highlight.js
+    match "js/highlight.js/src/**" $
+        compile copyFileCompiler
+
+    highlightjs <- makePatternDependency "js/highlight.js/src/**"
+    rulesExtraDependencies [highlightjs] $ create ["js/highlight.pack.js"] $
+        compile $ do
+            -- TODO logging
+            js <- unsafeCompiler $ do
+                _ <- rawSystem "python3.4" ("js/highlight.js/tools/build.py" : highlightLanguages)
+                readFile "js/highlight.js/build/highlight.pack.js"
+
+            makeItem js
+
+    -- Building additional js
+    concatResources "dart/s.js" ["dart/packages/browser/dart.js", "js/highlight.pack.js"]
+    -- TODO sroute-planner
+    concatResources "dart/smap.js" ["dart/packages/browser/dart.js", "js/d3/d3.min.js", "js/topojson/topojson.min.js",
+        "js/waterman.js"]
+
+    -- Building different dart resources
+    match "dart/lib/**" $
+        compile copyFileCompiler
+    match "dart/web/*.dart" $
+        compile copyFileCompiler
+    match "dart/pubspec.lock" $
+        compile copyFileCompiler
+
+    dartLibDeps <- makePatternDependency "dart/lib/**"
+    dartWebDeps <- makePatternDependency "dart/web/*.dart"
+    dartPubSpecDeps <- makePatternDependency "dart/pubspec.lock"
+    rulesExtraDependencies [dartLibDeps, dartWebDeps, dartPubSpecDeps] $ do
+        buildDart "main" "script"
+        buildDart "route-planner" "script-route-planner"
+        buildDart "map" "script-map"
 
 
 --------------------------------------------------------------------------------
