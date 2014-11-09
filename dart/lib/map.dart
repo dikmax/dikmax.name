@@ -132,9 +132,7 @@ class MapApplication {
 
     g.callMethod("style", ["stroke-width", 1])
       .callMethod('attr', ["transform", "translate(0,0)scale(1)"]);
-  }
 
-  void initMapOutline() {
     g.callMethod("append", ['path'])
       .callMethod("datum", [new JsObject.jsify({'type': "Sphere"})])
       .callMethod("attr", ["class", "graticule outline"])
@@ -145,7 +143,7 @@ class MapApplication {
     // Render countries
     JsObject country = g.callMethod("selectAll", [".country"]).callMethod("data", [countries]);
     country.callMethod("enter")
-      .callMethod("insert", ["path"])
+      .callMethod("insert", ["path", ".graticule.outline"])
       .callMethod("attr", ["class", "country"])
       .callMethod("attr", ["d", path])
       .callMethod("attr", ["id", (d, i, [_]) => d['id']])
@@ -174,8 +172,6 @@ class MapApplication {
         }
         return COLORS[color];
       }]);
-
-    initMapOutline();
 
     num offsetLeft = map.callMethod("property", ['offsetLeft']) + 5;
     num offsetTop = map.callMethod("property", ['offsetTop']) - 40;
