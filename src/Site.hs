@@ -234,18 +234,6 @@ staticFilesRules = do
         route   idRoute
         compile copyFileCompiler
 
-#ifdef DEVELOPMENT
-
-    match "dart/**" $ do
-        route   idRoute
-        compile copyFileCompiler
-
-    match "js/**" $ do
-        route   idRoute
-        compile copyFileCompiler
-
-#endif
-
     match (fromList
         [ "favicon.ico"
         , "robots.txt"

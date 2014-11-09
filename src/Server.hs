@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP               #-}
 {-# LANGUAGE OverloadedStrings #-}
 module Main where
 
@@ -13,6 +14,12 @@ site :: Snap ()
 site = path "rss" (redirect "feed.rss") <|>
     path "rss/" (redirect "feed.rss") <|>
     dir "media" (serveDirectory "/home/dikmax/Dropbox/dikmax.name") <|>
+
+#ifdef DEVELOPMENT
+    dir "dart" (serveDirectory "dart") <|>
+    dir "js" (serveDirectory "js") <|>
+#endif
+
     serveDirectory "_site" <|>
     notFoundHandler
 

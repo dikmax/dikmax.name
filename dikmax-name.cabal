@@ -61,6 +61,9 @@ Executable server
     unordered-containers      >= 0.1.4.3 && < 0.3,
     utf8-string               >= 0.3 && < 0.4
 
+  if flag(development)
+      cpp-options: -DDEVELOPMENT
+
   if impl(ghc >= 6.12.0)
     ghc-options: -threaded -Wall -fwarn-tabs -funbox-strict-fields -O2
                  -fno-warn-unused-do-bind
