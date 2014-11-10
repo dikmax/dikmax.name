@@ -31,6 +31,7 @@ data WriterStateData = WriterStateData
   , rawData :: T.Text
   , rawInline :: T.Text
   , writerOptions :: XmlHtmlWriterOptions
+  , countBlocks :: Int
   }
 
 type WriterState = State WriterStateData
@@ -53,6 +54,7 @@ emptyState = WriterStateData
   , rawData = ""
   , rawInline = ""
   , writerOptions = defaultXmlHtmlWriterOptions
+  , countBlocks = 0
   }
 
 writeXmlHtml' :: Pandoc -> WriterState [Node]
@@ -95,8 +97,10 @@ writeBlock (Plain inline) = do
   modify (\s -> s { rawData = rawData s `T.append` T.decodeUtf8 (toByteString $ renderHtmlFragment UTF8 inlines) } )
   return []
 writeBlock (Para inline) = do
+  s <- get
+  put s { countBlocks = countBlocks s + 1 }
   inlines <- concatInlines inline
-  return [Element "p" [] inlines]
+  return [Element "p" [ ("id", T.pack $ "p-" ++ show (countBlocks s + 1))] inlines]
 writeBlock (CodeBlock (identifier, classes, others) code) = return 
   [ Element "pre" mapAttrs 
     [ Element "code" mapAttrs 
@@ -113,38 +117,52 @@ writeBlock (BlockQuote blocks) = do
   items <- concatBlocks blocks
   return [ Element "blockquote" [] items ]
 writeBlock (OrderedList (startNum, numStyle, _) listItems) = do
+  s <- get
+  put s { countBlocks = countBlocks s + 1 }
   items <- foldM processListItems [] listItems
-  return [ Element "ol" 
-    ( ("type", case numStyle of
+  return [ Element "ol"
+    ( [("type", case numStyle of
         Decimal    -> "1"
         LowerAlpha -> "a"
         UpperAlpha -> "A"
         LowerRoman -> "i"
         UpperRoman -> "I"
         _          -> "1"
-      ) :
+      ), ("id", T.pack $ "p-" ++ show (countBlocks s + 1)) ] ++
       [ ("start", T.pack $ show startNum) | startNum /= 1 ]
     )
     items ]  
 writeBlock (BulletList listItems) = do
+  s <- get
+  put s { countBlocks = countBlocks s + 1 }
   items <- foldM processListItems [] listItems
-  return [ Element "ul" [] items ]
+  return [ Element "ul" [("id", T.pack $ "p-" ++ show (countBlocks s + 1))] items ]
 writeBlock (DefinitionList _) = return [TextNode "DefinitionList not implemented"]
 writeBlock (Header 1 _ inline) = do  -- TODO second header parameter
+  s <- get
+  put s { countBlocks = countBlocks s + 1 }
   inlines <- concatInlines inline
-  return [Element "h2" [] inlines]
+  return [Element "h2" [("id", T.pack $ "p-" ++ show (countBlocks s + 1))] inlines]
 writeBlock (Header 2 _ inline) = do
+  s <- get
+  put s { countBlocks = countBlocks s + 1 }
   inlines <- concatInlines inline
-  return [Element "h3" [] inlines]
+  return [Element "h3" [("id", T.pack $ "p-" ++ show (countBlocks s + 1))] inlines]
 writeBlock (Header 3 _ inline) = do
+  s <- get
+  put s { countBlocks = countBlocks s + 1 }
   inlines <- concatInlines inline
-  return [Element "h4" [] inlines]
+  return [Element "h4" [("id", T.pack $ "p-" ++ show (countBlocks s + 1))] inlines]
 writeBlock (Header 4 _ inline) = do
+  s <- get
+  put s { countBlocks = countBlocks s + 1 }
   inlines <- concatInlines inline
-  return [Element "h5" [] inlines]
+  return [Element "h5" [("id", T.pack $ "p-" ++ show (countBlocks s + 1))] inlines]
 writeBlock (Header _ _ inline) = do
+  s <- get
+  put s { countBlocks = countBlocks s + 1 }
   inlines <- concatInlines inline
-  return [Element "h6" [] inlines]
+  return [Element "h6" [("id", T.pack $ "p-" ++ show (countBlocks s + 1))] inlines]
 writeBlock HorizontalRule = return [Element "hr" [] []]
 writeBlock (Table {}) = return [TextNode "Table not implemented"]
 writeBlock (Div attr blocks) = do
@@ -254,7 +272,7 @@ writeInline (Image inline target) = do
         )
       ]
     else
-      [ Element "div" [("class", "figure")]
+      [ Element "div" [("id", extractId $ T.pack $ fst target), ("class", "figure")]
         [ Element "div" [("class", "figure-inner")]
           ( Element "img"
             [ ("src", T.pack $ fst target)
@@ -268,6 +286,8 @@ writeInline (Image inline target) = do
   where
     videoId url = T.takeWhile (/= '&') $ T.replace "http://www.youtube.com/watch?v=" "" $
         T.replace "https://www.youtube.com/watch?v=" "" url
+    -- http://dikmax.name/images/travel/2014-06-eurotrip/rome-santa-maria-maggiore-1.jpg -> rome-santa-maria-maggiore-1
+    extractId = T.init . fst . T.breakOnEnd "." . snd . T.breakOnEnd "/"
 
 writeInline (Note block) = do
   blocks <- concatBlocks block
