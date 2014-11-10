@@ -1,6 +1,6 @@
 _cache
 _site
-dikmax-name
+_temp
 dikmax-name.tar.lzma
 disqus-sync/node_modules
 dist
@@ -18,7 +18,3 @@ site.o
 /map/countries.json
 /map/regions.json
 /map/subunits.json
-*.dart.deps
-*.dart.js.deps
-*.dart.js.map
-*.dart.precompiled.js

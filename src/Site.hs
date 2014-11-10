@@ -368,6 +368,7 @@ buildDart input output = do
         route idRoute
         compile $ do
             dart <- unsafeCompiler $ do
+                -- TODO replace rawSystem with createProcess
                 _ <- rawSystem "dart2js" ["--out=_temp/" ++ output ++ ".dart.js", "--minify",
                     "dart/web/" ++ input ++ ".dart"]
                 readFile $ "_temp/" ++ output ++ ".dart.js"
@@ -399,9 +400,11 @@ scriptsCompilerRules = do
         compile $ do
             -- TODO logging
             js <- unsafeCompiler $ do
-                _ <- rawSystem "python3.4" ("js/highlight.js/tools/build.py" : highlightLanguages)
+                (_, _, _, h) <- createProcess $ (proc "node" ("tools/build.js" : highlightLanguages)) {
+                        cwd = Just "js/highlight.js"
+                    }
+                _ <- waitForProcess h
                 readFile "js/highlight.js/build/highlight.pack.js"
-
             makeItem js
 
     -- Building additional js

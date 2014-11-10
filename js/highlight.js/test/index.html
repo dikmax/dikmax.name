@@ -50,5 +50,30 @@
 
 <!-- non-code <pre> -->
 <pre><samp>Computer output</samp></pre>
+
+<!-- sub-languages -->
+<pre><code id="sublanguages" class="xml">&lt;? echo 'php'; /* ?&gt;
+&lt;body&gt;
+&lt;script&gt;function(x){return x;}();&lt;/script&gt;
+&lt;/body&gt;
+&lt;? end of comment */ ?&gt;
+</code></pre>
+
+<!-- add class name -->
+<pre><code id="without-hljs-class" class=" some-class ">&lt;?xml version="1.0"?&gt;
+    &lt;response value="ok" xml:lang="en"&gt;&lt;/response&gt;</code></pre>
+
+<!-- do not clutter class name first -->
+<pre><code id="with-hljs-class-first" class="hljs some-class ">&lt;?xml version="1.0"?&gt;
+    &lt;response value="ok" xml:lang="en"&gt;&lt;/response&gt;</code></pre>
+
+<!-- do not clutter class name last -->
+<pre><code id="with-hljs-class-last" class=" some-class hljs">&lt;?xml version="1.0"?&gt;
+    &lt;response value="ok" xml:lang="en"&gt;&lt;/response&gt;</code></pre>
+
+<!-- do not clutter class name spaces around-->
+<pre><code id="with-hljs-class-spaces-around" class=" hljs some-class ">&lt;?xml version="1.0"?&gt;
+    &lt;response value="ok" xml:lang="en"&gt;&lt;/response&gt;</code></pre>
+
 </body>
 </html>
