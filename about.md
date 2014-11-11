@@ -9,18 +9,18 @@ published: false
 Я в социальных сетях и различных сервисах
 ====================
 
-<div class="MojoShare">
-<a href="http://www.facebook.com/dikmax" title="Facebook" class="Facebook share square"></a>
-<a href="https://www.google.com/+MaximDikun" title="Google+" class="GooglePlus share square"></a>
-<a href="http://www.linkedin.com/pub/maxim-dikun/36/389/303" title="LinkedIn" class="Linkedin share square"></a>
-<a href="http://vk.com/dikmax" title="VK" class="VK share square"></a>
-<a href="http://www.last.fm/user/dikmax" title="last.fm" class="Lastfm share square"></a>
-<a href="http://instagram.com/dikmax" title="Instagram" class="Instagram share square"></a>
-<a href="https://foursquare.com/dikmax" title="Foursquare" class="Foursquare share square"></a>
-<a href="https://github.com/dikmax" title="GitHub" class="Github share square"></a>
-<a href="http://stackoverflow.com/users/682727/dikmax" title="StackOverflow" class="Stackoverflow share square"></a>
-<a href="https://twitter.com/dikmax" title="Twitter" class="Twitter share square"></a>
-<a href="http://www.youtube.com/user/zabeydikmax" title="YouTube" class="YouTube share square"></a>
+<div>
+<a href="https://www.facebook.com/dikmax" title="Facebook" class="btn btn-facebook"><i class="fa fa-facebook fa-2x fa-fw"></i></a>
+<a href="https://www.google.com/+MaximDikun" title="Google+" class="btn btn-google-plus"><i class="fa fa-google-plus fa-2x fa-fw"></i></a>
+<a href="https://www.linkedin.com/pub/maxim-dikun/36/389/303" title="LinkedIn" class="btn btn-linkedin"><i class="fa fa-linkedin fa-2x fa-fw"></i></a>
+<a href="https://vk.com/dikmax" title="VK" class="btn btn-vk"><i class="fa fa-vk fa-2x fa-fw"></i></a>
+<a href="http://www.last.fm/user/dikmax" title="last.fm" class="btn btn-lastfm"><i class="fa fa-lastfm fa-2x fa-fw"></i></a>
+<a href="http://instagram.com/dikmax" title="Instagram" class="btn btn-instagram"><i class="fa fa-instagram fa-2x fa-fw"></i></a>
+<a href="https://foursquare.com/dikmax" title="Foursquare" class="btn btn-foursquare"><i class="fa fa-foursquare fa-2x fa-fw"></i></a>
+<a href="https://github.com/dikmax" title="GitHub" class="btn btn-github"><i class="fa fa-github fa-2x fa-fw"></i></a>
+<a href="https://stackoverflow.com/users/682727/dikmax" title="StackOverflow" class="btn btn-stack-overflow"><i class="fa fa-stack-overflow fa-2x fa-fw"></i></a>
+<a href="https://twitter.com/dikmax" title="Twitter" class="btn btn-twitter"><i class="fa fa-twitter fa-2x fa-fw"></i></a>
+<a href="https://www.youtube.com/user/zabeydikmax" title="YouTube" class="btn btn-youtube"><i class="fa fa-youtube fa-2x fa-fw"></i></a>
 </div>
 
 Как-то много получилось. Не скажу, что я все это читаю и смотрю, но на личные сообщения стараюсь реагировать.
