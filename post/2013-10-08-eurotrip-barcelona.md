@@ -2,7 +2,7 @@
 title: "Eurotrip: Барселона"
 date: "2013-10-08T08:20:28+03:00"
 published: true
-tags: "eurotrip, eurotrip-2013, испания, отпуск, путешествие, фотки"
+tags: "eurotrip, eurotrip-2013, гостевой пост, испания, отпуск, путешествие, фотки"
 thread: 1833535879
 ---
 
