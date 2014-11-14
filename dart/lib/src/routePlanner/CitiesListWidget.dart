@@ -83,7 +83,7 @@ class CitiesListWidget {
       ..title = title
       ..append(
         new SpanElement()
-          ..classes.addAll(["glyphicon", "glyphicon-$icon"])
+          ..classes.addAll(["fa", "fa-$icon"])
     );
   }
 

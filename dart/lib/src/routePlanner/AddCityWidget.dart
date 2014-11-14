@@ -97,7 +97,7 @@ class AddCityWidget {
                   ..title = "Скрыть результаты" // TODO l10n
                   ..append(
                     new SpanElement()
-                      ..classes.addAll(['glyphicon', 'glyphicon-remove'])
+                      ..classes.addAll(['fa', 'fa-remove'])
                   )
                   ..onClick.listen((_) {
                     suggestions = null;
@@ -110,7 +110,7 @@ class AddCityWidget {
                   ..title = "Искать" // TODO l10n
                   ..append(
                     new SpanElement()
-                      ..classes.addAll(['glyphicon', 'glyphicon-search'])
+                      ..classes.addAll(['fa', 'fa-search'])
                   )
                   ..onClick.listen((_) => searchCity())
               )

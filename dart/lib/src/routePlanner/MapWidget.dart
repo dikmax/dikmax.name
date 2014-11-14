@@ -21,7 +21,7 @@ class MapWidget {
     JsObject fullScreenButton = new JsObject(context['ymaps']['control']['Button'], [
       new JsObject.jsify({
         "data": {
-          "content": '<span class="glyphicon glyphicon-fullscreen"></span>',
+          "content": '<span class="fa fa-fullscreen"></span>',
           "title": "На полный экран" // TODO l10n
         }
       }),

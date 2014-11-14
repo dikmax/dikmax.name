@@ -34,7 +34,7 @@ class CalcWidget {
         ..title = 'Обновить' // TODO l10n
         ..append(
           new SpanElement()
-            ..classes.addAll(["glyphicon", "glyphicon-refresh"])
+            ..classes.addAll(["fa", "fa-refresh"])
         ..onClick.listen((_) => calc())
       ), _element.children[0]
     );
@@ -153,7 +153,7 @@ class CalcWidget {
     }
 
     Element button = querySelector('.route-widget .refresh-button');
-    Element icon = button.querySelector('.glyphicon');
+    Element icon = button.querySelector('.fa');
     button.classes.add('disabled');
     icon.classes.add('in-progress');
     _calcAlgorithm = new AntColonyOptimization();

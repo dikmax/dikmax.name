@@ -52,7 +52,7 @@ class ExclusionsWidget {
               ..title = "Включить"  // TODO l10n
               ..append(
                 new SpanElement()
-                  ..classes.addAll(['glyphicon', 'glyphicon-remove'])
+                  ..classes.addAll(['fa', 'fa-remove'])
               )
               ..onClick.listen((_) => _model.include(segment))
           )
