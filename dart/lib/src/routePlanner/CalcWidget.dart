@@ -34,7 +34,7 @@ class CalcWidget {
         ..title = 'Обновить' // TODO l10n
         ..append(
           new SpanElement()
-            ..classes.addAll(["fa", "fa-refresh"])
+            ..classes.addAll([Icons.COMMON_CLASS, Icons.REFRESH])
         ..onClick.listen((_) => calc())
       ), _element.children[0]
     );

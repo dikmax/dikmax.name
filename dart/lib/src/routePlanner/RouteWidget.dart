@@ -80,7 +80,7 @@ class RouteWidget {
               ..title = 'Исключить' // TODO l10n
               ..append(
                 new SpanElement()
-                  ..classes.addAll(['fa', 'fa-remove'])
+                  ..classes.addAll([Icons.COMMON_CLASS, Icons.REMOVE])
               )
               ..onClick.listen((_) => _model.exclude(segment))
           )

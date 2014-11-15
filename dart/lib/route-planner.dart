@@ -8,6 +8,8 @@ import 'dart:js';
 import 'dart:math';
 import 'tsp.dart';
 import 'package:archive/archive.dart';
+import 'src/common/icons.dart';
+
 
 part 'src/routePlanner/AddCityWidget.dart';
 part 'src/routePlanner/CalcWidget.dart';

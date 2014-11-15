@@ -97,7 +97,7 @@ class AddCityWidget {
                   ..title = "Скрыть результаты" // TODO l10n
                   ..append(
                     new SpanElement()
-                      ..classes.addAll(['fa', 'fa-remove'])
+                      ..classes.addAll([Icons.COMMON_CLASS, Icons.REFRESH])
                   )
                   ..onClick.listen((_) {
                     suggestions = null;
