@@ -1,6 +1,6 @@
 ---
 title: "Haskell IDE 3"
-date: "2014-11-19T18:31:45+03:00"
+date: "2014-11-19T10:00:00+03:00"
 published: true
 tags: "haskell, ide, jetbrains, webstorm, программирование"
 ---
