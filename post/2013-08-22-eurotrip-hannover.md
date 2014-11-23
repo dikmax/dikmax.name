@@ -1,6 +1,7 @@
 ---
 title: "Eurotrip: Ганновер"
 date: "2013-08-22T22:06:22+03:00"
+collection: "latest-travel"
 published: true
 tags: "eurotrip, eurotrip-2013, германия, отпуск, путешествие, фотки"
 thread: 1629783775

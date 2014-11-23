@@ -1,6 +1,7 @@
 ---
 title: "Eurotrip 2014: Загреб"
 date: "2014-06-30T22:30:00+02:00"
+collection: "latest-travel"
 published: true
 tags: "eurotrip, eurotrip-2014, отпуск, путешествие, фотки, хорватия"
 ---

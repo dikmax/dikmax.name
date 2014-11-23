@@ -1,6 +1,7 @@
 ---
 title: "Eurotrip 2014: Неаполь"
 date: "2014-07-21T11:45:00+03:00"
+collection: "latest-travel"
 published: true
 tags: "eurotrip, eurotrip-2014, италия, отпуск, путешествие, фотки"
 ---

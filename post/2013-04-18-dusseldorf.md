@@ -1,6 +1,7 @@
 ---
 title: "Düsseldorf"
 date: "2013-04-18T00:04:46+03:00"
+collection: "latest-travel"
 published: true
 tags: "instagram, германия, лытдыбр, польша, путешествие, фотки"
 thread: 1218688236

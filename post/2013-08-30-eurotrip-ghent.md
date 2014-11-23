@@ -1,6 +1,7 @@
 ---
 title: "Eurotrip: Гент"
 date: "2013-08-30T11:56:58+03:00"
+collection: "latest-travel"
 published: true
 tags: "eurotrip, eurotrip-2013, бельгия, отпуск, путешествие, фотки"
 thread: 1671146682

@@ -1,6 +1,7 @@
 ---
 title: "Eurotrip 2014: Болонья"
 date: "2014-07-11T09:10:00+03:00"
+collection: "latest-travel"
 published: true
 tags: "eurotrip, eurotrip-2014, италия, отпуск, путешествие, фотки"
 thread: 2833689647

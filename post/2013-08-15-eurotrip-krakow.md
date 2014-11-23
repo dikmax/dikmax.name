@@ -1,6 +1,7 @@
 ---
 title: "Eurotrip: Краков"
 date: "2013-08-15T15:41:25+03:00"
+collection: "latest-travel"
 published: true
 tags: "eurotrip, eurotrip-2013, отпуск, польша, путешествие, фотки"
 thread: 1607936053

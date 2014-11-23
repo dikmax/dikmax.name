@@ -1,6 +1,7 @@
 ---
 title: "Результаты конкурса"
 date: "2014-07-16T14:45:00+03:00"
+collection: "latest-travel"
 published: true
 tags: "блог, конкурс, фотки"
 ---

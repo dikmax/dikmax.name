@@ -1,6 +1,7 @@
 ---
 title: "Eurotrip: Брюссель"
 date: "2013-08-27T18:50:20+03:00"
+collection: "latest-travel"
 published: true
 tags: "eurotrip, eurotrip-2013, бельгия, отпуск, путешествие, фотки"
 ---

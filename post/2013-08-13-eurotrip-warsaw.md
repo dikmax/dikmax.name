@@ -1,6 +1,7 @@
 ---
 title: "Eurotrip: Варшава"
 date: "2013-08-13T13:35:30+03:00"
+collection: "latest-travel"
 published: true
 tags: "eurotrip, eurotrip-2013, отпуск, польша, путешествие, фотки"
 ---

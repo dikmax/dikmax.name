@@ -1,6 +1,7 @@
 ---
 title: "Eurotrip: Париж"
 date: "2013-09-06T14:58:57+03:00"
+collection: "latest-travel"
 published: true
 tags: "eurotrip, eurotrip-2013, отпуск, путешествие, фотки, франция"
 ---

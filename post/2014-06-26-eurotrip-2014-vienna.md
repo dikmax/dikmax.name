@@ -1,6 +1,7 @@
 ---
 title: "Eurotrip 2014: Вена"
 date: "2014-06-26T14:30:00+02:00"
+collection: "latest-travel"
 published: true
 tags: "eurotrip, eurotrip-2014, австрия, отпуск, путешествие, фотки"
 thread: 2796758062

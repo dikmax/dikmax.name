@@ -1,6 +1,7 @@
 ---
 title: "Eurotrip 2014: Итоги"
 date: "2014-08-04T10:00:00+03:00"
+collection: "latest-travel"
 published: true
 tags: "eurotrip, eurotrip-2014, отпуск, путешествие, фотки"
 thread: 2897765376

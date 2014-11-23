@@ -1,6 +1,7 @@
 ---
 title: "Eurotrip: Вроцлав"
 date: "2013-08-19T21:13:45+03:00"
+collection: "latest-travel"
 published: true
 tags: "eurotrip, eurotrip-2013, гостевой пост, отпуск, польша, путешествие, фотки"
 ---

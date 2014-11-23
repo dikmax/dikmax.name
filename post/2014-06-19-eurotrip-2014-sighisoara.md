@@ -1,6 +1,7 @@
 ---
 title: "Eurotrip 2014: Сигишоара"
 date: "2014-06-19T20:40:00+02:00"
+collection: "latest-travel"
 published: true
 tags: "eurotrip, eurotrip-2014, отпуск, путешествие, румыния, фотки"
 ---

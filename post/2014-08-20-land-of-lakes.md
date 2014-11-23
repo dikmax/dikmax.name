@@ -1,6 +1,7 @@
 ---
 title: "Озёрный край"
 date: "2014-08-20T23:30:00+03:00"
+collection: "latest-travel"
 published: true
 tags: "путешествие, беларусь, фотки"
 ---

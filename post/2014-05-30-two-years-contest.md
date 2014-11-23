@@ -1,6 +1,7 @@
 ---
 title: "Конкурс"
 date: "2014-05-30T14:30:00+03:00"
+collection: "latest-travel"
 published: true
 tags: "блог, конкурс"
 thread: 2723620104

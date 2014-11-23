@@ -10,7 +10,7 @@ import           Data.Function (on)
 import           Data.List (sortBy, intercalate, isPrefixOf, find, groupBy, dropWhileEnd)
 import qualified Data.Map as M
 import           Data.Maybe
-import           Data.Monoid (mappend, mconcat)
+import           Data.Monoid (mempty, mappend, mconcat)
 import           Data.Ord (comparing)
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
@@ -39,6 +39,7 @@ main = hakyll $ do
     mapCompilerRules
     scriptsCompilerRules
     commentsRules
+    collectionRules
     postsRules
     tagsPagesRules
     archiveRules
@@ -444,6 +445,11 @@ postsRules =
             -- Comments
             thread <- getMetadataField identifier "thread"
             comments <- getComments thread
+
+            -- Collection
+            collectionName <- getMetadataField identifier "collection"
+            collection <- getCollectionFile collectionName
+
             -- Metadata
             title <- getMetadataField identifier "title"
             tags <- getTags identifier
@@ -452,7 +458,11 @@ postsRules =
             let images = map (fromMaybe "") $ filter isJust $ map imagesMap $ TS.parseTags $ itemBody item
 
             time <- getItemUTC defaultTimeLocale identifier
-            loadAndApplyTemplate "templates/_post.html" (postCtx `mappend` commentsField comments) item
+            loadAndApplyTemplate "templates/_post.html"
+                    (collectionField collection `mappend`
+                    commentsField comments `mappend`
+                    postCtx
+                    ) item
                 >>= loadAndApplyTemplate postTemplateName (postCtx `mappend` pageCtx (defaultMetadata
                     { metaTitle = fmap unwrap title
                     , metaUrl = '/' : identifierToUrl (toFilePath identifier)
@@ -502,6 +512,46 @@ commentsField items =
             str <- applyTemplateList tpl ctx items
             item <- makeItem str
                 >>= loadAndApplyTemplate "templates/_comments-list.html" postCtx
+            return $ itemBody item
+
+
+--------------------------------------------------------------------------------
+-- Collections
+--------------------------------------------------------------------------------
+
+collectionRules :: Rules ()
+collectionRules = do
+    match "collections/*.txt" $ do
+        compile getResourceBody
+
+getCollectionFile :: Maybe String -> Compiler (Maybe String)
+getCollectionFile Nothing = return Nothing
+getCollectionFile (Just collection) = do
+    item <- loadBody (fromFilePath $ "collections/" ++ (unwrap collection) ++ ".txt")
+    return $ Just item
+
+
+parseCollectionFile :: String -> (String, [Item String])
+parseCollectionFile file = (title,
+        map (\l -> Item (fromFilePath $ fst $ line l) $ (tail $ snd $ line l)) ls)
+    where
+        (title : ls) = lines file
+        line = break (== '|')
+
+collectionField :: Maybe String -> Context String
+collectionField Nothing = mempty
+collectionField (Just collection) =
+    field "collection" collectionString
+    where
+        ctx = bodyField "title" `mappend` pathField "url"
+
+        (title, items) = parseCollectionFile collection
+
+        collectionString _ = do
+            tpl <- loadBody "templates/_collection-item.html"
+            str <- applyTemplateList tpl ctx items
+            item <- makeItem str
+                >>= loadAndApplyTemplate "templates/_collection.html" (bodyField "body" `mappend` constField "title" title)
             return $ itemBody item
 
 --------------------------------------------------------------------------------

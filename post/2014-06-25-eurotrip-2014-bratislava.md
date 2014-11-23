@@ -1,6 +1,7 @@
 ---
 title: "Eurotrip 2014: Братислава"
 date: "2014-06-25T10:25:00+02:00"
+collection: "latest-travel"
 published: true
 tags: "eurotrip, eurotrip-2014, отпуск, путешествие, словакия, фотки"
 thread: 2789638545

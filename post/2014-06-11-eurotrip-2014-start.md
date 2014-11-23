@@ -1,6 +1,7 @@
 ---
 title: "Eurotrip 2014"
 date: "2014-06-11T19:45:00+03:00"
+collection: "latest-travel"
 published: true
 tags: "eurotrip, eurotrip-2014, лытдыбр, отпуск, путешествие, фотки"
 thread: 2755970864
