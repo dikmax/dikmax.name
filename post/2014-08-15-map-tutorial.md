@@ -3,6 +3,7 @@ title: "Как сделать свою карту"
 date: "2014-08-15T17:55:00+03:00"
 published: true
 tags: "d3, javascript, svg, карта, программирование"
+thread: 2927760853
 ---
 
 ![](/images/map-tutorial/cover.png)

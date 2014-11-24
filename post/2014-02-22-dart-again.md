@@ -3,6 +3,7 @@ title: "И снова Dart"
 date: "2014-02-22T12:40:00+03:00"
 published: true
 tags: "dart, блог, программирование"
+thread: 2302262951
 ---
 
 ![](/images/3rd-party/dart-logo.png "Dart")
