@@ -2,6 +2,7 @@
 title: "CommonMark"
 date: "2014-09-19T10:45:00+03:00"
 published: true
+collection: "md_proc"
 tags: "commonmark, markdown, программирование"
 ---
 
