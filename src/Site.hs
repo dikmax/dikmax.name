@@ -717,14 +717,14 @@ sitemapRules = do
 
         ids <- getMatches "post/**"
         let
-            postItems = map (\i -> SitemapItem ("http://dikmax.name/" ++ identifierToUrl (toFilePath i)) "1.0") ids
+            postItems = map (\i -> SitemapItem ("https://dikmax.name/" ++ identifierToUrl (toFilePath i)) "1.0") ids
         compile $
             makeItem ""
                  >>= loadAndApplyTemplate "templates/sitemap.xml" (sitemapField (staticItems ++ postItems))
     where
         staticItems =
-            [ SitemapItem "http://dikmax.name/" "0.5"
-            , SitemapItem "http://dikmax.name/about/" "0.8"
+            [ SitemapItem "https://dikmax.name/" "0.5"
+            , SitemapItem "https://dikmax.name/about/" "0.8"
             ]
 
 sitemapField :: [SitemapItem] -> Context String
@@ -794,7 +794,7 @@ postWithCommentsCountCtx =
 pageCtx :: PageMetadata -> Context String
 pageCtx (PageMetadata title url description keywords fType)=
     constField "meta.title" (escapeHtml $ metaTitle' title) `mappend`
-    constField "meta.url" (escapeHtml $ "http://dikmax.name" ++ url) `mappend`
+    constField "meta.url" (escapeHtml $ "https://dikmax.name" ++ url) `mappend`
     constField "meta.description" (escapeHtml description) `mappend`
     constField "meta.keywords" (escapeHtml $ intercalate ", " keywords) `mappend`
     constField "meta.dc.subject" (escapeHtml $ intercalate "; " keywords) `mappend`
