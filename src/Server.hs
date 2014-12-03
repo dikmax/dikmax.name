@@ -13,7 +13,7 @@ main = quickHttpServe site
 
 site :: Snap ()
 site =
-    httpsRedirect <|>
+    -- httpsRedirect <|>
     path "rss" (redirect "feed.rss") <|>
     path "rss/" (redirect "feed.rss") <|>
     dir "media" (serveDirectory "/home/dikmax/Dropbox/dikmax.name") <|>
