@@ -31,7 +31,7 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 .navbar-nav.navbar-right:last-child {
-  margin-right: 0px;
+  margin-right: 0;
 }
 
 
@@ -47,6 +47,14 @@ h1, h2, h3, h4, h5, h6 {
 // Yandex.Browser changes
 
 @media (ya-title-fade: true) {
+  body {
+    padding-top: 100px;
+
+    &.index-page {
+      padding-top: 90px;
+    }
+  }
+
   .navbar > .container {
     margin-top: 30px;
   }
