@@ -1,0 +1,10 @@
+{
+  "version": "1.0",
+  "api_version": 3,
+
+  "layout": {
+    "logo": "/images/yandex-widget.png",
+    "color": "#474747",
+    "show_title": "none"
+  }
+}

@@ -238,6 +238,7 @@ staticFilesRules = do
     match (fromList
         [ "favicon.ico"
         , "robots.txt"
+        , "yandex-widget-manifest.json"
         , "css/style.css"
         , "js/html5shiv.js"
         , "js/respond.min.js"
