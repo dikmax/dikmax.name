@@ -1,5 +1,5 @@
 User-agent: *
-Sitemap: http://dikmax.name/sitemap.xml
+Sitemap: https://dikmax.name/sitemap.xml
 
 User-agent: Yandex
 Host: dikmax.name
