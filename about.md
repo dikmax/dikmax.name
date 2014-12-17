@@ -1,10 +1,13 @@
 ---
 title: "Обо мне"
 date: "2012-05-30T20:00:00+03:00"
-published: false
+published: true
 ---
 
 ![](/images/photos/me.jpg "Это я")
+
+[JavaScript]-разработчик из\ Минска. Личное время трачу на\ [Dart], [Haskell] и\ немецкий. Люблю [путешествовать][map]
+и\ делиться впечатлениями.
 
 Я\ в\ социальных сетях и\ различных сервисах
 ============================================
@@ -29,3 +32,8 @@ published: false
 ========
 
 Письма слать сюда: [me@dikmax.name](mailto:me@dikmax.name).
+
+[Dart]: /tag/dart/
+[Haskell]: /tag/haskell/
+[JavaScript]: /tag/javascript/
+[map]: /map/
