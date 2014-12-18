@@ -35,6 +35,7 @@ import           XmlHtmlWriter
 main :: IO ()
 main = hakyll $ do
     staticFilesRules
+    webpConverterRules
     lessCompilerRules
     mapCompilerRules
     scriptsCompilerRules
@@ -246,6 +247,26 @@ staticFilesRules = do
         ]) $ do
         route   idRoute
         compile copyFileCompiler
+
+--------------------------------------------------------------------------------
+-- WebP images
+--------------------------------------------------------------------------------
+
+webpConverterRules :: Rules ()
+webpConverterRules = do
+    match "images/**.jpg" $ version "webp" $ do
+        route (setExtension "jpg.webp")
+        compile $ do
+            filePath <- getResourceFilePath
+            res      <- unixFilterLBS "cwebp" [filePath, "-mt", "-o", "-"] ""
+            makeItem res
+
+    match "images/**.png" $ version "webp" $ do
+        route (setExtension "png.webp")
+        compile $ do
+            filePath <- getResourceFilePath
+            res      <- unixFilterLBS "cwebp" [filePath, "-mt", "-lossless", "-q", "100", "-o", "-"] ""
+            makeItem res
 
 
 --------------------------------------------------------------------------------
