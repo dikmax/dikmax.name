@@ -258,14 +258,14 @@ webpConverterRules = do
         route (setExtension "jpg.webp")
         compile $ do
             filePath <- getResourceFilePath
-            res      <- unixFilterLBS "cwebp" [filePath, "-mt", "-o", "-"] ""
+            res      <- unixFilterLBS "cwebp" [filePath, "-mt", "-m", "6", "-o", "-"] ""
             makeItem res
 
     match "images/**.png" $ version "webp" $ do
         route (setExtension "png.webp")
         compile $ do
             filePath <- getResourceFilePath
-            res      <- unixFilterLBS "cwebp" [filePath, "-mt", "-lossless", "-q", "100", "-o", "-"] ""
+            res      <- unixFilterLBS "cwebp" [filePath, "-mt", "-lossless", "-q", "100", "-m", "6", "-o", "-"] ""
             makeItem res
 
 
