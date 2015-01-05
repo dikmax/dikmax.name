@@ -439,6 +439,33 @@
                         "link": "/post/eurotrip-barcelona/"
                     }
                 ]
+            },
+            {
+                "name": "Мадрид",
+                "lat": 40.4,
+                "lon": -3.683333,
+                "visits": [
+                    {
+                        "yearFrom": 2014,
+                        "monthFrom": 12,
+                        "dayFrom": 31,
+                        "yearTo": 2015,
+                        "monthTo": 1,
+                        "dayTo": 4
+                    }
+                ]
+            },
+            {
+                "name": "Толедо",
+                "lat": 39.866667,
+                "lon": -4.033333,
+                "visits": [
+                    {
+                        "year": 2015,
+                        "month": 1,
+                        "day": 3
+                    }
+                ]
             }
         ]
     },
