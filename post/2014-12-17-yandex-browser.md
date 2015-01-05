@@ -3,6 +3,7 @@ title: "Яндекс.Браузер"
 date: "2014-12-17T23:20:00+03:00"
 published: true
 tags: "css, блог, яндекс.браузер"
+thread: 3334393000
 ---
 
 ![](/images/3rd-party/yandex-browser-logo.png "Логотип Яндекс.Браузера")
