@@ -1003,7 +1003,8 @@
                 "visits": [
                     {
                         "year": 2014,
-                        "month": 12
+                        "month": 12,
+                        "link": "/post/saint-petersburg-and-gatchina/"
                     }
                 ]
             },
@@ -1029,7 +1030,8 @@
                 "visits": [
                     {
                         "year": 2014,
-                        "month": 12
+                        "month": 12,
+                        "link": "/post/saint-petersburg-and-gatchina/"
                     }
                 ]
             }
