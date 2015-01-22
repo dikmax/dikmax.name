@@ -451,7 +451,8 @@
                         "dayFrom": 31,
                         "yearTo": 2015,
                         "monthTo": 1,
-                        "dayTo": 4
+                        "dayTo": 4,
+                        "link": "/post/new-year-in-madrid"
                     }
                 ]
             },
