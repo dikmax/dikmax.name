@@ -2,9 +2,10 @@
 
 Самое интересное: [Карта путешествий][map], [Планировщик маршрутов][route-planner], [ООП в\ JavaScript][oopjs],
 [Осло][oslo],  [Вильнюс][vilnius], [Весенние каникулы][spring-break],
-[Путешествие по\ Европе 2014][eurotrip-2014], [Нью-Йорк][new-york], [Мадрид][madrid].
+[Путешествие по\ Европе 2014][eurotrip-2014], [Грузия][georgia], [Нью-Йорк][new-york], [Мадрид][madrid].
 
 [eurotrip-2014]: /post/eurotrip-2014/
+[georgia]: /post/georgia-2014-1/
 [madrid]: /post/new-year-in-madrid/
 [map]: /map/
 [new-york]: /post/new-york-2014-1/
