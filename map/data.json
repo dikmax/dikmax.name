@@ -861,6 +861,12 @@
                         "year": 2014,
                         "month": 10,
                         "link": "/post/bialystok/"
+                    },
+                    {
+                        "year": 2015,
+                        "month": 1,
+                        "dayFrom": 30,
+                        "dayTo": 31
                     }
                 ]
             },
