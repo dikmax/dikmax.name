@@ -5,6 +5,7 @@ saint-petersburg-and-gatchina|Санкт-Петербург и Гатчина
 bialystok|Белосток
 georgia-2014-1|Грузия
 new-york-2014-1|Нью-Йорк и Вашингтон
+braslav|Браслав
 land-of-lakes|Озёра Беларуси
 eurotrip-2014-milan-and-bergamo|Милан и Бергамо
 eurotrip-2014-rome|Рим
