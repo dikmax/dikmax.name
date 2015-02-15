@@ -925,6 +925,19 @@
                         "link": "/post/vacation2/"
                     }
                 ]
+            },
+            {
+                "name": "Люблин",
+                "lat": 51.233333,
+                "lon": 22.566667,
+                "visits": [
+                    {
+                        "year": 2015,
+                        "month": 2,
+                        "dayFrom": 14,
+                        "dayTo": 15
+                    }
+                ]
             }
         ]
     },
