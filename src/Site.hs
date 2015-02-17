@@ -458,8 +458,9 @@ scriptsCompilerRules = do
 --------------------------------------------------------------------------------
 
 postsRules :: Rules ()
-postsRules =
-    match "post/**" $ do
+postsRules = do
+    d <- makePatternDependency "collections/*.txt"
+    rulesExtraDependencies [d] $ match "post/**" $ do
         route removeExtension
 
         compile $ do
