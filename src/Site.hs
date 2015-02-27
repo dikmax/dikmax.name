@@ -290,6 +290,13 @@ lessCompilerRules = do
             >>= withItemBody
               (unixFilter "lessc" ["--clean-css","-O2", "--include-path=less","-"])
 
+    rulesExtraDependencies [d] $ create ["css/print.css"] $ do
+        route idRoute
+        compile $ loadBody "less/print.less"
+            >>= makeItem
+            >>= withItemBody
+              (unixFilter "lessc" ["--clean-css","-O2", "--include-path=less","-"])
+
 
 --------------------------------------------------------------------------------
 -- Map
