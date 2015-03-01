@@ -4,6 +4,7 @@ date: "2015-01-08T10:05:00+03:00"
 collection: "latest-travel"
 published: true
 tags: "россия, путешествие, фотки"
+thread: 3399696299
 ---
 
 ![](/images/travel/2014-12-saint-petersburg-and-gatchina/spb-cover.jpg)
