@@ -5,6 +5,64 @@ import 'dart:html';
 import 'dart:js';
 import 'dart:math' as math;
 
+class Date {
+  int year;
+  int month;
+  int day;
+
+  Date([this.year = null, this.month = null, this.day = null]);
+
+  static Date parse(String date) {
+    List<String> parts = date.split("-");
+    int year = int.parse(parts[0]);
+    int month = parts.length > 1 ? int.parse(parts[1]) : null;
+    int day = parts.length > 2 ? int.parse(parts[2]) : null;
+
+    return new Date(year, month, day);
+  }
+
+  String toString() {
+    return this.year.toString() + (this.month != null ? '-' + this.month.toString() : '') +
+      (this.day != null ? '-' + this.day.toString() : '');
+  }
+
+  bool operator==(obj) {
+    return obj is Date && this.year == obj.year && this.month == obj.month && this.day == obj.day;
+  }
+
+  int get hashCode {
+    return this.year * 10000 + (this.month == null ? 0 : this.month * 100) + (this.day == null ? 0 : this.day);
+  }
+}
+
+
+class DatePeriod {
+  Date start;
+  Date end;
+
+  DatePeriod(this.start, [Date end = null]) {
+    this.end = end == null ? this.start : end;
+  }
+
+  static DatePeriod parse(String date) {
+    List<String> dates = date.split("/");
+    Date startDate = Date.parse(dates[0]);
+    Date endDate;
+    if (dates.length == 1) {
+      endDate = startDate;
+    } else {
+      endDate = Date.parse(dates[1]);
+    }
+
+    return new DatePeriod(startDate, endDate);
+  }
+
+  String toString() {
+    return start.toString() + (start == end ? '' : '/' + end.toString());
+  }
+}
+
+
 class MapApplication {
   static const String DATA_PATH = "/map";
   static const String LAND_COLOR = "#ffffdd";
@@ -258,7 +316,7 @@ class MapApplication {
     city.callMethod("on", ["click", (d, i, [_]) {
       var mouse = context['d3'].callMethod("mouse", [svg.callMethod("node")]);
 
-      showPopOver(d['name'], "<p>${formatCityString(d, true)}</p>", mouse);
+      showPopOver(d['name'], "<p>${formatCityString(d, true, true)}</p>", mouse);
     }]);
   }
 
@@ -349,77 +407,88 @@ class MapApplication {
 
   static final List<String> MONTHS = <String>['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август',
     'сентябрь', 'октябрь', 'ноябрь', 'декабрь'];
+  static final List<String> MONTHS_CASE = <String>['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля',
+    'августа', 'сентября', 'октября', 'ноября', 'декабря'];
 
-  String formatVisitDate(visit) {
+  // TODO cover with tests
+  String formatVisitDate(visit, [bool withDay = false]) {
     var result = '';
 
-    int yearFrom = visit['yearFrom'];
-    if (yearFrom == null) {
-      yearFrom = visit['year'];
-      if (yearFrom == null) {
-        yearFrom = visit['yearTo'];
-      }
-    }
-    int yearTo = visit['yearTo'];
-    if (yearTo == null) {
-      yearTo = visit['year'];
-      if (yearTo == null) {
-        yearTo = visit['yearFrom'];
-      }
-    }
-    int monthFrom = visit['monthFrom'];
-    if (monthFrom == null) {
-      monthFrom = visit['month'];
-      if (monthFrom == null) {
-        monthFrom = visit['monthTo'];
-      }
-    }
-    int monthTo = visit['monthTo'];
-    if (monthTo == null) {
-      monthTo = visit['month'];
-      if (monthTo == null) {
-        monthTo = visit['monthFrom'];
-      }
-    }
+    String dateString = visit['date'];
+    if (dateString != null) {
+      DatePeriod period = DatePeriod.parse(dateString);
 
-    if (yearFrom != null) {
-      if (yearFrom != yearTo) {
-        if (monthFrom != null) {
-          result += MONTHS[monthFrom - 1] + ' ';
+      if (period.start.year != period.end.year) {
+        // Visit starts and ends in different yeas (New Year trip)
+        if (period.start.month != null) {
+          if (withDay && period.start.day != null) {
+            result += period.start.day.toString() + ' ' +
+              MONTHS_CASE[period.start.month - 1] + ' ';
+          } else {
+            result += MONTHS[period.start.month - 1] + ' ';
+          }
         }
-        result += "${yearFrom} &ndash; ";
-        if (monthTo != null) {
-          result += MONTHS[monthTo - 1] + ' ';
+        result += "${period.start.year} &ndash; ";
+        if (period.end.month != null) {
+          if (withDay && period.end.day != null) {
+            result += period.end.day.toString() + ' ' +
+              MONTHS_CASE[period.end.month - 1] + ' ';
+          } else {
+            result += MONTHS[period.end.month - 1] + ' ';
+          }
         }
-        result += yearTo.toString();
-      } else if (monthFrom != null) {
-        result += MONTHS[monthFrom - 1] + ' ';
-        if (monthFrom != monthTo) {
-          result += '&ndash; ${MONTHS[monthTo - 1]} ';
+        result += period.end.year.toString();
+      } else if (period.start.month != null && period.end.month != null){
+        if (period.start.month != period.end.month) {
+          // Visit starts and ends in different months
+          if (withDay && period.start.day != null) {
+            result += period.start.day.toString() + ' ' +
+              MONTHS_CASE[period.start.month - 1] + ' &ndash; ';
+          } else {
+            result += MONTHS[period.start.month - 1] + ' &ndash; ';
+          }
+          if (withDay && period.end.day != null) {
+            result += period.end.day.toString() + ' ' +
+              MONTHS_CASE[period.end.month - 1];
+          } else {
+            result += MONTHS[period.end.month - 1];
+          }
+          result += ' ' + period.start.year.toString();
+        } else {
+          // Same months
+          if (withDay && period.start.day != null && period.end.day != null) {
+            result += period.start.day.toString();
+            if (period.start.day != period.end.day) {
+              result += '&ndash;' + period.end.day.toString();
+            }
+            result += ' ' + MONTHS_CASE[period.start.month - 1];
+          } else {
+            result += MONTHS[period.start.month - 1];
+          }
+          result += ' ' + period.start.year.toString();
         }
-        result += yearFrom.toString();
       } else {
-        result += yearFrom.toString();
+        // We know only the year
+        result += period.start.year.toString();
       }
-    }
 
-    if (result != '') {
       result = '<small>${result}</small>';
     }
+
     return result;
 
   }
 
-  String formatCityString(city, [bool skipName = false]) {
+  String formatCityString(city, [bool skipName = false, bool withDay = false]) {
     if (city['visits'] != null && city['visits'][0] != null) {
-      String date = formatVisitDate(city['visits'][0]);
+      String date = formatVisitDate(city['visits'][0], withDay);
       String name = (skipName ? '' : city['name']) + (date != '' ? ' ' + date : '');
       if (city['visits'][0]['link'] != null) {
         name = '<a href="${city['visits'][0]['link']}">${name}</a>';
       }
       for (int i = 1; i < city['visits'].length; ++i) {
         var visit = city['visits'][i];
-        date = formatVisitDate(visit);
+        date = formatVisitDate(visit, withDay);
         if (date != '') {
           if (visit['link'] != null) {
             date = '<a href="${visit['link']}">${date}</a>';
