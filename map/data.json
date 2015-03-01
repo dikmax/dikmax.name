@@ -469,6 +469,9 @@
                 "lon": 2.3508,
                 "visits": [
                     {
+                        "date": "2015-02-27/2015-03-01"
+                    },
+                    {
                         "date": "2013-08",
                         "link": "/post/eurotrip-paris/"
                     }
