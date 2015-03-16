@@ -237,8 +237,7 @@ staticFilesRules = do
         compile copyFileCompiler
 
     match (fromList
-        [ "favicon.ico"
-        , "robots.txt"
+        [ "robots.txt"
         , "yandex-widget-manifest.json"
         , "css/style.css"
         , "js/html5shiv.js"
@@ -246,6 +245,10 @@ staticFilesRules = do
         , "map/data.json"
         ]) $ do
         route   idRoute
+        compile copyFileCompiler
+
+    match "favicons/**" $ do
+        route (gsubRoute "favicons/" (const ""))
         compile copyFileCompiler
 
 --------------------------------------------------------------------------------

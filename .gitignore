@@ -1,6 +1,7 @@
 _cache
 _site
 _temp
+.cabal-sandbox
 dikmax-name.tar.lzma
 disqus-sync/node_modules
 dist
