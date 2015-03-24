@@ -11,7 +11,4 @@ void main() {
 
   MapApplication map = new MapApplication();
   map.init();
-
-  // Loading map
-  //JsObject map = new JsObject(context['MapApplication']);
 }

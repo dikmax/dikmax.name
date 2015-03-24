@@ -74,6 +74,8 @@ postTemplateName :: Identifier
 postTemplateName = "templates/post-development.html"
 routePlannerTemplateName :: Identifier
 routePlannerTemplateName = "templates/route-planner-development.html"
+tagsTemplateName :: Identifier
+tagsTemplateName = "templates/tags-development.html"
 visitedCountriesTemplateName :: Identifier
 visitedCountriesTemplateName = "templates/map-development.html"
 
@@ -91,6 +93,8 @@ postTemplateName :: Identifier
 postTemplateName = "templates/post.html"
 routePlannerTemplateName :: Identifier
 routePlannerTemplateName = "templates/route-planner.html"
+tagsTemplateName :: Identifier
+tagsTemplateName = "templates/tags.html"
 visitedCountriesTemplateName :: Identifier
 visitedCountriesTemplateName = "templates/map.html"
 
@@ -643,6 +647,9 @@ tagsPagesRules = do
     tags <- buildTagsWith getTags (fromList idents) (\tag -> fromFilePath $ "tag/" ++ tag ++ "/index.html")
     d <- makePatternDependency "post/**"
     rulesExtraDependencies [d] $ create ["tags/index.html"] $ do
+        ids <- getMatches "post/**"
+        filteredIds <- filterM isPublished ids
+        years <- mapM yearsMap filteredIds
         route idRoute
         compile $ do
             t <- renderTags
@@ -650,15 +657,25 @@ tagsPagesRules = do
                     "<a href=\"/tag/" ++ tag ++ "/\" title=\"" ++ countText count "пост" "поста" "постов" ++
                     "\" class=\"weight-" ++ show (getWeight minCount maxCount count) ++ "\">" ++ tag ++ "</a>")
                 unwords tags
-            let ctx = pageCtx (defaultMetadata
-                    { metaTitle = Just "Темы"
-                    , metaDescription = "Полный список тем (тегов) на сайте"
-                    , metaUrl = "/tags/"
-                    })
+            let ctx =
+                    listField "years" yearCtx (mapM (makeItem . fst) ym) `mappend`
+                    pageCtx (defaultMetadata
+                        { metaTitle = Just "Темы"
+                        , metaDescription = "Полный список тем (тегов) на сайте"
+                        , metaUrl = "/tags/"
+                        })
+                ym = sortBy (\a b -> compare (fst b) (fst a)) $ yearsMap1 years
+                yearCtx =
+                    field "href" (return . fp' . itemBody) `mappend`
+                    bodyField "year"
+                firstYear = fst $ head ym
+                fp' year
+                    | year == firstYear = "/archive/"
+                    | otherwise = "/archive/" ++ year ++ "/"
+
             makeItem t
                 >>= loadAndApplyTemplate "templates/_tags-wrapper.html" ctx
-                >>= loadAndApplyTemplate "templates/_post-without-footer.html" ctx
-                >>= loadAndApplyTemplate defaultTemplateName ctx
+                >>= loadAndApplyTemplate tagsTemplateName ctx
 
     rulesExtraDependencies [d] $ tagsRules tags $ \tag identifiers -> do
         paginate <- buildPaginateWith (\ids -> return $ paginateEvery 5 $ reverse ids) identifiers (getTagIdentifier tag)
@@ -688,6 +705,11 @@ tagsPagesRules = do
         filterFn (_, metadata)
             | M.lookup "published" metadata == Just "false" = False
             | otherwise = True
+        yearsMap i = do
+            utc <- getItemUTC defaultTimeLocale i
+            return (formatTime defaultTimeLocale "%Y" utc, [i])
+        yearsMap1 = M.assocs . M.fromListWith (++)
+
 
 
 getTags :: MonadMetadata m => Identifier -> m [String]
@@ -716,7 +738,6 @@ staticPagesRules = do
             route idRoute
             compile $
                 getResourceBody
-                    >>= loadAndApplyTemplate "templates/_post-without-footer.html" postCtx
                     >>= loadAndApplyTemplate visitedCountriesTemplateName (pageCtx (defaultMetadata
                         { metaTitle = Just "Карта стран"
                         , metaDescription = "Карта посещённых стран и городов"
@@ -724,7 +745,7 @@ staticPagesRules = do
                         }))
 
 
-    match (fromList ["about.md", "404.md"]) $ do
+    match (fromList ["about.md", "projects.md", "404.md"]) $ do
         route removeExtension
         compile $ do
             identifier <- getUnderlying

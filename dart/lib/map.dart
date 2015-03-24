@@ -97,7 +97,7 @@ class MapApplication {
     width = map.callMethod('property', ['clientWidth']);
     height = width * 0.57;
 
-  zoom = context['d3']['behavior'].callMethod('zoom')
+    zoom = context['d3']['behavior'].callMethod('zoom')
       .callMethod('scaleExtent', [new JsObject.jsify([1, 60])])
       .callMethod('size', [new JsObject.jsify([width, height])])
       .callMethod('on', ["zoom", onZoom]);
@@ -108,8 +108,6 @@ class MapApplication {
 
     popover = querySelector('.popover.info');
     popover.onClick.listen((_) => hidePopOver());
-
-    initBackground();
 
     HttpRequest.request('$dataPath/world.json').then((HttpRequest request) {
       var world = JSON.decode(request.responseText);
@@ -142,12 +140,75 @@ class MapApplication {
         cities.addAll(v['cities']);
       }
     });
+    initPageLayout();
+    initBackground();
+    initDefaultZoom();
     initCountries();
     initCities();
-    initDefaultZoom();
+  }
+
+  void initPageLayout() {
+    // Type selector
+    var pagination = new Element.div()..classes.add('text-center');
+    var list = new Element.ul()..classes.addAll(['pagination', 'pagination-lg']);
+    var asMap = new Element.li()..classes.add('active')..append(new Element.span()..appendText("Карта"));
+    var asList = new Element.li()..append(new Element.span()..appendText("Список"));
+    list..append(asMap)
+        ..append(asList);
+    pagination.append(list);
+
+    // List panel
+    var listPanelBody = new DivElement()
+      ..classes.add('panel-body');
+    var listPanel = new DivElement()
+      ..classes.addAll(['panel', 'panel-default', 'hidden'])
+      ..append(listPanelBody);
+
+    var mapContainer = querySelector('.map-container');
+    var footer = mapContainer.parent.querySelector('footer');
+    mapContainer.parent.insertBefore(listPanel, footer);
+    mapContainer.parent.insertBefore(pagination, mapContainer);
+
+    List<Map<String, String>> countries = <Map<String, String>>[];
+    visited.forEach((k, v) {
+      countries.add({
+        'key': k,
+        'name': v['name']
+      });
+    });
+
+    countries.sort((a, b) => a['name'].compareTo(b['name']));
+
+    countries.forEach((e) {
+      listPanelBody.append(new HeadingElement.h1()..appendText(e['name']));
+
+      List cities = visited[e['key']]['cities'];
+      cities.sort((a, b) => a['name'].compareTo(b['name']));
+      print(cities);
+      Iterable content = cities.map((e) => "<li>${formatCityString(e)}</li>");
+
+      listPanelBody.appendHtml('<ul class="list-unstyled">${content.join('')}</ul>');
+    });
+
+
+    // Swither
+    asMap.onClick.listen((_) {
+      mapContainer.classes.remove('hidden');
+      listPanel.classes.add('hidden');
+      asMap.classes.add('active');
+      asList.classes.remove('active');
+    });
+
+    asList.onClick.listen((_) {
+      mapContainer.classes.add('hidden');
+      listPanel.classes.remove('hidden');
+      asMap.classes.remove('active');
+      asList.classes.add('active');
+    });
   }
 
   void initBackground() {
+    querySelector('.map>.loading').remove();
     // D3 code
     projection = context['d3']['geo']['polyhedron'].callMethod('waterman')
       .callMethod('scale', [0.121841155 * width])
@@ -337,43 +398,32 @@ class MapApplication {
 
     path = path.callMethod("pointRadius", [math.max(1/4, 1/scale)]);
 
-    var c = g.callMethod("selectAll", ['.city']);
-    g.callMethod('transition').callMethod("duration", [5000])
-      .callMethod("attr", ["transform", "translate(${translate.join(',')})scale($scale)"])
-      .callMethod("tween", ["side-effects", (_d, _i, [_]) {
-        var i = context['d3'].callMethod('interpolateNumber', [1, scale]);
-        return (t) {
-          var s = i.apply([t]);
-          g.callMethod("style", ["stroke-width", 1 / s]);
-          path = path.callMethod("pointRadius", [math.max(1/4, 1/s)]);
-          c.callMethod("attr", ["d", (d, i, [_]) => path.apply([new JsObject.jsify({
-              "type": "Point",
-              "coordinates": [d['lon'], d['lat']]
-          })])]);
-        };
-      }]);
-
-    zoom.callMethod("translate", [new JsObject.jsify(translate)]);
     zoom.callMethod("scale", [scale]);
+    updateZoom(translate, scale);
+  }
+
+  void updateZoom(translate, scale) {
+    translate[0] = math.max(math.min(translate[0], 0), width * (1 - scale));
+    translate[1] = math.max(math.min(translate[1], 0), height * (1 - scale));
+
+    path = path.callMethod("pointRadius", [math.max(1/4, 1/scale)]);
+    zoom.callMethod("translate", [new JsObject.jsify(translate)]);
+    g.callMethod("style", ["stroke-width", 1 / scale])
+      .callMethod("attr", ["transform", "translate(${translate.join(',')})scale($scale)"]);
+    g.callMethod("selectAll", ['.city']).
+    callMethod("attr", ["d", (d, i, [_]) => path.apply([new JsObject.jsify({
+      "type": "Point",
+      "coordinates": [d['lon'], d['lat']]
+    })])]);
   }
 
   void onZoom([_a, _b, _c]) {
     JsObject translate = context['d3']['event']['translate'];
     List<num> t = <num>[translate[0], translate[1]];
-    num s = context['d3']['event']['scale'];
+    num scale = context['d3']['event']['scale'];
 
-    t[0] = math.max(math.min(t[0], 0), width * (1 - s));
-    t[1] = math.max(math.min(t[1], 0), height * (1 - s));
+    updateZoom(t, scale);
 
-    path = path.callMethod("pointRadius", [math.max(1/4, 1/s)]);
-    zoom.callMethod("translate", [new JsObject.jsify(t)]);
-    g.callMethod("style", ["stroke-width", 1 / s])
-      .callMethod("attr", ["transform", "translate(${t.join(',')})scale($s)"]);
-    g.callMethod("selectAll", ['.city']).
-      callMethod("attr", ["d", (d, i, [_]) => path.apply([new JsObject.jsify({
-        "type": "Point",
-        "coordinates": [d['lon'], d['lat']]
-      })])]);
 
     hidePopOver();
   }
