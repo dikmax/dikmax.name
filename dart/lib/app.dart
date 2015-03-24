@@ -416,7 +416,7 @@ class App {
       Element script = new ScriptElement()
           ..type = "text/javascript"
           ..async = true
-          ..src = "http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML";
+          ..src = "//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_HTML";
       document.body.append(script);
     }
   }
