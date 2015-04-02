@@ -52,7 +52,7 @@ class ExclusionsWidget {
               ..title = "Включить"  // TODO l10n
               ..append(
                 new SpanElement()
-                  ..classes.addAll([Icons.COMMON_CLASS, Icons.REMOVE])
+                  ..classes.addAll([Icons.commonClass, Icons.remove])
               )
               ..onClick.listen((_) => _model.include(segment))
           )

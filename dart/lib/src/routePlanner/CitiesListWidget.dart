@@ -83,28 +83,28 @@ class CitiesListWidget {
       ..title = title
       ..append(
         new SpanElement()
-          ..classes.addAll([Icons.COMMON_CLASS, icon])
+          ..classes.addAll([Icons.commonClass, icon])
     );
   }
 
   void _updateNode(Element element, bool makeFirst, bool makeLast, City city) {
     element.innerHtml = '';
 
-    ButtonElement removeButton = _createButton("Удалить", Icons.REMOVE); // TODO l10n
+    ButtonElement removeButton = _createButton("Удалить", Icons.remove); // TODO l10n
     if (!makeFirst || !makeLast) {
       removeButton.disabled = true;
     } else {
       removeButton.onClick.listen((_) => _model.removeCity(city));
     }
 
-    ButtonElement makeFirstButton = _createButton("В начало", Icons.UP); // TODO l10n
+    ButtonElement makeFirstButton = _createButton("В начало", Icons.up); // TODO l10n
     if (!makeFirst) {
       makeFirstButton.disabled = true;
     } else {
       makeFirstButton.onClick.listen((_) => _model.makeFirst(city));
     }
 
-    ButtonElement makeLastButton = _createButton("В конец", Icons.DOWN); // TODO l10n
+    ButtonElement makeLastButton = _createButton("В конец", Icons.down); // TODO l10n
     if (!makeLast) {
       makeLastButton.disabled = true;
     } else {

@@ -1,12 +1,12 @@
 library icons;
 
 class Icons {
-  static final String COMMON_CLASS = 'fa';
-  static final String _PREFIX = 'fa-';
+  static final String commonClass = 'fa';
+  static final String _prefix = 'fa-';
 
-  static final String REFRESH = '${_PREFIX}arrows-cw';
-  static final String REMOVE = '${_PREFIX}cancel';
-  static final String UP = '${_PREFIX}up-open';
-  static final String DOWN = '${_PREFIX}down-open';
-  static final String FULLSCREEN = '${_PREFIX}resize-full-alt';
+  static final String refresh = '${_prefix}arrows-cw';
+  static final String remove = '${_prefix}cancel';
+  static final String up = '${_prefix}up-open';
+  static final String down = '${_prefix}down-open';
+  static final String fullScreen = '${_prefix}resize-full-alt';
 }

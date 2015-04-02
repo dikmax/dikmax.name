@@ -64,11 +64,11 @@ class DatePeriod {
 
 
 class MapApplication {
-  static const String DATA_PATH = "/map";
-  static const String LAND_COLOR = "#ffffdd";
+  static const String dataPath = "/map";
+  static const String landColor = "#ffffdd";
 
   // Colors for countries
-  static final Map<String, String> COLORS = <String, String>{
+  static final Map<String, String> colors = <String, String>{
       'blue': '#a3cec5',
       'green': '#d3e46f',
       'orange': '#fdc663',
@@ -111,10 +111,10 @@ class MapApplication {
 
     initBackground();
 
-    HttpRequest.request('${DATA_PATH}/world.json').then((HttpRequest request) {
+    HttpRequest.request('$dataPath/world.json').then((HttpRequest request) {
       var world = JSON.decode(request.responseText);
 
-      HttpRequest.request('${DATA_PATH}/data.json').then((HttpRequest request) {
+      HttpRequest.request('$dataPath/data.json').then((HttpRequest request) {
         var visitedData = JSON.decode(request.responseText);
         initData(world, visitedData);
       }, onError: (_) {
@@ -214,21 +214,21 @@ class MapApplication {
         }
         var c = visited[countryId];
         if (c == null) {
-          return LAND_COLOR;
+          return landColor;
         }
 
         var color = c['color'];
-        if (color == null || COLORS[color] == null) {
-          return LAND_COLOR;
+        if (color == null || colors[color] == null) {
+          return landColor;
         }
 
         if (regionId != null) {
           if (visited[countryId]['regions'] != null && visited[countryId]['regions'][regionId] != null) {
-            return COLORS[color];
+            return colors[color];
           }
-          return LAND_COLOR;
+          return landColor;
         }
-        return COLORS[color];
+        return colors[color];
       }]);
 
     num offsetLeft = map.callMethod("property", ['offsetLeft']) + 5;
@@ -253,10 +253,8 @@ class MapApplication {
     }]);
     country.callMethod("on", ["mouseout", (d, i, [_]) => tooltip.classes.add('hidden')]);
     country.callMethod("on", ["click", (d, i, [_]) {
-      var regionId;
       var countryId = d['id'];
       if (countryId.length > 3) {
-        regionId = countryId;
         countryId = countryId.substring(0, 3);
       }
 
@@ -341,7 +339,7 @@ class MapApplication {
 
     var c = g.callMethod("selectAll", ['.city']);
     g.callMethod('transition').callMethod("duration", [5000])
-      .callMethod("attr", ["transform", "translate(${translate.join(',')})scale(${scale})"])
+      .callMethod("attr", ["transform", "translate(${translate.join(',')})scale($scale)"])
       .callMethod("tween", ["side-effects", (_d, _i, [_]) {
         var i = context['d3'].callMethod('interpolateNumber', [1, scale]);
         return (t) {
@@ -359,9 +357,9 @@ class MapApplication {
     zoom.callMethod("scale", [scale]);
   }
 
-  void onZoom([_0, _1, _2]) {
-    JsObject t_ = context['d3']['event']['translate'];
-    List<num> t = <num>[t_[0], t_[1]];
+  void onZoom([_a, _b, _c]) {
+    JsObject translate = context['d3']['event']['translate'];
+    List<num> t = <num>[translate[0], translate[1]];
     num s = context['d3']['event']['scale'];
 
     t[0] = math.max(math.min(t[0], 0), width * (1 - s));
@@ -370,7 +368,7 @@ class MapApplication {
     path = path.callMethod("pointRadius", [math.max(1/4, 1/s)]);
     zoom.callMethod("translate", [new JsObject.jsify(t)]);
     g.callMethod("style", ["stroke-width", 1 / s])
-      .callMethod("attr", ["transform", "translate(${t.join(',')})scale(${s})"]);
+      .callMethod("attr", ["transform", "translate(${t.join(',')})scale($s)"]);
     g.callMethod("selectAll", ['.city']).
       callMethod("attr", ["d", (d, i, [_]) => path.apply([new JsObject.jsify({
         "type": "Point",
@@ -405,9 +403,9 @@ class MapApplication {
     popover.style.display = 'none';
   }
 
-  static final List<String> MONTHS = <String>['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август',
+  static final List<String> months = <String>['январь', 'февраль', 'март', 'апрель', 'май', 'июнь', 'июль', 'август',
     'сентябрь', 'октябрь', 'ноябрь', 'декабрь'];
-  static final List<String> MONTHS_CASE = <String>['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля',
+  static final List<String> monthsCase = <String>['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля',
     'августа', 'сентября', 'октября', 'ноября', 'декабря'];
 
   // TODO cover with tests
@@ -423,18 +421,18 @@ class MapApplication {
         if (period.start.month != null) {
           if (withDay && period.start.day != null) {
             result += period.start.day.toString() + ' ' +
-              MONTHS_CASE[period.start.month - 1] + ' ';
+              monthsCase[period.start.month - 1] + ' ';
           } else {
-            result += MONTHS[period.start.month - 1] + ' ';
+            result += months[period.start.month - 1] + ' ';
           }
         }
         result += "${period.start.year} &ndash; ";
         if (period.end.month != null) {
           if (withDay && period.end.day != null) {
             result += period.end.day.toString() + ' ' +
-              MONTHS_CASE[period.end.month - 1] + ' ';
+              monthsCase[period.end.month - 1] + ' ';
           } else {
-            result += MONTHS[period.end.month - 1] + ' ';
+            result += months[period.end.month - 1] + ' ';
           }
         }
         result += period.end.year.toString();
@@ -443,15 +441,15 @@ class MapApplication {
           // Visit starts and ends in different months
           if (withDay && period.start.day != null) {
             result += period.start.day.toString() + ' ' +
-              MONTHS_CASE[period.start.month - 1] + ' &ndash; ';
+              monthsCase[period.start.month - 1] + ' &ndash; ';
           } else {
-            result += MONTHS[period.start.month - 1] + ' &ndash; ';
+            result += months[period.start.month - 1] + ' &ndash; ';
           }
           if (withDay && period.end.day != null) {
             result += period.end.day.toString() + ' ' +
-              MONTHS_CASE[period.end.month - 1];
+              monthsCase[period.end.month - 1];
           } else {
-            result += MONTHS[period.end.month - 1];
+            result += months[period.end.month - 1];
           }
           result += ' ' + period.start.year.toString();
         } else {
@@ -461,9 +459,9 @@ class MapApplication {
             if (period.start.day != period.end.day) {
               result += '&ndash;' + period.end.day.toString();
             }
-            result += ' ' + MONTHS_CASE[period.start.month - 1];
+            result += ' ' + monthsCase[period.start.month - 1];
           } else {
-            result += MONTHS[period.start.month - 1];
+            result += months[period.start.month - 1];
           }
           result += ' ' + period.start.year.toString();
         }
@@ -472,7 +470,7 @@ class MapApplication {
         result += period.start.year.toString();
       }
 
-      result = '<small>${result}</small>';
+      result = '<small>$result</small>';
     }
 
     return result;
@@ -484,14 +482,14 @@ class MapApplication {
       String date = formatVisitDate(city['visits'][0], withDay);
       String name = (skipName ? '' : city['name']) + (date != '' ? ' ' + date : '');
       if (city['visits'][0]['link'] != null) {
-        name = '<a href="${city['visits'][0]['link']}">${name}</a>';
+        name = '<a href="${city['visits'][0]['link']}">$name</a>';
       }
       for (int i = 1; i < city['visits'].length; ++i) {
         var visit = city['visits'][i];
         date = formatVisitDate(visit, withDay);
         if (date != '') {
           if (visit['link'] != null) {
-            date = '<a href="${visit['link']}">${date}</a>';
+            date = '<a href="${visit['link']}">$date</a>';
           }
 
           name += ", " + date;
