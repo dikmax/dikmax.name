@@ -35,7 +35,11 @@ import           XmlHtmlWriter
 main :: IO ()
 main = hakyll $ do
     staticFilesRules
+
+#ifndef DEVELOPMENT
     webpConverterRules
+#endif
+
     lessCompilerRules
     mapCompilerRules
     scriptsCompilerRules
