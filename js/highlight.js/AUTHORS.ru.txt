@@ -140,3 +140,13 @@ URL:   https://highlightjs.org/
 - Танели Ватанен <taneli.vatanen@gmail.com>
 - Джен Эверс-Корвина <jen@sevvie.net>
 - Кассио Борхес <kassioborgesm@gmail.com>
+- Седрик Зорауер <sohrauer@googlemail.com>
+- Микаэль Делахэй <mickael.delahaye@gmail.com>
+- Хакан Озлер <ozler.hakan@gmail.com>
+- Трей Шугарт <treshugart@gmail.com>
+- Винсен Зуржак <vzurczak@linagora.com>
+- Адам Жозеф Кук <adam.joseph.cook@gmail.com>
+- Эдвин Далорсо <edwin@dalorzo.org>
+- mucaho <mkucko@gmail.com>
+- Деннис Титце <dennis.titze@gmail.com>
+- Брайан Куисторф <bquistorff@gmail.com>

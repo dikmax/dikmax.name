@@ -7,7 +7,7 @@ var packageJSON = require('../package');
 var utility     = require('./utility');
 
 var filterCB,
-    languages = { pattern: path.join('src', 'languages', '*.js') },
+    languages = utility.glob(path.join('src', 'languages', '*.js')),
     header    = utility.regex.header;
 
 function buildLanguages() {
@@ -33,22 +33,13 @@ function buildLanguages() {
 
 function buildCore() {
   var input    = path.join(dir.root, 'src', 'highlight.js'),
-      output   = path.join(dir.build, 'lib'),
-
-      replaceArgs = utility.replace(header, ''),
-      template    = 'var Highlight = <%= content %>;' +
-                    '\nmodule.exports = Highlight;';
+      output   = path.join(dir.build, 'lib');
 
   return {
     logCore: { task: ['log', 'Building core file.'] },
     readCore: { requires: 'logCore',  task: ['read', input] },
-    replaceCore: { requires: 'readCore', task: ['replace', replaceArgs] },
-    templateCore: {
-      requires: 'replaceCore',
-      task: ['template', template]
-    },
     writeCoreLog: {
-      requires: 'templateCore',
+      requires: 'readCore',
       task: ['log', 'Writing core file.']
     },
     writeCore: { requires: 'writeCoreLog', task: ['dest', output] }
@@ -60,8 +51,7 @@ function buildIndex() {
       output = path.join(dir.build, 'lib', 'index.js'),
 
       template =
-    [ 'var Highlight = require(\'./highlight\');'
-    , 'var hljs      = new Highlight();\n'
+    [ 'var hljs = require(\'./highlight\');\n'
     , '<% _.each(names, function(name) { %>' +
       'hljs.registerLanguage(\'<%= name %>\', ' +
       'require(\'./languages/<%= name %>\'));'
@@ -90,7 +80,7 @@ function copyMetaFiles() {
   var docs   = path.join('docs', '*.rst'),
       glob   = '{README.md,LICENSE,' + docs + '}',
 
-      input  = { pattern: path.join(dir.root, glob) },
+      input  = utility.glob(path.join(dir.root, glob)),
       output = { dir: dir.build, base: '.' };
 
   return {
@@ -112,7 +102,7 @@ function buildStyles() {
     logcss: { task: ['log', 'Building style files.'] },
     readcss: {
       requires: 'logcss',
-      task: ['glob', { pattern: input }]
+      task: ['glob', utility.glob(input)]
     },
     writecsslog: {
       requires: 'readcss',

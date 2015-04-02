@@ -286,13 +286,12 @@ Django ("django", "jinja")
 
 * ``keyword``:          HTML tag in HTML, default tags and default filters in templates
 * ``tag``:              any tag from "<" till ">"
-* ``comment``:          comment
+* ``comment``:          template comment, both {# .. #} and {% comment %}
 * ``doctype``:          <!DOCTYPE ... > declaration
 * ``attribute``:        tag's attribute with or without value
 * ``value``:            attribute's value
 * ``template_tag``:     template tag {% .. %}
 * ``variable``:         template variable {{ .. }}
-* ``template_comment``: template comment, both {# .. #} and {% comment %}
 * ``filter``:           filter from "|" till the next filter or the end of tag
 * ``argument``:         filter argument
 
@@ -302,13 +301,12 @@ Twig ("twig", "craftcms")
 
 * ``keyword``:          HTML tag in HTML, default tags and default filters in templates
 * ``tag``:              any tag from "<" till ">"
-* ``comment``:          comment
+* ``comment``:          template comment {# .. #}
 * ``doctype``:          <!DOCTYPE ... > declaration
 * ``attribute``:        tag's attribute with or withou value
 * ``value``:            attribute's value
 * ``template_tag``:     template tag {% .. %}
 * ``variable``:         template variable {{ .. }}
-* ``template_comment``: template comment {# .. #}
 * ``filter``:           filter from "|" till the next filter or the end of tag
 * ``argument``:         filter argument
 
@@ -593,6 +591,21 @@ Processing ("processing")
 * ``function``:         Processing setup and draw functions
 * ``built_in``:         Processing built in functions
 
+AspectJ ("aspectj")
+-------------
+
+* ``comment``:          comment
+* ``string``:           string
+* ``number``:           number
+* ``keyword``:          keyword
+* ``annotation``:       annotation
+* ``javadoc``:          javadoc comment
+* ``operation``:        method and intertype method header
+* ``aspect``:           aspect header from "aspect" till "{"
+* ``params``:           everything in parentheses inside an aspect header
+* ``inheritance``:      keywords "extends" and "implements" inside an aspect header
+* ``title``:            aspect, method name or pointcut name inside an aspect header
+
 C++ ("cpp", "c", "h", "c++", "h++")
 -----------------------------------
 
@@ -654,12 +667,15 @@ OCaml ("ocaml", "ml")
 ---------------------
 
 * ``keywords``:         keyword
+* ``literal``:          true false etc.
 * ``number``:           number
 * ``string``:           string
+* ``char``:             character
 * ``comment``:          comment
-* ``class``:            any custom OCaml type
-* ``title``:            the name of a custom OCaml type
-* ``annotation``:       any attribute
+* ``built_in``:         built-in type (int, list etc.)
+* ``type``:             variant constructor, module name
+* ``tag``:              polymorphic variant tag
+* ``symbol``:           type variable
 
 D ("d")
 -------
@@ -748,6 +764,7 @@ Clojure ("clojure", "clj")
 * ``list``:             non-quoted list
 * ``keyword``:          first symbol in a list
 * ``built_in``:         built-in function name as the first symbol in a list
+* ``prompt``:           REPL prompt
 
 Scheme ("scheme")
 --------------------------
@@ -1237,6 +1254,15 @@ Puppet ("puppet", "pp")
 * ``keyword``:          classes and types
 * ``constant``:         dependencies
 
+Stata ("stata")
+-------------
+
+* ``keyword``:          commands and control flow
+* ``label``:            macros (locals and globals)
+* ``string``:           string
+* ``comment``:          comment
+* ``literal``:          built-in functions
+
 XL ("xl", "tao")
 -----------
 
@@ -1253,3 +1279,56 @@ XL ("xl", "tao")
 * ``number``:           Number values
 * ``function``:         Function or variable definition
 * ``import``:           Import clause
+
+Roboconf ("graph", "instances")
+------------------------------
+
+* ``keyword``:          keyword
+* ``string``:           names of imported variables
+* ``comment``:          comment
+* ``facet``:            a **facet** section
+* ``component``:        a **component** section
+* ``instance-of``:      an **instance** section
+
+STEP Part 21 ("p21", "step", "stp")
+-----------------------------------
+
+* ``preprocessor``:     delimiters
+* ``comment``:          single- or multi-line comment
+* ``keyword``:          keyword
+* ``number``:           number
+* ``string``:           string
+* ``label``:            variable reference starting with "#"
+
+Mercury ("mercury")
+-------------------
+
+* ``keyword``:          keyword
+* ``pragma``:           compiler directive
+* ``preprocessor``:     foreign language interface
+* ``built_in``:         control flow, logical, implication, head-body conjunction, purity
+* ``number``:           number, numcode of character
+* ``comment``:          comment
+* ``label``:            TODO label inside comment
+* ``string``:           string
+* ``constant``:         string format
+
+Smali ("smali")
+-------------
+
+* ``string``:           string
+* ``comment``:          comment
+* ``keyword``:          smali keywords
+* ``instruction``:      instruction
+* ``class``:            classtypes
+* ``function``:         function (call or signature)
+* ``variable``:         variable or parameter
+
+Verilog ("verilog", "v")
+------------------------
+
+* ``keyword``:          keyword, operator
+* ``comment``:          comment
+* ``typename``:         types of data, register, and net
+* ``number``:           number literals (including X and Z)
+* ``value``:            parameters passed to instances

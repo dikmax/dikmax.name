@@ -13,7 +13,7 @@ function copyDocs() {
     logDocs: { task: ['log', 'Copying documentation.'] },
     readDocs: {
       requires: 'logDocs',
-      task: ['glob', { pattern: input }]
+      task: ['glob', utility.glob(input)]
     },
     writeDocsLog: {
       requires: 'readDocs',
@@ -23,18 +23,46 @@ function copyDocs() {
   };
 }
 
+function generateDemo(filterCB) {
+  var readArgs   = utility.glob(path.join('src', 'languages', '*.js')),
+      staticArgs = utility.glob(path.join('demo', '*.{js,css}')),
+      stylesArgs = utility.glob(path.join('src', 'styles', '*'), 'bin'),
+      demoRoot   = path.join(dir.build, 'demo');
+
+  return {
+    logDemoStart: { task: ['log', 'Generating demo.'] },
+
+    readLanguages: { requires: 'logDemoStart', task: ['glob', readArgs] },
+    filterSnippets: { requires: 'readLanguages', task: ['filter', filterCB] },
+    readSnippet: { requires: 'filterSnippets', task: 'readSnippet' },
+    templateDemo: { requires: 'readSnippet', task: 'templateDemo' },
+    writeDemo: {
+      requires: 'templateDemo',
+      task: ['write', path.join(demoRoot, 'index.html')] },
+
+    readStatic: { requires: 'logDemoStart', task: ['glob', staticArgs] },
+    writeStatic: { requires: 'readStatic', task: ['dest', demoRoot] },
+
+    readStyles: { requires: 'logDemoStart', task: ['glob', stylesArgs] },
+    writeStyles: {
+      requires: 'readStyles',
+      task: ['dest', path.join(demoRoot, 'styles')]
+    }
+  };
+}
+
 module.exports = function(commander) {
-  var amdArgs, hljsExt, output, requiresTask, tasks,
+  var hljsExt, output, requiresTask, tasks,
       replace           = utility.replace,
       regex             = utility.regex,
       replaceClassNames = utility.replaceClassNames,
 
-      readArgs     = { pattern: path.join('src', '**', '*.js') },
+      readArgs     = utility.glob(path.join('src', '**', '*.js')),
       filterCB     = utility.buildFilterCallback(commander.args),
       replaceArgs  = replace(regex.header, ''),
-      templateArgs = { _: 'hljs.registerLanguage(\'<%= name %>\',' +
-                          ' <%= content %>);\n'
-                     , highlight: 'var hljs = new <%= content %>();\n'
+      templateArgs = { template: 'hljs.registerLanguage(' +
+                          '\'<%= name %>\', <%= content %>);\n'
+                     , skip: 'highlight'
                      };
 
   tasks = {
@@ -47,17 +75,6 @@ module.exports = function(commander) {
     concat: { requires: 'template', task: 'concat' }
   };
   requiresTask = 'concat';
-
-  if(commander.target === 'amd') {
-    tasks.amdlog = {
-      requires: requiresTask,
-      task: ['log', 'Adding AMD wrapper.']
-    };
-
-    amdArgs = 'define(function() {\n<%= content %>\nreturn hljs;\n});';
-    tasks.amd = { requires: 'amdlog', task: ['template', amdArgs] };
-    requiresTask = 'amd';
-  }
 
   if(commander.compress || commander.target === 'cdn') {
     tasks.compresslog = {
@@ -95,7 +112,7 @@ module.exports = function(commander) {
   };
 
   if(commander.target === 'browser') {
-    tasks = _.merge(copyDocs(), tasks);
+    tasks = _.merge(copyDocs(), generateDemo(filterCB), tasks);
   }
 
   return tasks;

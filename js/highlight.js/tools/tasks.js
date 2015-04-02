@@ -4,10 +4,10 @@ var _        = require('lodash');
 var del      = require('del');
 var Registry = require('gear').Registry;
 var path     = require('path');
+var fs       = require('fs');
 
 var parseHeader = require('./utility').parseHeader;
 var tasks       = require('gear-lib');
-var headerRegex = /^\s*\/\*((.|\r?\n)*?)\*/;
 
 tasks.clean = function(directories, blobs, done) {
   directories = _.isString(directories) ? [directories] : directories;
@@ -24,23 +24,10 @@ tasks.reorderDeps = function(options, blobs, done) {
 
   _.each(blobs, function(blob) {
     var basename = path.basename(blob.name),
-        content  = blob.result,
-        fileInfo = {},
-        match    = content.match(headerRegex);
+        fileInfo = parseHeader(blob.result),
+        extra = {blob: blob, processed: false};
 
-    if(!match || basename === 'highlight.js') {
-      fileInfo.blob      = blob;
-      fileInfo.processed = false;
-      buffer[basename]   = fileInfo;
-
-      return;
-    }
-
-    fileInfo = parseHeader(match[1]);
-    fileInfo.processed = false;
-    fileInfo.blob      = blob;
-
-    buffer[basename] = fileInfo;
+    buffer[basename] = _.merge(extra, fileInfo || {});
   });
 
   function pushInBlob(object) {
@@ -73,21 +60,27 @@ tasks.template = function(options, blob, done) {
   var content  = blob.result.trim(),
       filename = path.basename(blob.name),
       basename = filename.replace(/\.js$/, ''),
-      data, hasTemplate, template;
+      data, hasTemplate, newBlob, template;
 
-  if(_.isString(options)) options = { _: options };
+  if(_.isString(options)) options = { template: options };
 
-  data = {
-    name: basename,
-    filename: filename,
-    content: content
-  };
+  if(basename !== options.skip) {
+    data = {
+      name: basename,
+      filename: filename,
+      content: content
+    };
 
-  hasTemplate = _.contains(_.keys(options), basename);
-  template    = hasTemplate ? options[basename] : options._;
-  content     = _.template(template, data);
+    hasTemplate = _.contains(_.keys(options), basename);
+    template    = hasTemplate ? options[basename] : options.template;
+    content     = _.template(template, data);
 
-  return done(null, new blob.constructor(content, blob));
+    newBlob = new blob.constructor(content, blob);
+  } else {
+    newBlob = blob;
+  }
+
+  return done(null, newBlob);
 };
 
 tasks.templateAll = function(template, blobs, done) {
@@ -102,16 +95,6 @@ tasks.templateAll = function(template, blobs, done) {
   return done(null, [new blobs[0].constructor(content, blobs)]);
 };
 tasks.templateAll.type = 'collect';
-
-tasks.dest = function(options, blob, done) {
-  options = _.isString(options) ? {dir: options} : options;
-
-  var basename = options.base ? path.relative(options.base, blob.name)
-                              : path.basename(blob.name),
-      output   = path.join(options.dir, basename);
-
-  blob.writeFile(output, blob, 'utf8', done);
-};
 
 tasks.rename = function(options, blob, done) {
   options = options || {};
@@ -155,14 +138,14 @@ tasks.replaceSkippingStrings = function(params, blob, done) {
 
       replace = params.replace || '',
       regex   = params.regex,
-      quotes  = /['"\/]/,
+      starts  = /\/\/|['"\/]/,
 
       result  = [],
       chunk, end, match, start, terminator;
 
   while(offset < length) {
     chunk = content.slice(offset);
-    match = chunk.match(quotes);
+    match = chunk.match(starts);
     end   = match ? match.index : length;
 
     chunk = content.slice(offset, end + offset);
@@ -171,7 +154,10 @@ tasks.replaceSkippingStrings = function(params, blob, done) {
     offset += end;
 
     if(match) {
-      terminator = new RegExp('[' + match[0] + '\\\\]');
+      // We found a starter sequence: either a `//` or a "quote"
+      // In the case of `//` our terminator is the end of line.
+      // Otherwise it's either a matching quote or an escape symbol.
+      terminator = match[0] !== '//' ? new RegExp('[' + match[0] + '\\\\]') : /$/m;
       start      = offset;
       offset    += 1;
 
@@ -202,30 +188,48 @@ tasks.filter = function(callback, blobs, done) {
 
   // Re-add in blobs required from header definition
   _.each(filteredBlobs, function(blob) {
-    var fileInfo,
-        dirname  = path.dirname(blob.name),
+    var dirname  = path.dirname(blob.name),
         content  = blob.result,
-        match    = content.match(headerRegex);
+        fileInfo = parseHeader(content);
 
-    if(match) {
-      fileInfo = parseHeader(match[1]);
+    if(fileInfo && fileInfo.Requires) {
+      _.each(fileInfo.Requires, function(language) {
+        var filename  = dirname + '/' + language,
+            fileFound = _.find(filteredBlobs, { name: filename });
 
-      if(fileInfo.Requires) {
-        _.each(fileInfo.Requires, function(language) {
-          var filename  = path.join(dirname, language),
-              fileFound = _.find(filteredBlobs, { name: filename });
-
-          if(!fileFound) {
-            filteredBlobs.push(
-              _.find(blobs, { name: filename }));
-          }
-        });
-      }
+        if(!fileFound) {
+          filteredBlobs.push(
+            _.find(blobs, { name: filename }));
+        }
+      });
     }
   });
 
   return done(null, filteredBlobs);
 };
 tasks.filter.type = 'collect';
+
+tasks.readSnippet = function(options, blob, done) {
+  var name        = path.basename(blob.name, '.js'),
+      fileInfo    = parseHeader(blob.result),
+      snippetName = path.join(dir.root, 'test', 'detect', name, 'default.txt');
+
+  function addMeta(options, blob) {
+    var meta = {name: name + '.js', fileInfo: fileInfo},
+        blob = new blob.constructor(blob.result, meta);
+    return done(null, blob);
+  }
+
+  blob.constructor.readFile(snippetName, 'utf8', addMeta, false);
+}
+
+tasks.templateDemo = function(options, blobs, done) {
+  var name = path.join(dir.root, 'demo', 'index.html'),
+      template = fs.readFileSync(name, 'utf8'),
+      content = _.template(template, { path: path, blobs: blobs });
+
+  return done(null, [new blobs[0].constructor(content)]);
+};
+tasks.templateDemo.type = 'collect';
 
 module.exports = new Registry({ tasks: tasks });
