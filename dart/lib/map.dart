@@ -184,7 +184,6 @@ class MapApplication {
 
       List cities = visited[e['key']]['cities'];
       cities.sort((a, b) => a['name'].compareTo(b['name']));
-      print(cities);
       Iterable content = cities.map((e) => "<li>${formatCityString(e)}</li>");
 
       listPanelBody.appendHtml('<ul class="list-unstyled">${content.join('')}</ul>');

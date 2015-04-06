@@ -421,7 +421,7 @@ concatResources out inputs = do
 scriptsCompilerRules :: Rules ()
 scriptsCompilerRules = do
     match (fromList ["dart/packages/browser/dart.js", "js/d3/d3.min.js", "js/topojson/topojson.min.js",
-        "js/waterman.js"]) $ compile getResourceBody
+        "js/d3-geo-projection/d3.geo.projection.min.js"]) $ compile getResourceBody
 
     -- Building highlight.js
     match "js/highlight.js/src/**" $
@@ -442,8 +442,8 @@ scriptsCompilerRules = do
     -- Building additional js
     concatResources "dart/s.js" ["js/highlight.pack.js"]
     -- TODO sroute-planner
-    concatResources "dart/smap.js" ["js/d3/d3.min.js", "js/topojson/topojson.min.js",
-        "js/waterman.js"]
+    concatResources "dart/smap.js" ["js/d3/d3.min.js", "js/d3-geo-projection/d3.geo.projection.min.js",
+        "js/topojson/topojson.min.js"]
 
     -- Building different dart resources
     match "dart/lib/**" $
