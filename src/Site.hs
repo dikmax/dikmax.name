@@ -396,15 +396,6 @@ highlightLanguages = ["bash", "css", "haskell", "javascript", "markdown", "sql",
 
 buildDart :: String -> String -> Rules ()
 buildDart input output = do
-    create [fromFilePath $ "dart/" ++ output ++ ".dart"] $ do
-        route idRoute
-        compile $ do
-            dart <- unsafeCompiler $ do
-                _ <- rawSystem "dart2js" ["--out=_temp/" ++ output ++ ".dart", "--minify", "--output-type=dart",
-                    "dart/web/" ++ input ++ ".dart"]
-                readFile $ "_temp/" ++ output ++ ".dart"
-            makeItem dart
-    -- Building main js...
     create [fromFilePath $ "dart/" ++ output ++ ".dart.js"] $ do
         route idRoute
         compile $ do
@@ -449,9 +440,9 @@ scriptsCompilerRules = do
             makeItem js
 
     -- Building additional js
-    concatResources "dart/s.js" ["dart/packages/browser/dart.js", "js/highlight.pack.js"]
+    concatResources "dart/s.js" ["js/highlight.pack.js"]
     -- TODO sroute-planner
-    concatResources "dart/smap.js" ["dart/packages/browser/dart.js", "js/d3/d3.min.js", "js/topojson/topojson.min.js",
+    concatResources "dart/smap.js" ["js/d3/d3.min.js", "js/topojson/topojson.min.js",
         "js/waterman.js"]
 
     -- Building different dart resources
