@@ -36,11 +36,13 @@ function(hljs) {
     begin: '\\b[A-Z][\\w\']*',
     relevance: 0
   };
-  var BLOCK_COMMENT = {
-    className: 'comment',
-    begin: '/\\*', end: '\\*/',
-    contains: [hljs.PHRASAL_WORDS_MODE, 'self']
-  };
+  var BLOCK_COMMENT = hljs.COMMENT(
+    '/\\*',
+    '\\*/',
+    {
+      contains: ['self']
+    }
+  );
   var SUBST = {
     className: 'subst',
     begin: /\\\(/, end: '\\)',
@@ -75,12 +77,12 @@ function(hljs) {
           }),
           {
             className: 'generics',
-            begin: /\</, end: /\>/,
-            illegal: /\>/
+            begin: /</, end: />/,
+            illegal: />/
           },
           {
             className: 'params',
-            begin: /\(/, end: /\)/,
+            begin: /\(/, end: /\)/, endsParent: true,
             keywords: SWIFT_KEYWORDS,
             contains: [
               'self',
@@ -96,8 +98,8 @@ function(hljs) {
       },
       {
         className: 'class',
-        keywords: 'struct protocol class extension enum',
-        begin: '(struct|protocol|class(?! (func|var))|extension|enum)',
+        beginKeywords: 'struct protocol class extension enum',
+        keywords: SWIFT_KEYWORDS,
         end: '\\{',
         excludeEnd: true,
         contains: [
@@ -110,7 +112,7 @@ function(hljs) {
                   '@NSCopying|@NSManaged|@objc|@optional|@required|@auto_closure|' +
                   '@noreturn|@IBAction|@IBDesignable|@IBInspectable|@IBOutlet|' +
                   '@infix|@prefix|@postfix)'
-      },
+      }
     ]
   };
 }

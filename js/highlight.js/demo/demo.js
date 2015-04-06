@@ -21,6 +21,8 @@ function selectCategory(category) {
       div.hide();
     }
   });
+
+  $(document).scrollTop(0);
 }
 
 function categoryKey(c) {

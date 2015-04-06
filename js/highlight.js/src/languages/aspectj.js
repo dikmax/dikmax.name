@@ -12,7 +12,7 @@ function (hljs) {
     'aspectOf adviceexecution proceed cflowbelow cflow initialization preinitialization ' +
     'staticinitialization withincode target within execution getWithinTypeName handler ' +
     'thisJoinPoint thisJoinPointStaticPart thisEnclosingJoinPointStaticPart declare parents '+
-    'warning error soft precedence';
+    'warning error soft precedence thisAspectInstance';
   var SHORTKEYS = 'get set args call';
   return {
     keywords : KEYWORDS,
@@ -101,7 +101,7 @@ function (hljs) {
       {
         // the function class is a bit different for AspectJ compared to the Java language
         className : 'function',
-        begin : /\w+ +\w+(\.)?\w+\s*\([^\)]*\)\s*((throws)[\w\s\,]+)?[\{\;]/,
+        begin : /\w+ +\w+(\.)?\w+\s*\([^\)]*\)\s*((throws)[\w\s,]+)?[\{;]/,
         returnBegin : true,
         end : /[{;=]/,
         keywords : KEYWORDS,

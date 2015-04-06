@@ -13,17 +13,14 @@ function (hljs) {
         className: 'keyword',
         begin: '\\*'
       },
-      {
-        className: 'comment',
-        begin: '@[^@\r\n\t ]+', end: '$'
-      },
+      hljs.COMMENT('@[^@\r\n\t ]+', '$'),
       {
         className: 'string',
         begin: '\\|', end: '\\$'
       },
       {
         className: 'variable',
-        begin: '<', end: '>',
+        begin: '<', end: '>'
       },
       hljs.HASH_COMMENT_MODE,
       {

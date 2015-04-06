@@ -151,3 +151,16 @@ Contributors:
 - Dennis Titze <dennis.titze@gmail.com>
 - Jon Evans <jon@craftyjon.com>
 - Brian Quistorff <bquistorff@gmail.com>
+- Jonathan Suever <suever@gmail.com>
+- Alexis Hénaut <alexis@henaut.net>
+- Chris Kiehl <audionautic@gmail.com>
+- Peter Piwowarski <oldlaptop654@aol.com>
+- Kenta Sato <bicycle1885@gmail.com>
+- Anthony Scemama <scemama@irsamc.ups-tlse.fr>
+- Taufik Nurrohman <latitudu.latitudu@gmail.com>
+- Pedro Oliveira <kanytu@gmail.com>
+- Gu Yiling <justice360@gmail.com>
+- Thomas Applencourt <thomas.applencourt@irsamc.ups-tlse.fr>
+- Andrew Farmer <ahfarmer@gmail.com>
+- Sergey Mashkov <cy6erGn0m@gmail.com>
+- Raivo Laanemets <raivo@infdot.com>

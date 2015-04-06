@@ -79,10 +79,9 @@ function(hljs) {
       },
       {
         className: 'cell',
-        begin: '\\{', end: /\}/,
+        begin: '\\{', end: /}/,
         contains: COMMON_CONTAINS,
         relevance: 0,
-        illegal: /:/,
         starts: TRANSPOSE
       },
       {
@@ -91,10 +90,8 @@ function(hljs) {
         relevance: 0,
         starts: TRANSPOSE
       },
-      {
-        className: 'comment',
-        begin: '\\%', end: '$'
-      }
+      hljs.COMMENT('^\\s*\\%\\{\\s*$', '^\\s*\\%\\}\\s*$'),
+      hljs.COMMENT('\\%', '$')
     ].concat(COMMON_CONTAINS)
   };
 }

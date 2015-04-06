@@ -19,7 +19,7 @@ function(hljs) {
         /* built-in types according to basis library */
         'array bool char exn int list option order real ref string substring vector unit word',
       literal:
-        'true false NONE SOME LESS EQUAL GREATER nil',
+        'true false NONE SOME LESS EQUAL GREATER nil'
     },
     illegal: /\/\/|>>/,
     lexemes: '[a-z_]\\w*!?',
@@ -28,19 +28,21 @@ function(hljs) {
         className: 'literal',
         begin: '\\[(\\|\\|)?\\]|\\(\\)'
       },
-      {
-        className: 'comment',
-        begin: '\\(\\*', end: '\\*\\)',
-        contains: ['self', hljs.PHRASAL_WORDS_MODE],
-      },
+      hljs.COMMENT(
+        '\\(\\*',
+        '\\*\\)',
+        {
+          contains: ['self']
+        }
+      ),
       { /* type variable */
         className: 'symbol',
-        begin: '\'[A-Za-z_](?!\')[\\w\']*',
+        begin: '\'[A-Za-z_](?!\')[\\w\']*'
         /* the grammar is ambiguous on how 'a'b should be interpreted but not the compiler */
       },
       { /* polymorphic variant */
         className: 'tag',
-        begin: '`[A-Z][\\w\']*',
+        begin: '`[A-Z][\\w\']*'
       },
       { /* module or constructor */
         className: 'type',

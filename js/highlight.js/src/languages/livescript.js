@@ -29,7 +29,7 @@ function(hljs) {
   var TITLE = hljs.inherit(hljs.TITLE_MODE, {begin: JS_IDENT_RE});
   var SUBST = {
     className: 'subst',
-    begin: /#\{/, end: /\}/,
+    begin: /#\{/, end: /}/,
     keywords: KEYWORDS
   };
   var SUBST_SIMPLE = {
@@ -115,10 +115,7 @@ function(hljs) {
     keywords: KEYWORDS,
     illegal: /\/\*/,
     contains: EXPRESSIONS.concat([
-      {
-        className: 'comment',
-        begin: '\\/\\*', end: '\\*\\/'
-      },
+      hljs.COMMENT('\\/\\*', '\\*\\/'),
       hljs.HASH_COMMENT_MODE,
       {
         className: 'function',
