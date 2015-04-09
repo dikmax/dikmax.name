@@ -446,7 +446,8 @@
                 "lon": 7.899444,
                 "visits": [
                     {
-                        "date": "2015-03-26"
+                        "date": "2015-03-26",
+                        "link": "/post/schauinsland/"
                     }
                 ]
             },
