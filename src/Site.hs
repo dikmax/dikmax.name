@@ -100,6 +100,9 @@ visitedCountriesTemplateName = "templates/map.html"
 
 #endif
 
+mainSiteDomain :: T.Text
+mainSiteDomain = "https://dikmax.name"
+
 --------------------------------------------------------------------------------
 -- Archive
 --------------------------------------------------------------------------------
@@ -215,7 +218,7 @@ feedRules =
             ids <- getMatches "post/**"
             filteredIds <- filterM isPublished ids
             posts <- fmap (take 10) . recentFirst =<<
-                loadAllSnapshots (fromList filteredIds) "content"
+                loadAllSnapshots (fromList filteredIds) "rss"
             time <- unsafeCompiler getCurrentTime
             lastItemTime <- getItemUTC defaultTimeLocale $ itemIdentifier $ head posts
             let postsCtx =
@@ -486,7 +489,8 @@ postsRules = do
             title <- getMetadataField identifier "title"
             tags <- getTags identifier
             description <- getMetadataField identifier "description"
-            item <- pandocCompiler >>= saveSnapshot "content"
+            item <- pandocCompiler False >>= saveSnapshot "content"
+            pandocCompiler True >>= saveSnapshot "rss"
             let images = map (fromMaybe "") $ filter isJust $ map imagesMap $ TS.parseTags $ itemBody item
 
             time <- getItemUTC defaultTimeLocale identifier
@@ -593,7 +597,7 @@ collectionField (Just collection) =
 indexPagesRules :: Rules ()
 indexPagesRules = do
     match "index.md" $
-        compile pandocCompiler
+        compile $ pandocCompiler False
 
     paginate <- buildPaginateWith (\ids -> return $ paginateEvery 5 $ reverse ids) "post/**" getPageIdentifier
     d <- makePatternDependency "post/**"
@@ -742,7 +746,7 @@ staticPagesRules = do
             identifier <- getUnderlying
             title <- getMetadataField identifier "title"
             description <- getMetadataField identifier "description"
-            pandocCompiler
+            pandocCompiler False
                 >>= loadAndApplyTemplate "templates/_post-without-footer.html" postCtx
                 >>= loadAndApplyTemplate defaultTemplateName (pageCtx (defaultMetadata
                     { metaTitle = fmap unwrap title
@@ -976,11 +980,13 @@ dateFieldWith locale key format = field key $ \i -> do
     return $ formatTime locale format time
 
 
-pandocCompiler :: Compiler (Item String)
-pandocCompiler = do
+pandocCompiler :: Bool -> Compiler (Item String)
+pandocCompiler rss = do
     post <- getResourceBody
     makeItem $ T.unpack $ T.decodeUtf8 $ toByteString $ renderHtmlFragment UTF8 $ writeXmlHtml defaultXmlHtmlWriterOptions
         { idPrefix = "" --postUrl post
+        , renderForRSS = rss
+        , siteDomain = mainSiteDomain
         , debugOutput = False
         }
         (readMarkdown readerOptions $ itemBody post)

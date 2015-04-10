@@ -15,6 +15,7 @@ import Text.Pandoc
 
 data XmlHtmlWriterOptions = XmlHtmlWriterOptions 
   { idPrefix :: T.Text
+  , siteDomain :: T.Text
   , debugOutput :: Bool
   , renderForRSS :: Bool
   }
@@ -22,6 +23,7 @@ data XmlHtmlWriterOptions = XmlHtmlWriterOptions
 defaultXmlHtmlWriterOptions :: XmlHtmlWriterOptions
 defaultXmlHtmlWriterOptions = XmlHtmlWriterOptions 
   { idPrefix = ""
+  , siteDomain = ""
   , debugOutput = False
   , renderForRSS = False
   }
@@ -251,11 +253,14 @@ writeInline (RawInline "html" str) = do
 writeInline (RawInline _ _) = return []
 writeInline (Link inline target) = do
   inlines <- concatInlines inline
+  writerState <- get
   return [
     Element "a" 
-      [("href", T.pack $ fst target), ("title", T.pack $ snd target)] inlines]
+      [("href", linkToAbsolute (renderForRSS (writerOptions writerState)) (T.pack $ fst target) (siteDomain (writerOptions writerState))),
+        ("title", T.pack $ snd target)] inlines]
 writeInline (Image inline target) = do
   inlines <- concatInlines inline
+  writerState <- get
   return $ if "http://www.youtube.com/watch?v=" `T.isPrefixOf` T.pack (fst target) ||
         "https://www.youtube.com/watch?v=" `T.isPrefixOf` T.pack (fst target)
     then
@@ -275,7 +280,7 @@ writeInline (Image inline target) = do
       [ Element "div" [("id", extractId $ T.pack $ fst target), ("class", "figure")]
         [ Element "div" [("class", "figure-inner")]
           ( Element "img"
-            [ ("src", T.pack $ fst target)
+            [ ("src", linkToAbsolute (renderForRSS (writerOptions writerState)) (T.pack $ fst target) (siteDomain (writerOptions writerState)))
             , ("title", T.pack $ fixImageTitle $ snd target)
             , ("alt", T.pack $ fixImageTitle $ snd target)
             , ("class", "img-polaroid")
@@ -306,6 +311,7 @@ writeInline (Note block) = do
 writeInline (Span attr inline) = do
   inlines <- concatInlines inline
   return [ Element "span" (writeAttr attr) inlines ]
+
 
 concatRawInlines :: [Inline] -> WriterState T.Text
 concatRawInlines inlines = do
@@ -411,3 +417,10 @@ fixImageTitle :: String -> String
 fixImageTitle title
     | take 4 title == "fig:" = drop 4 title
     | otherwise = title
+
+linkToAbsolute :: Bool -> T.Text -> T.Text -> T.Text
+linkToAbsolute False link _ = link
+linkToAbsolute True link "" = link
+linkToAbsolute True link domain
+  | (T.length link >= 2) && (T.head link == '/') && (T.head $ T.tail link) /= '/' = domain `T.append` link
+  | otherwise = link
