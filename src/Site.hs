@@ -35,11 +35,6 @@ import           XmlHtmlWriter
 main :: IO ()
 main = hakyll $ do
     staticFilesRules
-
-#ifndef DEVELOPMENT
-    webpConverterRules
-#endif
-
     lessCompilerRules
     mapCompilerRules
     scriptsCompilerRules
@@ -261,26 +256,6 @@ staticFilesRules = do
     match "favicons/**" $ do
         route (gsubRoute "favicons/" (const ""))
         compile copyFileCompiler
-
---------------------------------------------------------------------------------
--- WebP images
---------------------------------------------------------------------------------
-
-webpConverterRules :: Rules ()
-webpConverterRules = do
-    match "images/**.jpg" $ version "webp" $ do
-        route (setExtension "jpg.webp")
-        compile $ do
-            filePath <- getResourceFilePath
-            res      <- unixFilterLBS "cwebp" [filePath, "-jpeg_like", "-mt", "-m", "6", "-o", "-"] ""
-            makeItem res
-
-    match "images/**.png" $ version "webp" $ do
-        route (setExtension "png.webp")
-        compile $ do
-            filePath <- getResourceFilePath
-            res      <- unixFilterLBS "cwebp" [filePath, "-mt", "-lossless", "-q", "100", "-m", "6", "-o", "-"] ""
-            makeItem res
 
 
 --------------------------------------------------------------------------------
