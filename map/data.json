@@ -385,7 +385,8 @@
                 "lon": 8.15,
                 "visits": [
                     {
-                        "date": "2015-03-26"
+                        "date": "2015-03-26",
+                        "link": "/post/villingen-schwenningen-and-titisee"
                     }
                 ]
             },
@@ -416,7 +417,8 @@
                 "lon": 8.458611,
                 "visits": [
                     {
-                        "date": "2015-03-26"
+                        "date": "2015-03-26",
+                        "link": "/post/villingen-schwenningen-and-titisee"
                     }
                 ]
             },
