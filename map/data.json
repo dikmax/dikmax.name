@@ -288,7 +288,8 @@
                 "lon": 8.403889,
                 "visits": [
                     {
-                        "date": "2015-03-27"
+                        "date": "2015-03-27",
+                        "link": "/post/one-day-in-schwarzwald/"
                     }
                 ]
             },
@@ -407,7 +408,8 @@
                 "lon": 8.011111,
                 "visits": [
                     {
-                        "date": "2015-03-27"
+                        "date": "2015-03-27",
+                        "link": "/post/one-day-in-schwarzwald/"
                     }
                 ]
             },
@@ -460,7 +462,8 @@
                 "lon": 8.344722,
                 "visits": [
                     {
-                        "date": "2015-03-27"
+                        "date": "2015-03-27",
+                        "link": "/post/one-day-in-schwarzwald/"
                     }
                 ]
             }

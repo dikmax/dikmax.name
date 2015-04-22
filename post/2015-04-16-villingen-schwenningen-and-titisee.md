@@ -85,7 +85,7 @@ tags: "путешествие, фотки, германия"
 
 ![](/images/travel/2015-03-schwarzwald/titisee-lake-memory.jpg)
 
-Продолжение следует...
+Читать дальше: [Фельдберг, Альпирсбах и Шильтах](/post/one-day-in-schwarzwald/).
 
 [freiburg]: /post/freiburg/ 
 [triberg]: /post/triberg/
