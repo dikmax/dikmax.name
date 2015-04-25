@@ -441,7 +441,8 @@
                 "lon": 8.683333,
                 "visits": [
                     {
-                        "date": "2015-03-29"
+                        "date": "2015-03-29",
+                        "link": "/post/frankfurt-am-main/"
                     }
                 ]
             },

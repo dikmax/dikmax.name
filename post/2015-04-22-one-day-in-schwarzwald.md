@@ -151,11 +151,11 @@ tags: "путешествие, фотки, германия"
 
 ![](/images/travel/2015-03-schwarzwald/schiltach-beauty-6.jpg)
 
-Жаль, что вечер приходит так быстро, а\ с\ ним закат, и\ значит, пора возвращаться [во\ Фрайбург][freiburg], чтобы там съесть 
-Geburtstagkuchen (именинный пирог), предварительно задув Geburtstagkerzen, и\ пить Geburtstagwein.
+Жаль, что вечер приходит так быстро, а\ с\ ним закат, и\ значит, пора возвращаться [во\ Фрайбург][freiburg], чтобы там 
+съесть Geburtstagkuchen (именинный пирог), предварительно задув Geburtstagkerzen, и\ пить Geburtstagwein.
 
 ![](/images/travel/2015-03-schwarzwald/schiltach-sunset.jpg)
 
-Продолжение следует...
+Читать дальше: [Франкфурт](/post/frankfurt-am-main/).
 
 [freiburg]: /post/freiburg/
