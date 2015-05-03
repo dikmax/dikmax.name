@@ -116,7 +116,6 @@ class BranchAndBound extends TSPAlgorithm {
       // High estimate
       double f = routeLength + c[Ilast][firstAvailable];
       int prev = firstAvailable;
-      int skip = firstAvailable;
       List<int> x = new List<int>.from(I);
       x.add(firstAvailable);
 

@@ -10,7 +10,6 @@ class AntColonyOptimization extends TSPAlgorithm {
   List<int> _bestTour;
   double _bestLength;
   Random _random = new Random();
-  int _timeout;
   int _halfAnts;
 
   static final double alpha = 0.1; // The importance of the previous trails
@@ -26,10 +25,8 @@ class AntColonyOptimization extends TSPAlgorithm {
     cancelled = false;
 
     _dist = dist;
-    _timeout = dist.length * 100;
     _initializeData();
 
-    int wave = 0;
     int bestUpdatedIterationsAgo = 0;
 
     void process() {
@@ -39,7 +36,6 @@ class AntColonyOptimization extends TSPAlgorithm {
       }
       if (bestUpdatedIterationsAgo < stillPeriod) {
         ++bestUpdatedIterationsAgo;
-        ++wave;
         _constructSolutions();
         _localSearch();
         _updatePheromoneTrails();

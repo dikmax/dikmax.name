@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import '../lib/app.dart';
 import '../lib/map.dart';
 
