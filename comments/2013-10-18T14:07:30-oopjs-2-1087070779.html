@@ -1,0 +1,10 @@
+---
+id: 1087070779
+thread: 1226277014
+date: 2013-10-18T14:07:30
+authorName: Maxim Dikun
+authorProfile: https://disqus.com/by/dikmax/
+authorAvatar: https://disqus.com/api/users/avatars/dikmax.jpg
+---
+
+<p>Я на самом деле согласен. Но в таком случае нужно отказаться от довольно удобной функции inherited и писать имя родительского класса самостоятельно: ParentClass.method.call(this, arg1, arg2, ...).</p><p>Кстати, Google Closure Library, которая во многом является для меня примером, тоже вынуждена использовать arguments.callee.caller в своем аналогичном методе goog.base. Правда все это исчезает после компиляции и заменяется на прямой вызов.</p>

@@ -1,0 +1,10 @@
+---
+id: 951374449
+thread: 1226277014
+date: 2013-07-04T07:02:34
+authorName: Maxim Dikun
+authorProfile: https://disqus.com/by/dikmax/
+authorAvatar: https://disqus.com/api/users/avatars/dikmax.jpg
+---
+
+<p>Правильно будет так:</p><p>var Car = function () {}; // конструктор<br>Car.prototype.field1 = 0;<br>Car.prototype.field2 = 0;<br>Car.prototype.method1 = function () {};<br>Car.prototype.method2 = function () {};</p><p>Honda = function () {}; // конструктор<br>Honda.__extends__(Car);<br>Honda.prototype.method1 = function() {<br>    this.__super__(); // Вызов родительского метода, если нужно<br>}; // переопределенный метод</p><p>Так понятно?</p>
