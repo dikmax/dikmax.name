@@ -45,4 +45,4 @@ thread: 2471709112
 [InterRail]: http://www.interrail.eu/
 [maps]: http://api.yandex.ru/maps/
 [route-planner]: /route-planner/
-[sources]: https://github.com/dikmax/dikmax.name/blob/master/dart/route-planner.dart
+[sources]: https://github.com/dikmax/dikmax.name/blob/master/dart/lib/route-planner.dart

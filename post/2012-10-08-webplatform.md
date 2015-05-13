@@ -22,7 +22,7 @@ wiki по web-разработке, попытка собрать всю инф�
 * [Mozilla Developer Network](https://developer.mozilla.org/en/)\ --- самый крупный и полезный сайт по разработке.
   Зачастую мой поиск дальше этого сайта и не уходит.
 * [jQuery](http://docs.jquery.com/Main_Page), [ExtJs](http://docs.sencha.com/ext-js/4-1/#!/api),
-  [Closure Library](http://closure-library.googlecode.com/svn/docs/index.html), любойДругойФреймворк\ ---
+  [Closure Library](https://closure-library.googlecode.com/git-history/docs/index.html), любойДругойФреймворк\ ---
   официальная документация по js-фреймворкам.
 * [Stack Overflow](http://stackoverflow.com/)\ --- если в официальных источниках ответ не нашелся.
 * [Google](http://google.com/)\ --- последняя инстанция.

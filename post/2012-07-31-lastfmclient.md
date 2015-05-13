@@ -20,7 +20,7 @@ $ sudo apt-get install lastfm
 
 Затем нам нужен hex-редактор файлов. Я как приверженец KDE поставил себе
 [Okteta](http://www.kde.org/applications/utilities/okteta/). Для адептов Ubuntu скорее подойдет
-[GHex](https://live.gnome.org/Ghex/).
+[GHex](https://github.com/GNOME/ghex).
 
 ~~~~~bash
 $ sudo apt-get install okteta

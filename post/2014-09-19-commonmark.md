@@ -42,4 +42,4 @@ StackOverflow и ещё нескольких компаний увенчалис
 [coding-horror]: http://blog.codinghorror.com/
 [gruber]: http://daringfireball.net/
 [Markdown]: https://en.wikipedia.org/wiki/Markdown
-[spec]: https://jgm.github.io/stmd/spec.html
+[spec]: http://spec.commonmark.org/

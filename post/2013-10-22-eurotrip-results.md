@@ -124,7 +124,7 @@ frieten. Она идёт в\ качестве гарнира к\ большин�
 [Вернуться к\ оглавлению](/post/eurotrip-2013/).
 
 
-[AVE]: http://en.wikipedia.org/wiki/AVEhttp://en.wikipedia.org/wiki/AVE
+[AVE]: http://en.wikipedia.org/wiki/AVE
 [booking.com]: http://www.booking.com/
 [booking-app]: https://play.google.com/store/apps/details?id=com.booking
 [Genius]: http://vimeo.com/69317087

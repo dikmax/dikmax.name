@@ -6,7 +6,7 @@ tags: "подкаст"
 ---
 
 Как вы, должно быть, знаете, перед своим отпуском я [принял участие в записи](/post/itground13/)
-[подкаста IT_Ground](http://itground.by/). Пришла пора выложить смонтированную запись. Наслаждайтесь!
+подкаста IT_Ground. Пришла пора выложить смонтированную запись. Наслаждайтесь!
 
 <audio controls="controls" preload="none">
   <source src="/media/IT_Ground__013__2012_07_05.ogg" type="audio/ogg">
@@ -15,5 +15,4 @@ tags: "подкаст"
 </audio>
 
 [Скачать mp3](/media/IT_Ground__013__2012_07_05.mp3) |
-[Скачать ogg](/media/IT_Ground__013__2012_07_05.ogg) |
-[Скачать mp3 c сайта IT_Ground](http://itground.by/data/IT_Ground__013__2012_07_05.mp3)
+[Скачать ogg](/media/IT_Ground__013__2012_07_05.ogg)

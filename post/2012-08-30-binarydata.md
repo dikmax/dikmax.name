@@ -38,8 +38,8 @@ $.ajax({
 
 А вот с [Google Closure Library](https://developers.google.com/closure/library/) не всё так просто. Там нет никаких
 `beforeSend`, и если
-[посмотреть в документацию](http://closure-library.googlecode.com/svn/docs/class_goog_net_XhrIo.html), то нужная
-функция выглядит следующим образом:
+[посмотреть в документацию](https://closure-library.googlecode.com/git-history/docs/class_goog_net_XhrIo.html), то 
+нужная функция выглядит следующим образом:
 
 ~~~~~javascript
 goog.net.XhrIo.send(url, opt_callback, opt_method, opt_content, opt_headers, opt_timeoutInterval)

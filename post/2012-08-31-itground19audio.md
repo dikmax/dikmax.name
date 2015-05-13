@@ -5,8 +5,8 @@ published: true
 tags: "подкаст"
 ---
 
-Антон весьма оперативно [выложил запись](http://itground.by/Podcast/019)
-[подкаста с моим участием](/post/itground19/) в сеть. Предлагаю всем послушать и насладиться.
+Антон весьма оперативно выложил запись [подкаста с моим участием](/post/itground19/) в сеть. Предлагаю всем послушать 
+и\ насладиться.
 
 <audio controls="controls" preload="none">
   <source src="/media/IT_Ground__019__2012_08_30.ogg" type="audio/ogg">
@@ -15,5 +15,4 @@ tags: "подкаст"
 </audio>
 
 [Скачать mp3](/media/IT_Ground__019__2012_08_30.mp3) |
-[Скачать ogg](/media/IT_Ground__019__2012_08_30.ogg) |
-[Скачать mp3 c сайта IT_Ground](http://itground.by/data/IT_Ground__019__2012_08_30.mp3)
+[Скачать ogg](/media/IT_Ground__019__2012_08_30.ogg)
