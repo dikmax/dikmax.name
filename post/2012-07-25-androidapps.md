@@ -33,7 +33,7 @@ tags: "android, google play, телефон"
 Словарь. Отличается от всех остальных поддержкой файлов [ABBYY Lingvo](http://www.lingvo.ru/). Там еще куча каких-то
 форматов, но я использую только этот, ну и [hunspell](http://hunspell.sourceforge.net/) для поиска с учетом словоформ.
 
-# [Google Reader](https://play.google.com/store/apps/details?id=com.google.android.apps.reader)
+# ~~Google Reader~~ (умер)
 
 Не думаю, что тут нужны комментарии.
 
@@ -54,8 +54,7 @@ tags: "android, google play, телефон"
 
 # [OsmAnd+](https://play.google.com/store/apps/details?id=net.osmand.plus)
 
-Карта. Она, конечно, не так шустро рендерится, как
-[MapDroyd](https://play.google.com/store/apps/details?id=com.osa.android.mapdroyd), но точно выигрывает по набору
+Карта. Она, конечно, не так шустро рендерится, как ~~MapDroyd~~ (более не доступен), но точно выигрывает по набору
 функций. Можно даже показывать точки из [wikipedia](http://www.wikipedia.org/) и читать статьи, не подключаясь к
 интернету.
 
