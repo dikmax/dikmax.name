@@ -3,7 +3,7 @@ title: "Франкфурт-на-Майне"
 date: "2015-04-25T13:55:00+03:00"
 collection: "latest-travel"
 published: true
-tags: "путешествие, фотки, германия"
+tags: "германия, путешествие, фотки"
 ---
 
 ![](/images/travel/2015-03-schwarzwald/frankfurt-cover.jpg)
