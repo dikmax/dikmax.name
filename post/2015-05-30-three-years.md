@@ -3,6 +3,7 @@ title: "Три года блогу: конкурс"
 date: "2015-05-30T08:40:00+02:00"
 published: true
 tags: "блог, лытдыбр"
+thread: 3805005191
 ---
 
 ![](/images/3rd-party/three-years.jpg)
