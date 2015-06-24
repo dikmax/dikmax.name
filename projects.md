@@ -5,7 +5,8 @@ published: true
 
 # Проекты
 
-[md_proc]. Библиотека для разбора и генерации Markdown с поддержкой спецификации [CommonMark].
+[md_proc]. Библиотека для разбора и генерации Markdown с поддержкой спецификации [CommonMark]. 
+[Страница на GitHub][md_proc-github].
 
 [Планировщик маршрутов][route-planner]. Сервис для построения оптимального маршрута по городам.
 
@@ -16,6 +17,7 @@ IDE, например, [IntelliJ IDEA][idea], [Eclipse] или [WebStorm].
 [Eclipse]: https://www.eclipse.org/home/index.php
 [idea]: https://www.jetbrains.com/idea/
 [md_proc]: /tag/md_proc/
+[md_proc-github]: https://github.com/dikmax/md_proc
 [route-planner]: /route-planner/
 [russian]: /post/russian-dictionary/
 [WebStorm]: https://www.jetbrains.com/webstorm/
