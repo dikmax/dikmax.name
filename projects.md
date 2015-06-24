@@ -9,10 +9,13 @@ published: true
 
 [Планировщик маршрутов][route-planner]. Сервис для построения оптимального маршрута по городам.
 
-[Словарь словоформ русского языка][russian]. Текстовый файл, который позвонят добавить проверку орфографии к различным
-IDE, например, IntelliJ IDEA, Eclipse или WebStorm.
+[Словарь словоформ русского языка][russian]. Текстовый файл, который позволяет добавить проверку орфографии к различным
+IDE, например, [IntelliJ IDEA][idea], [Eclipse] или [WebStorm].
 
 [CommonMark]: http://commonmark.org/
+[Eclipse]: https://www.eclipse.org/home/index.php
+[idea]: https://www.jetbrains.com/idea/
 [md_proc]: /tag/md_proc/
 [route-planner]: /route-planner/
 [russian]: /post/russian-dictionary/
+[WebStorm]: https://www.jetbrains.com/webstorm/
