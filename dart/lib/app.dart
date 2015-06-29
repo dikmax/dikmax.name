@@ -96,15 +96,15 @@ class App {
       return;
     }
 
-    var navBarHeight = navBar.clientHeight;
-    var jumbotronHeight = jumbotron.clientHeight;
+    var navBarHeight = navBar.offsetHeight;
+    var jumbotronHeight = jumbotron.offsetHeight;
     setNavBarOpacity(0);
 
-    jumbotron.style.paddingTop = "${48 + navBarHeight + 1}px";
+    jumbotron.style.paddingTop = "${48 + navBarHeight}px";
     DivElement jumbotronParent = new DivElement();
     jumbotronParent.style
       ..position = 'relative'
-      ..marginTop = "-${navBarHeight + 1}px";
+      ..marginTop = "-${navBarHeight}px";
 
     jumbotron.replaceWith(jumbotronParent);
     jumbotronParent.append(jumbotron);
