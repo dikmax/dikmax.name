@@ -3,12 +3,11 @@ library app;
 import 'dart:async';
 import 'dart:html';
 import 'dart:js';
-import 'package:cookie/cookie.dart' as cookie;
+import 'dart:math';
 
 class App {
   void init() {
     _setupMaxImageHeight();
-    _setupJumbotron();
     _setupTopNavBar();
     _fixTimeZones();
     _updateCommentsText();
@@ -34,40 +33,27 @@ class App {
     styleSheet.insertRule(rule, 0);
   }
 
-  void _setupJumbotron() {
-    Element closeButton = querySelector('.close-jumbotron-button');
-    Element openButton = querySelector('.open-jumbotron-button');
-    if (closeButton == null || openButton == null) {
-      return;
-    }
+  void _setupTopNavBar() {
+    bool visible = false;
 
     Element jumbotron = querySelector('.jumbotron');
-    Element jumbotronFolded = querySelector('.jumbotron-folded');
+    Element navBar = querySelector('.navbar');
 
-    closeButton.onClick.listen((event) {
-      jumbotron.style.display = 'none';
-      jumbotronFolded.style.display = 'block';
-      cookie.set('closeJumbotron', '1', expires: 180);
-      event.stopPropagation();
-    });
-    openButton.onClick.listen((event) {
-      jumbotron.style.display = 'block';
-      jumbotronFolded.style.display = 'none';
-      cookie.set('closeJumbotron', '0', expires: 180);
-      event.stopPropagation();
-    });
-
-    if (cookie.get('closeJumbotron') == '1') {
-      jumbotron.style.display = 'none';
-      jumbotronFolded.style.display = 'block';
+    var prevOpacity = 0.9;
+    void setNavBarOpacity([num opacity]) {
+      if (opacity == null) {
+        opacity = prevOpacity;
+      } else {
+        prevOpacity = opacity;
+      }
+      if (visible) {
+        opacity = 0.9;
+      }
+      navBar.style.backgroundColor = 'rgba(51,51,51,${opacity})';
     }
-  }
 
-  void _setupTopNavBar() {
     Element toggleButton = querySelector('.navbar-toggle-button');
     Element collapsibleBlock = querySelector('.navbar-collapsible-block');
-
-    bool visible = false;
 
     var complete = (_) {
       if (visible) {
@@ -81,6 +67,7 @@ class App {
             ..remove('collapsing')
             ..remove('in');
         collapsibleBlock.style.height = '0';
+        setNavBarOpacity();
       }
     };
 
@@ -96,9 +83,52 @@ class App {
       if (visible) {
         int height = collapsibleBlock.scrollHeight + 1;
         collapsibleBlock.style.height = "${height}px";
+        setNavBarOpacity();
       } else {
         collapsibleBlock.style.height = "0";
       }
+    });
+
+
+    // Jumbotron
+
+    if (jumbotron == null) {
+      return;
+    }
+
+    var navBarHeight = navBar.clientHeight;
+    var jumbotronHeight = jumbotron.clientHeight;
+    setNavBarOpacity(0);
+
+    jumbotron.style.paddingTop = "${48 + navBarHeight}px";
+    DivElement jumbotronParent = new DivElement();
+    jumbotronParent.style
+      ..position = 'relative'
+      ..marginTop = "-${navBarHeight}px";
+
+    jumbotron.replaceWith(jumbotronParent);
+    jumbotronParent.append(jumbotron);
+    DivElement jumbotronMask = new DivElement();
+    jumbotronMask.style
+      ..position = 'absolute'
+      ..top = '0'
+      ..bottom = '0'
+      ..left = '0'
+      ..right = '0'
+      ..pointerEvents = 'none';
+    jumbotronParent.append(jumbotronMask);
+
+    document.onScroll.listen((Event e) {
+      var scroll = document.body.scrollTop;
+      if (scroll < 0) {
+        scroll = 0;
+      }
+      if (scroll > jumbotronHeight) {
+        scroll = jumbotronHeight;
+      }
+      num opacity = log(scroll / jumbotronHeight + 1) / log(2);
+      setNavBarOpacity(opacity * 0.9);
+      jumbotronMask.style.backgroundColor = 'rgba(255,255,255,${opacity})';
     });
   }
 
