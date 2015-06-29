@@ -100,11 +100,11 @@ class App {
     var jumbotronHeight = jumbotron.clientHeight;
     setNavBarOpacity(0);
 
-    jumbotron.style.paddingTop = "${48 + navBarHeight}px";
+    jumbotron.style.paddingTop = "${48 + navBarHeight + 1}px";
     DivElement jumbotronParent = new DivElement();
     jumbotronParent.style
       ..position = 'relative'
-      ..marginTop = "-${navBarHeight}px";
+      ..marginTop = "-${navBarHeight + 1}px";
 
     jumbotron.replaceWith(jumbotronParent);
     jumbotronParent.append(jumbotron);
