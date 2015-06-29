@@ -119,7 +119,13 @@ class App {
     jumbotronParent.append(jumbotronMask);
 
     window.onScroll.listen((Event e) {
-      var scroll = document.body.scrollTop;
+      var scroll;
+      if (document.documentElement != null) { // IE workaround: IE doesn't have document.body.scrollTop
+        scroll = document.documentElement.scrollTop;
+      }
+      if (scroll == null || scroll == 0) {
+        scroll = document.body.scrollTop;
+      }
       if (scroll < 0) {
         scroll = 0;
       }
