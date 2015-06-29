@@ -108,15 +108,6 @@ class App {
 
     jumbotron.replaceWith(jumbotronParent);
     jumbotronParent.append(jumbotron);
-    DivElement jumbotronMask = new DivElement();
-    jumbotronMask.style
-      ..position = 'absolute'
-      ..top = '0'
-      ..bottom = '0'
-      ..left = '0'
-      ..right = '0'
-      ..pointerEvents = 'none';
-    jumbotronParent.append(jumbotronMask);
 
     int lastScroll = 0;
     void animationFrame(_) {
@@ -141,7 +132,7 @@ class App {
 
       num opacity = log(scroll / jumbotronHeight + 1) / log(2);
       setNavBarOpacity(opacity * 0.9);
-      jumbotronMask.style.backgroundColor = 'rgba(255,255,255,${opacity})';
+      jumbotronParent.style.opacity = '${1 - opacity}';
 
       window.animationFrame.then(animationFrame);
     }
