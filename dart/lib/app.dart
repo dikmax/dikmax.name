@@ -104,7 +104,8 @@ class App {
     DivElement jumbotronParent = new DivElement();
     jumbotronParent.style
       ..position = 'relative'
-      ..marginTop = "-${navBarHeight}px";
+      ..marginTop = "-${navBarHeight}px"
+      ..transform = "translateZ(0)";
 
     jumbotron.replaceWith(jumbotronParent);
     jumbotronParent.append(jumbotron);
