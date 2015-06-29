@@ -118,7 +118,8 @@ class App {
       ..pointerEvents = 'none';
     jumbotronParent.append(jumbotronMask);
 
-    window.onScroll.listen((Event e) {
+    int lastScroll = 0;
+    void animationFrame(_) {
       var scroll;
       if (document.documentElement != null) { // IE workaround: IE doesn't have document.body.scrollTop
         scroll = document.documentElement.scrollTop;
@@ -126,16 +127,26 @@ class App {
       if (scroll == null || scroll == 0) {
         scroll = document.body.scrollTop;
       }
+      if (scroll == lastScroll) {
+        window.animationFrame.then(animationFrame);
+        return;
+      }
+      lastScroll = scroll;
       if (scroll < 0) {
         scroll = 0;
       }
       if (scroll > jumbotronHeight) {
         scroll = jumbotronHeight;
       }
+
       num opacity = log(scroll / jumbotronHeight + 1) / log(2);
       setNavBarOpacity(opacity * 0.9);
       jumbotronMask.style.backgroundColor = 'rgba(255,255,255,${opacity})';
-    });
+
+      window.animationFrame.then(animationFrame);
+    }
+
+    window.animationFrame.then(animationFrame);
   }
 
   void _fixTimeZones() {
