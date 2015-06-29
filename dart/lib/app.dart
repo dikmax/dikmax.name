@@ -118,7 +118,7 @@ class App {
       ..pointerEvents = 'none';
     jumbotronParent.append(jumbotronMask);
 
-    document.onScroll.listen((Event e) {
+    window.onScroll.listen((Event e) {
       var scroll = document.body.scrollTop;
       if (scroll < 0) {
         scroll = 0;
