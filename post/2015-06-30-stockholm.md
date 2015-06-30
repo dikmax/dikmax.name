@@ -1,6 +1,6 @@
 ---
 title: "Стокгольм"
-date: "2015-06-30T12:05:00+03:00"
+date: "2015-06-30T12:30:00+03:00"
 collection: "latest-travel"
 published: true
 tags: "швеция, путешествие, фотки"
