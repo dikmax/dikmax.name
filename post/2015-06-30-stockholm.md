@@ -144,9 +144,9 @@ Skansen всё-таки найдёт, чем удивить.
 
 ![](/images/travel/2015-05-stockholm/vasa-2.jpg)
 
-![](/images/travel/2015-05-stockholm/vasa-2.jpg)
-
 ![](/images/travel/2015-05-stockholm/vasa-3.jpg)
+
+![](/images/travel/2015-05-stockholm/vasa-4.jpg)
 
 Drottninggatan\ --- главная пешеходная улица, напичканная всевозможными магазинами и\ ресторанами.
 
