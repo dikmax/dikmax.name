@@ -154,7 +154,7 @@ Drottninggatan\ --- главная пешеходная улица, напичк
 И\ практически последняя точка этого дня\ --- набережная на\ острове Riddarholmen. Отсюда открываются отличные виды 
 на\ ратушу.
 
-![](/images/travel/2015-05-stockholm/riddarholmen-view.jpg)
+![](/images/travel/2015-05-stockholm/city-hall-view.jpg)
 
 Второй день выдался попроще, в\ первую очередь из-за того, что половину времени лил дождь. 
 
@@ -176,7 +176,7 @@ Drottninggatan\ --- главная пешеходная улица, напичк
 
 Вид на\ Riddarholmen.
 
-![](/images/travel/2015-05-stockholm/city-hall-view.jpg)
+![](/images/travel/2015-05-stockholm/riddarholmen-view.jpg)
 
 Набережная Южного острова.
 
