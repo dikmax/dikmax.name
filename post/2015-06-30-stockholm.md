@@ -41,7 +41,7 @@ Storkyrkan, она же церковь Св. Николая - одна из ст
 
 ![](/images/travel/2015-05-stockholm/storkyrkan-2.jpg)
 
-![](/images/travel/2015-05-stockholm/storkyrkan-2.jpg)
+![](/images/travel/2015-05-stockholm/storkyrkan-3.jpg)
 
 Огромный подсвечник, местная достопримечательность.
 
