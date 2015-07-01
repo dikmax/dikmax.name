@@ -1,6 +1,6 @@
 ---
 title: "airbnb и двойная конвертация: как немного сэкономить"
-date: "2015-06-30T12:00:00+03:00"
+date: "2015-07-01T12:00:00+03:00"
 collection: "latest-travel"
 published: true
 tags: "airbnb, деньги, путешествие"
