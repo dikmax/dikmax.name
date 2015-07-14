@@ -55,5 +55,5 @@ airbnb, тоже хотят получать деньги в\ USD. Казало�
 
 Приятных путешествий!
 
-[airbnb]: www.airbnb.com/c/mdikun?s=8
+[airbnb]: https://www.airbnb.com/c/mdikun?s=8
 [faq]: https://www.airbnb.com/support/article/502
