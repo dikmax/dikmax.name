@@ -3,6 +3,7 @@ title: "Оптимизируем блог и экономим трафик: ча
 date: "2015-07-14T12:10:00+03:00"
 published: true
 tags: "dart, nginx, webp, zopfli, блог, оптимизация"
+thread: 3926625640
 ---
                       
 ![](/images/photos/static-compress.png "static-compress")
