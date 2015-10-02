@@ -12,6 +12,7 @@ class App {
     _fixTimeZones();
     _updateCommentsText();
     _updateCodeListings();
+    _setupPano();
     _inlineFootnotes();
     _setupKeyboardNavigation();
     _setupMath();
@@ -31,6 +32,10 @@ class App {
     final rule = '.img-responsive, .thumbnail>img, .thumbnail a>img, .post-body .figure .figure-inner>img, '
       '.post-body .figure .figure-inner a>img { max-height: ${height}px; }';
     styleSheet.insertRule(rule, 0);
+
+    final panoRule = '.post-body .figure.figure-pano .figure-inner>img, '
+        '.post-body .figure.figure-pano .figure-inner a>img { height: ${height}px; }';
+    styleSheet.insertRule(panoRule, 1);
   }
 
   void _setupTopNavBar() {
@@ -342,6 +347,41 @@ class App {
 
       hideTooltip();
       tooltipTarget = null;
+    });
+  }
+
+
+  void _handlePano(Element figure, ImageElement pano) {
+    Element inner = figure.querySelector('.figure-inner');
+    var paragraph = new ParagraphElement()
+      ..classes.add('figure-description')
+      ..text = 'Нажмите для увеличения';
+    if (inner != null) {
+      inner.append(paragraph);
+    }
+
+    bool collapsed = true;
+    String collapsedName = pano.src;
+    String fullName = collapsedName.replaceAll(new RegExp(r"-pano\.jpg$"), "-pano-full.jpg");
+    figure.onClick.listen((_) {
+      collapsed = !collapsed;
+      pano.src = collapsed ? collapsedName : fullName;
+      figure.classes.toggle('figure-pano', !collapsed);
+      paragraph.classes.toggle('hidden', !collapsed);
+    });
+    figure.style.cursor = 'pointer';
+  }
+
+
+  void _setupPano() {
+    ElementList figures = querySelectorAll('.figure');
+    figures.forEach((Element figure) {
+      Element image = figure.querySelector('img');
+      if (image != null && image is ImageElement) {
+        if (image.src.endsWith("-pano.jpg")) {
+          _handlePano(figure, image);
+        }
+      }
     });
   }
 
