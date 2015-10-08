@@ -1,0 +1,14 @@
+{
+    "plugins": {
+        "lint": {
+            "maximum-line-length": 120,
+            "emphasis-marker": "*",
+            "strong-marker": "*"
+        }
+    },
+    "settings": {
+        "commonmark": true,
+        "yaml": true,
+        "footnotes": true
+    }
+}
