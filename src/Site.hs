@@ -1,5 +1,6 @@
 {-# LANGUAGE CPP               #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE FlexibleContexts  #-}
 {-# LANGUAGE TupleSections     #-}
 import           Blaze.ByteString.Builder (toByteString)
 import           Control.Applicative ((<$>))
@@ -15,13 +16,12 @@ import           Data.Ord (comparing)
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import           Data.Time.Clock (UTCTime, getCurrentTime)
-import           Data.Time.Format (formatTime, parseTime)
+import           Data.Time.Format
 import           Hakyll hiding (chronological, dateFieldWith, getItemUTC, getTags, paginateContext,
                     pandocCompiler, recentFirst, teaserField)
 import           System.Directory
 import           System.FilePath (takeFileName)
 import           System.IO.Error
-import           System.Locale
 import           System.Process
 import           Text.HTML.TagSoup (Tag(..))
 import qualified Text.HTML.TagSoup as TS
@@ -964,7 +964,10 @@ pandocCompiler rss = do
         , siteDomain = mainSiteDomain
         , debugOutput = False
         }
-        (readMarkdown readerOptions $ itemBody post)
+        (extract $ readMarkdown readerOptions $ itemBody post)
+    where
+        extract (Right r) = r
+        extract _ = error "Pandoc parse error"
 
 
 readerOptions :: ReaderOptions
