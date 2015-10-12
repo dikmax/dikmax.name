@@ -932,7 +932,7 @@ getItemUTC locale id' = do
   where
     empty'     = fail $ "Hakyll.Web.Template.Context.getItemUTC: " ++
         "could not parse time for " ++ show id'
-    parseTime' = parseTime locale
+    parseTime' = parseTimeM True locale
     formats    =
         [ "%a, %d %b %Y %H:%M:%S %Z"
         , "%Y-%m-%dT%H:%M:%S%Z"
@@ -1089,19 +1089,19 @@ removeExtension = customRoute $ removeExtension' . toFilePath
 
 removeExtension' :: String -> String
 removeExtension' filepath = subRegex (mkRegex "^(.*)\\.md$")
-                                        (subRegex (mkRegex "/[0-9]{4}-[0-9]{2}-[0-9]{2}-(.*)\\.md$") filepath "/\\1/index.html")
+                                        (subRegex (mkRegex "/[0-9]{4}/[0-9]{4}-[0-9]{2}-[0-9]{2}-(.*)\\.md$") filepath "/\\1/index.html")
                                         "\\1/index.html"
 
 identifierToUrl :: String -> String
 identifierToUrl filepath = subRegex (mkRegex "^(.*)\\.md$")
-                                        (subRegex (mkRegex "/[0-9]{4}-[0-9]{2}-[0-9]{2}-(.*)\\.md$") filepath "/\\1/")
+                                        (subRegex (mkRegex "/[0-9]{4}/[0-9]{4}-[0-9]{2}-[0-9]{2}-(.*)\\.md$") filepath "/\\1/")
                                         "\\1/"
 
 simplifiedUrl :: String -> String
 simplifiedUrl url = subRegex (mkRegex "/index\\.html$") url "/"
 
 identifierToDisqus :: String -> String
-identifierToDisqus filepath = subRegex (mkRegex "^post/[0-9]{4}-[0-9]{2}-[0-9]{2}-(.*)\\.md$") filepath  "\\1"
+identifierToDisqus filepath = subRegex (mkRegex "^post/[0-9]{4}/[0-9]{4}-[0-9]{2}-[0-9]{2}-(.*)\\.md$") filepath  "\\1"
 
 countText :: Int -> String -> String -> String -> String
 countText count one two many
