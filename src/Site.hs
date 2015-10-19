@@ -277,14 +277,14 @@ lessCompilerRules = do
         compile $ loadBody "less/style.less"
             >>= makeItem
             >>= withItemBody
-              (unixFilter "lessc" ["--clean-css","-O2", "--include-path=less","-"])
+              (unixFilter "lessc" ["--clean-css=advanced", "--include-path=less", "-"])
 
     rulesExtraDependencies [d] $ create ["css/print.css"] $ do
         route idRoute
         compile $ loadBody "less/print.less"
             >>= makeItem
             >>= withItemBody
-              (unixFilter "lessc" ["--clean-css","-O2", "--include-path=less","-"])
+              (unixFilter "lessc" ["--clean-css=advanced", "--include-path=less", "-"])
 
 
 --------------------------------------------------------------------------------
@@ -331,9 +331,11 @@ mapCompilerRules = do
                 _ <- rawSystem "ogr2ogr" ["-f", "GeoJSON", "map/regions.json",
                         "-where", "ADM0_A3 = 'RUS' or ADM0_A3 = 'USA'",
                         "map/ne_10m_admin_1_states_provinces_lakes/ne_10m_admin_1_states_provinces_lakes.shp"]
-                readProcess "topojson" ["--id-property", "ADM_A3,SU_A3,adm1_code",
+                _ <- rawSystem "topojson" ["-o", "_temp/world.json",
+                        "--id-property", "ADM_A3,SU_A3,adm1_code",
                         "--simplify", "1e-6",
-                        "--", "map/countries.json", "map/subunits.json", "map/regions.json"] ""
+                        "--", "map/countries.json", "map/subunits.json", "map/regions.json"]
+                readFile $ "_temp/world.json"
             makeItem mapData
 
 
@@ -399,7 +401,7 @@ concatResources out inputs = do
 scriptsCompilerRules :: Rules ()
 scriptsCompilerRules = do
     match (fromList ["dart/packages/browser/dart.js", "js/d3/d3.min.js", "js/topojson/topojson.min.js",
-        "js/polyhedron.js"]) $ compile getResourceBody
+        "js/polyhedron.js", "js/likely/likely.js"]) $ compile getResourceBody
 
     -- Building highlight.js
     match "js/highlight.js/src/**" $
@@ -418,7 +420,7 @@ scriptsCompilerRules = do
             makeItem js
 
     -- Building additional js
-    concatResources "dart/s.js" ["js/highlight.pack.js"]
+    concatResources "dart/s.js" ["js/highlight.pack.js", "js/likely/likely.js"]
     -- TODO sroute-planner
     concatResources "dart/smap.js" ["js/d3/d3.min.js", "js/polyhedron.js",
         "js/topojson/topojson.min.js"]
