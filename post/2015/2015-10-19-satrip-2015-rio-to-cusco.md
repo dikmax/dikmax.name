@@ -3,7 +3,7 @@ title: "SATrip 2015: Из Рио в Куско"
 date: "2015-10-19T11:00:00+03:00"
 collection: "latest-travel"
 published: true
-tags: "satrip, satrip-2015, бразилия, отпуск, путешествие, фотки"
+tags: "satrip, satrip-2015, перу, отпуск, путешествие, фотки"
 ---
 
 ![](/images/travel/2015-09-satrip/cusco-1-cover.jpg)
