@@ -19,7 +19,35 @@ main = shakeArgs shakeOptions{shakeFiles="_build"} $ do
         putNormal $ "Cleaning files in " ++ tempDir
         removeFilesAfter tempDir ["//*"]
 
-    -- TODO phony "build"
+    phony "build" $ do
+        -- Statics
+        forM statics $ \pattern -> do
+            files <- getDirectoryFiles "." [pattern]
+            need [buildDir </> x | x <- files]
+
+        -- Demos
+        demosFiles <- getDirectoryFiles "." ["demos//*"]
+        need [buildDir </> x | x <- demosFiles, not $ ".git" `isPrefixOf` (dropDirectory1 x)]
+
+        -- Favicons
+        faviconsFiles <- getDirectoryFiles "." ["favicons//*"]
+        need [buildDir </> dropDirectory1 x | x <- faviconsFiles]
+
+        -- Styles
+        need [buildDir </> "css/style.css", buildDir </> "css/print.css"]
+
+        -- Map
+        need [buildDir </> "map/world.json"]
+
+        -- Scripts
+        need
+            [ buildDir </> "dart/s.js"
+            , buildDir </> "dart/smap.js"
+            , buildDir </> "dart/script.dart.js"
+            , buildDir </> "dart/script-route-planner.dart.js"
+            , buildDir </> "dart/script-map.dart.js"
+            ]
+
 
     -- Statics
     forM statics buildStatic
@@ -38,9 +66,6 @@ main = shakeArgs shakeOptions{shakeFiles="_build"} $ do
             ]
 
 buildStatic pattern = do
-    action $ do
-        files <- getDirectoryFiles "." [pattern]
-        need [buildDir </> x | x <- files]
     buildDir </> pattern %> \out -> do
         let src = dropDirectory1 out
         copyFileChanged src out
@@ -48,9 +73,6 @@ buildStatic pattern = do
 
 
 buildDemos = do
-    action $ do
-        files <- getDirectoryFiles "." ["demos//*"]
-        need [buildDir </> x | x <- files, p x]
     buildDir </> "demos//*" %> \out -> do
         let src = dropDirectory1 out
         when (p src) $ copyFileChanged src out
@@ -61,9 +83,6 @@ buildDemos = do
 
 -- Copy favicons folder to root
 buildFavicons = do
-    action $ do
-        files <- getDirectoryFiles "." ["favicons//*"]
-        need [buildDir </> dropDirectory1 x | x <- files]
     buildDir </> "*" %> \out -> do
         let src = "favicons" </> dropDirectory1 out
         exists <- doesFileExist src
@@ -73,8 +92,6 @@ buildFavicons = do
 
 -- Build styles
 buildStyles = do
-    action $ do
-        need [buildDir </> "css/style.css", buildDir </> "css/print.css"]
     buildDir </> "css/*.css" %> \out -> do
         let src = "less" </> dropDirectory1 (dropDirectory1 out -<.> "less")
         files <- getDirectoryFiles "." ["less//*"]
@@ -85,8 +102,6 @@ buildStyles = do
 
 -- Build map
 buildMap = do
-    action $ need [buildDir </> "map/world.json"]
-
     buildDir </> "map/world.json" %> \out -> do
         let countries = tempDir </> "countries.json"
         let subunits = tempDir </> "subunits.json"
@@ -116,14 +131,6 @@ buildMap = do
 
 -- Build scripts
 buildScripts = do
-    action $ need
-        [ buildDir </> "dart/s.js"
-        , buildDir </> "dart/smap.js"
-        , buildDir </> "dart/script.dart.js"
-        , buildDir </> "dart/script-route-planner.dart.js"
-        , buildDir </> "dart/script-map.dart.js"
-        ]
-
     buildDir </> "dart/s.js" %> \out -> do
         content <- concatResources ["js/highlight.js/build/highlight.pack.js", "js/likely/likely.js"]
         writeFile' out content
