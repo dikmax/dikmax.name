@@ -1,4 +1,7 @@
 Последние путешествия
+satrip-2015-rio-to-cusco|Из Рио в Куско
+satrip-2015-rio-1|Рио-де-Жанейро
+satrip-2015-paris|Париж
 vitebsk-1|Витебск
 stockholm|Стокгольм
 belarus-2015-2|На юго-запад Беларуси
@@ -20,25 +23,3 @@ georgia-2014-1|Грузия
 new-york-2014-1|Нью-Йорк и Вашингтон
 braslav|Браслав
 land-of-lakes|Озёра Беларуси
-eurotrip-2014-milan-and-bergamo|Милан и Бергамо
-eurotrip-2014-rome|Рим
-eurotrip-2014-capri|Капри
-eurotrip-2014-naples|Неаполь
-eurotrip-2014-vesuvius-and-pompeii|Везувий и Помпеи
-eurotrip-2014-florence|Флоренция
-eurotrip-2014-bologna|Болонья
-eurotrip-2014-verona|Верона
-eurotrip-2014-padua|Падуя
-eurotrip-2014-bled-bohinj|Блед и Бохинь
-eurotrip-2014-postojna-skocjan|Постойнские и Шкотьянские пещеры
-eurotrip-2014-ljubljana|Любляна
-eurotrip-2014-plitvice-lakes|Плитвицкие озёра
-eurotrip-2014-zagreb|Загреб
-eurotrip-2014-graz|Грац
-eurotrip-2014-vienna|Вена
-eurotrip-2014-bratislava|Братислава
-eurotrip-2014-budapest|Будапешт
-eurotrip-2014-sighisoara|Сигишоара
-eurotrip-2014-bran-rasnov-brasov|Бран, Рашнов, Брашов
-eurotrip-2014-bucharest|Бухарест
-eurotrip-2014-chisinau|Кишинёв
