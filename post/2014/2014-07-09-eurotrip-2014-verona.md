@@ -1,7 +1,7 @@
 ---
 title: "Eurotrip 2014: Верона"
 date: "2014-07-09T00:15:00+03:00"
-collection: "latest-travel"
+collection: "eurotrip-2014"
 published: true
 tags: "eurotrip, eurotrip-2014, гостевой пост, италия, отпуск, путешествие, фотки"
 ---

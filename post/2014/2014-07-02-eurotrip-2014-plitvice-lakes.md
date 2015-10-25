@@ -1,7 +1,7 @@
 ---
 title: "Eurotrip 2014: Плитвицкие озёра"
 date: "2014-07-02T23:20:00+02:00"
-collection: "latest-travel"
+collection: "eurotrip-2014"
 published: true
 tags: "eurotrip, eurotrip-2014, отпуск, путешествие, фотки, хорватия"
 thread: 2813137005

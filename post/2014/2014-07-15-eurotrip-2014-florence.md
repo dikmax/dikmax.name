@@ -1,7 +1,7 @@
 ---
 title: "Eurotrip 2014: Флоренция"
 date: "2014-07-15T23:35:00+03:00"
-collection: "latest-travel"
+collection: "eurotrip-2014"
 published: true
 tags: "eurotrip, eurotrip-2014, италия, отпуск, путешествие, фотки"
 ---
