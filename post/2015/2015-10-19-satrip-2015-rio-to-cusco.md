@@ -235,9 +235,10 @@ tags: "satrip, satrip-2015, перу, отпуск, путешествие, фо
 SATrip 2015:
 [Начало](/post/satrip-2015-paris/),
 [Париж](/post/satrip-2015-paris/),
-[Рио-де-Жанейро, часть 1](/post/satrip-2015-rio-1/),
-[Рио-де-Жанейро, часть 2](/post/satrip-2015-rio-2/),
-[Рио-де-Жанейро, часть 3](/post/satrip-2015-rio-3/),
-**Из Рио в Куско**...
+[Рио-де-Жанейро, часть\ 1](/post/satrip-2015-rio-1/),
+[Рио-де-Жанейро, часть\ 2](/post/satrip-2015-rio-2/),
+[Рио-де-Жанейро, часть\ 3](/post/satrip-2015-rio-3/),
+**Из\ Рио в\ Куско**,
+[Дорога в\ Мачу Пикчу](/post/satrip-2015-road-to-machu-picchu/)...
 
 [machu-picchu]: http://www.machupicchu.gob.pe
