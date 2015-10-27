@@ -1039,10 +1039,14 @@ findTeaser = go []
        trim' str = dropWhileEnd isSpace $ dropWhile isSpace str
 
 removeIds :: String -> String
-removeIds html = TS.renderTags $ map process $ TS.parseTags html
+removeIds html = TS.renderTagsOptions options $ map process $ TS.parseTags html
   where
     process (TagOpen str attrs) = TagOpen str $ filter (\attr -> fst attr /= "id") attrs
     process x = x
+
+    options = TS.renderOptions
+      { TS.optMinimize = \x -> x == "br" || x == "img"
+      }
 
 --------------------------------------------------------------------------------
 -- | Sort pages chronologically. Uses the same method as 'dateField' for
