@@ -1009,7 +1009,7 @@ teaserField key readMoreKey snapshot =
                 Nothing -> fail $
                     "Hakyll.Web.Template.Context: no teaser defined for " ++
                     show (itemIdentifier item)
-                Just (t, _) -> return t
+                Just (t, _) -> return $ removeIds t
         readMore item = do
             body <- itemBody <$> loadSnapshot (itemIdentifier item) snapshot
             case findTeaser body of
@@ -1037,6 +1037,12 @@ findTeaser = go []
                 else Nothing
            | otherwise                           = go2 (x : acc) xs
        trim' str = dropWhileEnd isSpace $ dropWhile isSpace str
+
+removeIds :: String -> String
+removeIds html = TS.renderTags $ map process $ TS.parseTags html
+  where
+    process (TagOpen str attrs) = TagOpen str $ filter (\attr -> fst attr /= "id") attrs
+    process x = x
 
 --------------------------------------------------------------------------------
 -- | Sort pages chronologically. Uses the same method as 'dateField' for
