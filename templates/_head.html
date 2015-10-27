@@ -59,9 +59,10 @@
     <meta property="article:publisher" content="1201794820" />
     $for(meta.facebook.tags)$<meta property="article:tag" content="$body$" />
     $endfor$
-    $for(meta.facebook.images)$<meta property="og:image" itemprop="image" content="$body$" />
+    $for(meta.facebook.images)$<meta property="og:image" content="$body$" />
     <link rel="image_src" href="$body$"/>
     $endfor$
+    <meta itemprop="image" content="$meta.cover$" />
     $endif$
 
     $partial("templates/_google-analytics.html")$

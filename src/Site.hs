@@ -827,7 +827,6 @@ pageCtx (PageMetadata title url description keywords fType)=
     constField "meta.url" (escapeHtml $ "https://dikmax.name" ++ url) `mappend`
     constField "meta.description" (escapeHtml description) `mappend`
     constField "meta.keywords" (escapeHtml $ intercalate ", " keywords) `mappend`
-    constField "meta.dc.subject" (escapeHtml $ intercalate "; " keywords) `mappend`
     facebookFields fType `mappend`
     defaultContext
     where
@@ -838,7 +837,8 @@ pageCtx (PageMetadata title url description keywords fType)=
                 constField "meta.facebook.article" "" `mappend`
                 constField "meta.facebook.published" (formatTime defaultTimeLocale "%Y-%m-%dT%H:%M:%SZ" published) `mappend`
                 listField "meta.facebook.tags" defaultContext (mapM makeItem keywords') `mappend`
-                listField "meta.facebook.images" defaultContext (mapM makeItem images)
+                listField "meta.facebook.images" defaultContext (mapM makeItem images) `mappend`
+                constField "meta.cover" (if length images > 0 then head images else "")
         -- TODO Facebook profile
         facebookFields _ = constField "meta.facebook.nothing" ""
 
