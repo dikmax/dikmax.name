@@ -102,7 +102,12 @@ writeBlock (Para inline) = do
   s <- get
   put s { countBlocks = countBlocks s + 1 }
   inlines <- concatInlines inline
-  return [Element "p" [ ("id", T.pack $ "p-" ++ show (countBlocks s + 1))] inlines]
+  return $ if length inline == 1 && isImage (inline !! 0)
+    then inlines
+    else [Element "p" [ ("id", T.pack $ "p-" ++ show (countBlocks s + 1))] inlines]
+  where
+    isImage (Image _ _) = True
+    isImage _ = False
 writeBlock (CodeBlock (identifier, classes, others) code) = return 
   [ Element "pre" mapAttrs 
     [ Element "code" mapAttrs 
