@@ -3,7 +3,6 @@
 {-# LANGUAGE FlexibleContexts  #-}
 {-# LANGUAGE TupleSections     #-}
 import           Blaze.ByteString.Builder (toByteString)
-import           Control.Applicative ((<$>))
 import           Control.Exception
 import           Control.Monad (forM_, filterM, liftM, msum, foldM)
 import           Data.Char
@@ -11,7 +10,6 @@ import           Data.Function (on)
 import           Data.List (sortBy, intercalate, isPrefixOf, find, groupBy, dropWhileEnd)
 import qualified Data.Map as M
 import           Data.Maybe
-import           Data.Monoid (mempty, mappend, mconcat)
 import           Data.Ord (comparing)
 import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
@@ -19,6 +17,7 @@ import           Data.Time.Clock (UTCTime, getCurrentTime)
 import           Data.Time.Format
 import           Hakyll hiding (chronological, dateFieldWith, getItemUTC, getTags, paginateContext,
                     pandocCompiler, recentFirst, teaserField)
+import           Network.URI
 import           System.Directory
 import           System.FilePath (takeFileName)
 import           System.IO.Error
@@ -488,7 +487,14 @@ postsRules = do
 
 
 imagesMap :: Tag String -> Maybe String
-imagesMap (TagOpen "img" attrs) = snd <$> find (\attr -> fst attr == "src") attrs
+imagesMap (TagOpen "img" attrs) = addDomain $ snd <$> find (\attr -> fst attr == "src") attrs
+    where
+        addDomain (Just str) = fmap (\uri -> (uriToString id uri) "") $
+            addDomain' (parseURIReference str) (parseURIReference $ T.unpack mainSiteDomain)
+        addDomain Nothing = Nothing
+
+        addDomain' (Just relative) (Just base) = Just $ relative `relativeTo` base
+        addDomain' _ _ = Nothing
 imagesMap _ = Nothing
 
 --------------------------------------------------------------------------------

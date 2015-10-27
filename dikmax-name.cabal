@@ -18,6 +18,9 @@ Executable dikmax-name
   hs-source-dirs: src
   main-is: Site.hs
 
+  other-modules:
+    XmlHtmlWriter
+
   Build-depends:
     base >= 4 && < 5,
     blaze-builder >= 0.4 && < 0.5,
@@ -25,6 +28,7 @@ Executable dikmax-name
     filepath >= 1.4 && < 1.5,
     hakyll >= 4.7.0.0 && < 4.8,
     mtl >= 1 && < 2.3,
+    network-uri >= 2.6 && < 2.7,
     pandoc >= 1.15 && < 1.16,
     regex-compat >= 0.95.1,
     tagsoup >= 0.13.1 && < 0.14,
@@ -43,6 +47,9 @@ Executable dikmax-name
 Executable server
   hs-source-dirs: src
   main-is: Server.hs
+
+  other-modules:
+    FileServe
 
   Build-depends:
     attoparsec                >= 0.12  && < 0.13,

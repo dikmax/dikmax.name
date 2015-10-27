@@ -56,9 +56,8 @@
     $for(meta.facebook.tags)$<meta property="article:tag" content="$body$" />
     $endfor$
     $for(meta.facebook.images)$<meta property="og:image" content="$body$" />
-    <link rel="image_src" href="$body$"/>
+    <link rel="image_src" itemprop="image" href="$body$"/>
     $endfor$
-    <meta itemprop="image" content="https://dikmax.name$meta.cover$" />
     <meta itemprop="discussionUrl" content="$meta.url$#disqus_thread" />
     $endif$
 
