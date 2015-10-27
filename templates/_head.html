@@ -36,13 +36,18 @@
     <script src="/js/respond.min.js"></script>
     <![endif]-->
 
+    <meta name="keywords" content="$meta.keywords$" />
     <meta itemprop="keywords" name="keywords" content="$meta.keywords$" />
     <meta name="author" content="Maxim Dikun"/>
     <meta property="fb:admins" content="1201794820" />
     <meta property="og:site_name" content="[dikmax's blog]" />
-    <meta property="og:title" name="title" itemprop="name" content="$meta.title$" />
+    <meta property="og:title" content="$meta.title$" />
+    <meta name="title"content="$meta.title$" />
+    <meta itemprop="name" content="$meta.title$" />
     <meta property="og:url" content="$meta.url$" />
-    <meta property="og:description" name="description" itemprop="description" content="$meta.description$" />
+    <meta property="og:description" content="$meta.description$" />
+    <meta name="description" content="$meta.description$" />
+    <meta itemprop="description" content="$meta.description$" />
     <meta property="og:locale" content="ru_BY" />
     <meta property="fb:profile_id" content="1201794820" />
     $if(meta.facebook.nothing)$
@@ -56,7 +61,8 @@
     $for(meta.facebook.tags)$<meta property="article:tag" content="$body$" />
     $endfor$
     $for(meta.facebook.images)$<meta property="og:image" content="$body$" />
-    <link rel="image_src" itemprop="image" href="$body$"/>
+    <link rel="image_src" href="$body$"/>
+    <link itemprop="image" href="$body$"/>
     $endfor$
     <meta itemprop="discussionUrl" content="$meta.url$#disqus_thread" />
     $endif$
