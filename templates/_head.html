@@ -36,7 +36,7 @@
     <script src="/js/respond.min.js"></script>
     <![endif]-->
 
-    <meta name="keywords" content="$meta.keywords$" />
+    <meta itemprop="keywords" name="keywords" content="$meta.keywords$" />
     <meta name="author" content="Maxim Dikun"/>
     <meta property="fb:admins" content="1201794820" />
     <meta property="og:site_name" content="[dikmax's blog]" />
@@ -59,6 +59,7 @@
     <link rel="image_src" href="$body$"/>
     $endfor$
     <meta itemprop="image" content="https://dikmax.name$meta.cover$" />
+    <meta itemprop="discussionUrl" content="$meta.url$#disqus_thread" />
     $endif$
 
     $partial("templates/_google-analytics.html")$
