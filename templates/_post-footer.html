@@ -1,9 +1,10 @@
 <div class="panel-footer">
+    <meta itemprop="datePublished" content="$post-date$" />
     $if(tags)$
         $tags$ |
     $endif$
 
-    <i class="fa fa-calendar"></i> <span itemprop="datePublished" itemvalue="$post-date$" data-post-date="$post-date$">$date$</span>
+    <i class="fa fa-calendar"></i> <span data-post-date="$post-date$">$date$</span>
 
     $if(commentsCount)$
     | <i class="fa fa-comment"></i>
