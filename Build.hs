@@ -4,20 +4,27 @@ import Development.Shake
 import Development.Shake.Command
 import Development.Shake.FilePath
 import Development.Shake.Util
+import System.Directory (createDirectoryIfMissing)
 
 buildDir = "_build"
 tempDir = "_temp"
+hakyllDir = "_site"
+hakyllCacheDir = "_cache"
 
 highlightLanguages :: [String]
 highlightLanguages = ["bash", "css", "haskell", "javascript", "markdown", "sql", "xml", "dart"]
 
 main :: IO ()
-main = shakeArgs shakeOptions{shakeFiles="_build"} $ do
+main = shakeArgs shakeOptions{shakeFiles="_build", shakeThreads=0} $ do
     phony "clean" $ do
         putNormal $ "Cleaning files in " ++ buildDir
         removeFilesAfter buildDir ["//*"]
         putNormal $ "Cleaning files in " ++ tempDir
         removeFilesAfter tempDir ["//*"]
+        putNormal $ "Cleaning files in " ++ hakyllDir
+        removeFilesAfter hakyllDir ["//*"]
+        putNormal $ "Cleaning files in " ++ hakyllCacheDir
+        removeFilesAfter hakyllCacheDir ["//*"]
 
     phony "build" $ do
         -- Statics
@@ -48,6 +55,8 @@ main = shakeArgs shakeOptions{shakeFiles="_build"} $ do
             , buildDir </> "dart/script-map.dart.js"
             ]
 
+        need ["site"]
+
 
     -- Statics
     forM statics buildStatic
@@ -57,6 +66,8 @@ main = shakeArgs shakeOptions{shakeFiles="_build"} $ do
     buildStyles
     buildMap
     buildScripts
+
+    buildSite
 
     where
         statics =
@@ -157,3 +168,25 @@ buildScripts = do
                  need files
                  () <- cmd "dart2js" ("--out=" ++ out) "--minify" src
                  liftIO $ removeFiles "." [out -<.> "js.deps", out -<.> "js.map"]
+
+buildSite = do
+    phony "site" $ do
+        files <- getDirectoryFiles ""
+            [ "comments/*.html"
+            , "templates/*.html"
+            , "route-planner/index.html"
+            , "collections/*.txt"
+            , "index.md"
+            , "404.md"
+            , "about.md"
+            , "projects.md"
+            , "post//*"
+            , "dikmax-name"
+            ]
+        need files
+        () <- cmd "./dikmax-name build"
+        results <- getDirectoryFiles "" [hakyllDir <//> "*"]
+        forM_ results (\file -> do
+            let out = buildDir </> dropDirectory1 file
+            liftIO $ createDirectoryIfMissing True (takeDirectory out)
+            copyFileChanged file out)
