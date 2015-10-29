@@ -80,7 +80,7 @@ tags: "satrip, satrip-2015, перу, отпуск, путешествие, фо
 
 ![](/images/travel/2015-09-satrip/machu-picchu-2-inti-puntu-1.jpg "Inti Puntu и лестница")
 
-![](/images/travel/2015-09-satrip/machu-picchu-2-inti-puntu-1.jpg "Inti Puntu")
+![](/images/travel/2015-09-satrip/machu-picchu-2-inti-puntu-2.jpg "Inti Puntu")
 
 А\ тут и\ правда красиво, так\ бы сидел и\ любовался.
 
