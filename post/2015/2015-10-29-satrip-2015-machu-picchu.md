@@ -203,6 +203,7 @@ Montaña и\ Wayna Picchu. Первая\ --- это гора слева от\ г
 
 Продолжение следует...
 
+SATrip 2015:
 [Начало](/post/satrip-2015-paris/),
 [Париж](/post/satrip-2015-paris/),
 [Рио-де-Жанейро, часть\ 1](/post/satrip-2015-rio-1/),
