@@ -286,7 +286,7 @@ writeInline (Image inline target) = do
         [ Element "div" [("class", "figure-inner")]
           ( Element "img"
             [ ("src", linkToAbsolute (renderForRSS (writerOptions writerState)) (T.pack $ fst target) (siteDomain (writerOptions writerState)))
-            , ("title", T.pack $ fixImageTitle $ snd target)
+            -- , ("title", T.pack $ fixImageTitle $ snd target)
             , ("alt", T.pack $ fixImageTitle $ snd target)
             , ("class", "img-polaroid")
             ] []
@@ -381,7 +381,7 @@ writeRawInline (Image inline target) = do
     (if inline /= [] then "<p class=\"figure-description\">" `T.append` inlines `T.append` "</p>" else "")
     `T.append` "<img " `T.append`
     writeRawAttr ("", [], [ ("src", fst target)
-        , ("title", fixImageTitle $ snd target)
+        -- , ("title", fixImageTitle $ snd target)
         , ("alt", fixImageTitle $ snd target)
         , ("class", "img-polaroid")
         ]) `T.append` " />"
