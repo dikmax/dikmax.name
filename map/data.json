@@ -1155,7 +1155,8 @@
                 "lon": -72.545556,
                 "visits": [
                     {
-                        "date": "2015-09-03"
+                        "date": "2015-09-03",
+                        "link": "/post/satrip-2015-machu-picchu/"
                     }
                 ]
             }
