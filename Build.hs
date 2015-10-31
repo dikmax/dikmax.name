@@ -161,6 +161,12 @@ buildScripts = do
         need ("npm install highlight.js" : files)
         cmd (Cwd "js/highlight.js") "node" "tools/build.js" highlightLanguages
 
+    "dart/pubspec.lock" %> \_ -> do
+        need ["dart/pubspec.yaml"]
+        () <- cmd (Cwd "dart") "pub" "get"
+        files <- getDirectoryFiles "." ["dart/packages//*"]
+        need files
+
     buildDart "dart/script.dart.js" "dart/web/main.dart"
     buildDart "dart/script-route-planner.dart.js" "dart/web/route-planner.dart"
     buildDart "dart/script-map.dart.js" "dart/web/map.dart"
@@ -172,10 +178,11 @@ buildScripts = do
 
         buildDart res src =
             buildDir </> res %> \out -> do
-                 files <- getDirectoryFiles "." ["dart/lib//*.dart", "dart/packages//*.dart", "dart/web//*.dart"]
-                 need files
-                 () <- cmd "dart2js" ("--out=" ++ out) "--minify" src
-                 liftIO $ removeFiles "." [out -<.> "js.deps", out -<.> "js.map"]
+                need [src, "dart/pubspec.lock"]
+                () <- cmd "dart2js" ("--out=" ++ out) "--minify" src
+                -- deps <- readFileLines $ out -<.> "js.deps"
+                -- need $ map (drop 7) deps
+                removeFilesAfter "." [out -<.> "js.deps", out -<.> "js.map"]
 
 buildSite =
     phony "site" $ do
