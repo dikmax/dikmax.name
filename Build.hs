@@ -10,6 +10,8 @@ buildDir = "_build"
 tempDir = "_temp"
 hakyllDir = "_site"
 hakyllCacheDir = "_cache"
+nodeModulesDir = "node_modules"
+nodeModulesBinDir = nodeModulesDir </> ".bin"
 
 highlightLanguages :: [String]
 highlightLanguages = ["bash", "css", "haskell", "javascript", "markdown", "sql", "xml", "dart"]
@@ -57,6 +59,11 @@ main = shakeArgs shakeOptions{shakeFiles="_build", shakeThreads=0} $ do
 
         need ["site"]
 
+
+    -- npm packages
+    nodeModulesBinDir </> "lessc" %> \out -> do
+        need ["package.json"]
+        cmd "npm" "install"
 
     -- Statics
     forM_ statics buildStatic
@@ -107,8 +114,8 @@ buildStyles =
         let src = "less" </> dropDirectory1 (dropDirectory1 out -<.> "less")
         files <- getDirectoryFiles "." ["less//*"]
         need files
-        cmd "lessc" "--clean-css=advanced" "--include-path=less" src out
-
+        need [nodeModulesBinDir </> "lessc"]
+        cmd (nodeModulesBinDir </> "lessc") "--clean-css=advanced" "--include-path=less" src out
 
 
 -- Build map
