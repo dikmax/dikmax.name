@@ -29,39 +29,32 @@ main = shakeArgs shakeOptions{shakeFiles="_build", shakeThreads=0} $ do
         removeFilesAfter hakyllCacheDir ["//*"]
 
     phony "build" $ do
-        -- Statics
-        forM_ statics $ \pattern -> do
-            files <- getDirectoryFiles "." [pattern]
-            need [buildDir </> x | x <- files]
-
-        -- Demos
+        staticFiles <- getDirectoryFiles "." statics
         demosFiles <- getDirectoryFiles "." ["demos//*"]
-        need [buildDir </> x | x <- demosFiles, not $ ".git" `isPrefixOf` dropDirectory1 x]
-
-        -- Favicons
         faviconsFiles <- getDirectoryFiles "." ["favicons//*"]
-        need [buildDir </> dropDirectory1 x | x <- faviconsFiles]
+        need $ [buildDir </> x | x <- staticFiles]                                            -- Statics
 
-        -- Styles
-        need [buildDir </> "css/style.css", buildDir </> "css/print.css"]
+            ++ [buildDir </> x | x <- demosFiles, not $ ".git" `isPrefixOf` dropDirectory1 x] -- Demos
 
-        -- Map
-        need [buildDir </> "map/world.json"]
+            ++ [buildDir </> dropDirectory1 x | x <- faviconsFiles]                           -- Favicons
 
-        -- Scripts
-        need
-            [ buildDir </> "dart/s.js"
-            , buildDir </> "dart/smap.js"
-            , buildDir </> "dart/script.dart.js"
-            , buildDir </> "dart/script-route-planner.dart.js"
-            , buildDir </> "dart/script-map.dart.js"
-            ]
+            ++ [ buildDir </> "css/style.css"                                                 -- Styles
+               , buildDir </> "css/print.css"
 
-        need ["site"]
+               , buildDir </> "map/world.json"                                                -- Map
+
+               , buildDir </> "dart/s.js"                                                     -- Scripts
+               , buildDir </> "dart/smap.js"
+               , buildDir </> "dart/script.dart.js"
+               , buildDir </> "dart/script-route-planner.dart.js"
+               , buildDir </> "dart/script-map.dart.js"
+
+               , "site"
+               ]
 
 
     -- npm packages
-    nodeModulesBinDir </> "lessc" %> \out -> do
+    phony "npm install" $ do
         need ["package.json"]
         cmd "npm" "install"
 
@@ -109,13 +102,15 @@ buildFavicons =
 
 
 -- Build styles
-buildStyles =
+buildStyles = do
+    let lessc = nodeModulesBinDir </> "lessc"
+    lessc %> (\_ -> need ["npm install"])
+
     buildDir </> "css/*.css" %> \out -> do
         let src = "less" </> dropDirectory1 (dropDirectory1 out -<.> "less")
         files <- getDirectoryFiles "." ["less//*"]
-        need files
-        need [nodeModulesBinDir </> "lessc"]
-        cmd (nodeModulesBinDir </> "lessc") "--clean-css=advanced" "--include-path=less" src out
+        need (lessc : files)
+        cmd lessc "--clean-css=advanced" "--include-path=less" src out
 
 
 -- Build map
