@@ -53,6 +53,11 @@ main = shakeArgs shakeOptions{shakeFiles="_build", shakeThreads=0} $ do
                ]
 
 
+    -- haskell
+    ["dikmax-name", "server"] &%> \_ -> do
+        src <- getDirectoryFiles "." ["src//*.hs", "dikmax-name.cabal"]
+        cmd "stack" "install"
+
     -- npm packages
     phony "npm install" $ do
         need ["package.json"]
@@ -196,9 +201,8 @@ buildSite =
             , "about.md"
             , "projects.md"
             , "post//*"
-            , "dikmax-name"
             ]
-        need files
+        need ("dikmax-name" : files)
         () <- cmd "./dikmax-name build"
         results <- getDirectoryFiles "" [hakyllDir <//> "*"]
         forM_ results (\file -> do
