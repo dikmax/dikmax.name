@@ -36,7 +36,7 @@ main = shakeArgs shakeOptions{shakeFiles="_build", shakeThreads=0} $ do
 
     phony "build" $ do
         -- Test demos folder
-        demosExists <- doesDirectoryExist "demos"
+        demosExists <- doesFileExist "demos/.git"
         when (not demosExists) $ need ["init submodules"]
 
         staticFiles <- getDirectoryFiles "." statics
