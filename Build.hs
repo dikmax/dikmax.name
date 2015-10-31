@@ -28,13 +28,13 @@ main = shakeArgs shakeOptions{shakeFiles="_build", shakeThreads=0} $ do
 
     phony "build" $ do
         -- Statics
-        forM statics $ \pattern -> do
+        forM_ statics $ \pattern -> do
             files <- getDirectoryFiles "." [pattern]
             need [buildDir </> x | x <- files]
 
         -- Demos
         demosFiles <- getDirectoryFiles "." ["demos//*"]
-        need [buildDir </> x | x <- demosFiles, not $ ".git" `isPrefixOf` (dropDirectory1 x)]
+        need [buildDir </> x | x <- demosFiles, not $ ".git" `isPrefixOf` dropDirectory1 x]
 
         -- Favicons
         faviconsFiles <- getDirectoryFiles "." ["favicons//*"]
@@ -59,7 +59,7 @@ main = shakeArgs shakeOptions{shakeFiles="_build", shakeThreads=0} $ do
 
 
     -- Statics
-    forM statics buildStatic
+    forM_ statics buildStatic
     buildDemos
     buildFavicons
 
@@ -76,24 +76,24 @@ main = shakeArgs shakeOptions{shakeFiles="_build", shakeThreads=0} $ do
             , "robots.txt", "yandex-widget-manifest.json", "js/html5shiv.js", "map/data.json"
             ]
 
-buildStatic pattern = do
+buildStatic pattern =
     buildDir </> pattern %> \out -> do
         let src = dropDirectory1 out
         copyFileChanged src out
 
 
 
-buildDemos = do
+buildDemos =
     buildDir </> "demos//*" %> \out -> do
         let src = dropDirectory1 out
         when (p src) $ copyFileChanged src out
     where
-        p file = not $ ".git" `isPrefixOf` (dropDirectory1 file)
+        p file = not $ ".git" `isPrefixOf` dropDirectory1 file
 
 
 
 -- Copy favicons folder to root
-buildFavicons = do
+buildFavicons =
     buildDir </> "*" %> \out -> do
         let src = "favicons" </> dropDirectory1 out
         exists <- doesFileExist src
@@ -102,7 +102,7 @@ buildFavicons = do
 
 
 -- Build styles
-buildStyles = do
+buildStyles =
     buildDir </> "css/*.css" %> \out -> do
         let src = "less" </> dropDirectory1 (dropDirectory1 out -<.> "less")
         files <- getDirectoryFiles "." ["less//*"]
@@ -150,7 +150,7 @@ buildScripts = do
         content <- concatResources ["js/d3/d3.min.js", "js/polyhedron.js", "js/topojson/topojson.min.js"]
         writeFile' out content
 
-    "js/highlight.js/build/highlight.pack.js" %> \out -> do
+    "js/highlight.js/build/highlight.pack.js" %> \out ->
         cmd (Cwd "js/highlight.js") "node" "tools/build.js" highlightLanguages
 
     buildDart "dart/script.dart.js" "dart/web/main.dart"
@@ -159,7 +159,7 @@ buildScripts = do
 
     where
         concatResources resources = do
-            content <- mapM (\resource -> readFile' resource) resources
+            content <- mapM readFile' resources
             return $ concat content
 
         buildDart res src =
@@ -169,7 +169,7 @@ buildScripts = do
                  () <- cmd "dart2js" ("--out=" ++ out) "--minify" src
                  liftIO $ removeFiles "." [out -<.> "js.deps", out -<.> "js.map"]
 
-buildSite = do
+buildSite =
     phony "site" $ do
         files <- getDirectoryFiles ""
             [ "comments/*.html"
