@@ -6,7 +6,8 @@ dikmax-name.tar.lzma
 node_modules
 dist
 log/*.log
-server
+/server
+/dikmax-name
 /.idea
 /less/*.css
 /dart/pubspec.lock
