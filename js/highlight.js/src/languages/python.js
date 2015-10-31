@@ -5,7 +5,7 @@ Category: common
 
 function(hljs) {
   var PROMPT = {
-    className: 'prompt',  begin: /^(>>>|\.\.\.) /
+    className: 'meta',  begin: /^(>>>|\.\.\.) /
   };
   var STRING = {
     className: 'string',
@@ -58,7 +58,7 @@ function(hljs) {
       keyword:
         'and elif is global as in if from raise for except finally print import pass return ' +
         'exec else break not with class assert yield try while continue del or def lambda ' +
-        'nonlocal|10 None True False',
+        'async await nonlocal|10 None True False',
       built_in:
         'Ellipsis NotImplemented'
     },
@@ -78,8 +78,8 @@ function(hljs) {
         contains: [hljs.UNDERSCORE_TITLE_MODE, PARAMS]
       },
       {
-        className: 'decorator',
-        begin: /@/, end: /$/
+        className: 'meta',
+        begin: /^[\t ]*@/, end: /$/
       },
       {
         begin: /\b(print|exec)\(/ // don’t highlight keywords-turned-functions in Python 3

@@ -16,7 +16,6 @@ function(hljs) {
     begin: '@[A-Za-z]+'
   };
   var IRB_OBJECT = {
-    className: 'value',
     begin: '#<', end: '>'
   };
   var COMMENT_MODES = [
@@ -66,7 +65,7 @@ function(hljs) {
   };
   var PARAMS = {
     className: 'params',
-    begin: '\\(', end: '\\)',
+    begin: '\\(', end: '\\)', endsParent: true,
     keywords: RUBY_KEYWORDS
   };
 
@@ -80,10 +79,8 @@ function(hljs) {
       contains: [
         hljs.inherit(hljs.TITLE_MODE, {begin: '[A-Za-z_]\\w*(::\\w+)*(\\?|\\!)?'}),
         {
-          className: 'inheritance',
           begin: '<\\s*',
           contains: [{
-            className: 'parent',
             begin: '(' + hljs.IDENT_RE + '::)?' + hljs.IDENT_RE
           }]
         }
@@ -91,17 +88,11 @@ function(hljs) {
     },
     {
       className: 'function',
-      beginKeywords: 'def', end: ' |$|;',
-      relevance: 0,
+      beginKeywords: 'def', end: '$|;',
       contains: [
         hljs.inherit(hljs.TITLE_MODE, {begin: RUBY_METHOD_RE}),
         PARAMS
       ].concat(COMMENT_MODES)
-    },
-    {
-      className: 'constant',
-      begin: '(::)?(\\b[A-Z]\\w*(::)?)+',
-      relevance: 0
     },
     {
       className: 'symbol',
@@ -120,8 +111,7 @@ function(hljs) {
       relevance: 0
     },
     {
-      className: 'variable',
-      begin: '(\\$\\W)|((\\$|\\@\\@?)(\\w+))'
+      begin: '(\\$\\W)|((\\$|\\@\\@?)(\\w+))' // variables
     },
     { // regexp container
       begin: '(' + hljs.RE_STARTERS_RE + ')\\s*',
@@ -154,13 +144,12 @@ function(hljs) {
   var IRB_DEFAULT = [
     {
       begin: /^\s*=>/,
-      className: 'status',
       starts: {
         end: '$', contains: RUBY_DEFAULT_CONTAINS
       }
     },
     {
-      className: 'prompt',
+      className: 'meta',
       begin: '^('+SIMPLE_PROMPT+"|"+DEFAULT_PROMPT+'|'+RVM_PROMPT+')',
       starts: {
         end: '$', contains: RUBY_DEFAULT_CONTAINS
@@ -171,6 +160,7 @@ function(hljs) {
   return {
     aliases: ['rb', 'gemspec', 'podspec', 'thor', 'irb'],
     keywords: RUBY_KEYWORDS,
+    illegal: /\/\*/,
     contains: COMMENT_MODES.concat(IRB_DEFAULT).concat(RUBY_DEFAULT_CONTAINS)
   };
 }

@@ -34,25 +34,16 @@ function(hljs) {
     // contains defined later
   };
   var VAR = {
-    className: 'variable',
     variants: [
       {begin: /\$\d/},
       {begin: /[\$%@](\^\w\b|#\w+(::\w+)*|{\w+}|\w+(::\w*)*)/},
       {begin: /[\$%@][^\s\w{]/, relevance: 0}
     ]
   };
-  var COMMENT = hljs.COMMENT(
-    '^(__END__|__DATA__)',
-    '\\n$',
-    {
-      relevance: 5
-    }
-  );
   var STRING_CONTAINS = [hljs.BACKSLASH_ESCAPE, SUBST, VAR];
   var PERL_DEFAULT_CONTAINS = [
     VAR,
     hljs.HASH_COMMENT_MODE,
-    COMMENT,
     hljs.COMMENT(
       '^\\=\\w',
       '\\=cut',
@@ -123,7 +114,6 @@ function(hljs) {
       relevance: 0,
       contains: [
         hljs.HASH_COMMENT_MODE,
-        COMMENT,
         {
           className: 'regexp',
           begin: '(s|tr|y)/(\\\\.|[^/])*/(\\\\.|[^/])*/[a-z]*',
@@ -138,14 +128,26 @@ function(hljs) {
       ]
     },
     {
-      className: 'sub',
-      beginKeywords: 'sub', end: '(\\s*\\(.*?\\))?[;{]',
-      relevance: 5
+      className: 'function',
+      beginKeywords: 'sub', end: '(\\s*\\(.*?\\))?[;{]', excludeEnd: true,
+      relevance: 5,
+      contains: [hljs.TITLE_MODE]
     },
     {
-      className: 'operator',
       begin: '-\\w\\b',
       relevance: 0
+    },
+    {
+      begin: "^__DATA__$",
+      end: "^__END__$",
+      subLanguage: 'mojolicious',
+      contains: [
+        {
+            begin: "^@@.*",
+            end: "$",
+            className: "comment"
+        }
+      ]
     }
   ];
   SUBST.contains = PERL_DEFAULT_CONTAINS;

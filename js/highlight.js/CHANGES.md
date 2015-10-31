@@ -1,3 +1,129 @@
+## MASTER (UNRELEASED)
+
+Notable fixes and improvements to existing languages:
+
+- ECMAScript 6 modules import now do not require closing semicolon
+- ECMAScript 6 classes constructors now highlighted
+- Template string support for Typescript, as for ECMAScript 6
+- Scala case classes params highlight fixed
+
+Other notable changes:
+
+- WebWorkers support added bu [Jan Kühle][]
+- We now have tests for both browser builds
+- License added to not minified browser build
+
+[Jan Kühle]: https://github.com/frigus02
+
+## Version 8.9.1
+
+Some last-minute changes reverted due to strange bug with minified browser build:
+
+- Scala case classes params highlight fixed
+- ECMAScript 6 modules import now do not require closing semicolon
+- ECMAScript 6 classes constructors now highlighted
+- Template string support for Typescript, as for ECMAScript 6
+- License added to not minified browser build
+
+## Version 8.9.0
+
+New languages:
+
+- *crmsh* by [Kristoffer Gronlund][]
+- *SQF* by [Søren Enevoldsen][]
+
+Notable fixes and improvements to existing languages:
+
+- Added `abstract` and `namespace` keywords to TypeScript by [Daniel Rosenwasser][]
+- Added `label` support to Dockerfile by [Ladislav Prskavec][]
+- Crystal highlighting improved by [Tsuyusato Kitsune][]
+- Missing Swift keywords added by [Nate Cook][]
+- Improve detection of C block comments
+- ~~Scala case classes params highlight fixed~~
+- ~~ECMAScript 6 modules import now do not require closing semicolon~~
+- ~~ECMAScript 6 classes constructors now highlighted~~
+- ~~Template string support for Typescript, as for ECMAScript 6~~
+
+Other notable changes:
+
+- ~~License added to not minified browser build~~
+
+[Kristoffer Gronlund]: https://github.com/krig
+[Søren Enevoldsen]: https://github.com/senevoldsen90
+[Daniel Rosenwasser]: https://github.com/DanielRosenwasser
+[Ladislav Prskavec]: https://github.com/abtris
+[Tsuyusato Kitsune]: https://github.com/MakeNowJust
+[Nate Cook]: https://github.com/natecook1000
+
+## Version 8.8.0
+
+New languages:
+
+- *Golo* by [Philippe Charrière][]
+- *GAMS* by [Stefan Bechert][]
+- *IRPF90* by [Anthony Scemama][]
+- *Access logs* by [Oleg Efimov][]
+- *Crystal* by [Tsuyusato Kitsune][]
+
+Notable fixes and improvements to existing languages:
+
+- JavaScript highlighting no longer fails with ES6 default parameters
+- Added keywords `async` and `await` to Python
+- PHP heredoc support improved
+- Allow preprocessor directives within C++ functions
+
+Other notable changes:
+
+- Change versions to X.Y.Z SemVer-compatible format
+- Added ability to build all targets at once
+
+[Philippe Charrière]: https://github.com/k33g
+[Stefan Bechert]: https://github.com/b-pos465
+[Anthony Scemama]: https://github.com/scemama
+[Oleg Efimov]: https://github.com/Sannis
+[Tsuyusato Kitsune]: https://github.com/MakeNowJust
+
+## Version 8.7
+
+New languages:
+
+- *Zephir* by [Oleg Efimov][]
+- *Elm* by [Janis Voigtländer][]
+- *XQuery* by [Dirk Kirsten][]
+- *Mojolicious* by [Dotan Dimet][]
+- *AutoIt* by Manh Tuan from [J2TeaM][]
+- *Toml* (ini extension) by [Guillaume Gomez][]
+
+New Styles:
+
+- *Hopscotch* by [Jan T. Sott][]
+- *Grayscale* by [MY Sun][]
+
+Notable fixes and improvements to existing languages:
+
+- Fix encoding of images when copied over in certain builds
+- Fix incorrect highlighting of the word "bug" in comments
+- Treat decorators different from matrix multiplication in Python
+- Fix traits inheritance highlighting in Rust
+- Fix incorrect document
+- Oracle keywords added to SQL language definition by [Vadimtro][]
+- Postgres keywords added to SQL language definition by [Benjamin Auder][]
+- Fix registers in x86asm being highlighted as a hex number
+- Fix highlighting for numbers with a leading decimal point
+- Correctly highlight numbers and strings inside of C/C++ macros
+- C/C++ functions now support pointer, reference, and move returns
+
+[Oleg Efimov]: https://github.com/Sannis
+[Guillaume Gomez]: https://github.com/GuillaumeGomez
+[Janis Voigtländer]: https://github.com/jvoigtlaender
+[Jan T. Sott]: https://github.com/idleberg
+[Dirk Kirsten]: https://github.com/dirkk
+[MY Sun]: https://github.com/simonmysun
+[Vadimtro]: https://github.com/Vadimtro
+[Benjamin Auder]: https://github.com/ghost
+[Dotan Dimet]: https://github.com/dotandimet
+[J2TeaM]: https://github.com/J2TeaM
+
 ## Version 8.6
 
 New languages:

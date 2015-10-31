@@ -36,17 +36,23 @@ function(hljs) {
   return {
     aliases: ['jsp'],
     keywords: KEYWORDS,
-    illegal: /<\//,
+    illegal: /<\/|#/,
     contains: [
       hljs.COMMENT(
         '/\\*\\*',
         '\\*/',
         {
           relevance : 0,
-          contains : [{
-            className : 'doctag',
-            begin : '@[A-Za-z]+'
-          }]
+          contains : [
+            {
+              // eat up @'s in emails to prevent them to be recognized as doctags
+              begin: /\w+@/, relevance: 0
+            },
+            {
+              className : 'doctag',
+              begin : '@[A-Za-z]+'
+            }
+          ]
         }
       ),
       hljs.C_LINE_COMMENT_MODE,
@@ -98,7 +104,7 @@ function(hljs) {
       },
       JAVA_NUMBER_MODE,
       {
-        className: 'annotation', begin: '@[A-Za-z]+'
+        className: 'meta', begin: '@[A-Za-z]+'
       }
     ]
   };

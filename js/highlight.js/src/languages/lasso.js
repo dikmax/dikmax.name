@@ -10,12 +10,12 @@ function(hljs) {
   var LASSO_CLOSE_RE = '\\]|\\?>';
   var LASSO_KEYWORDS = {
     literal:
-      'true false none minimal full all void and or not ' +
+      'true false none minimal full all void ' +
       'bw nbw ew new cn ncn lt lte gt gte eq neq rx nrx ft',
     built_in:
       'array date decimal duration integer map pair string tag xml null ' +
       'boolean bytes keyword list locale queue set stack staticarray ' +
-      'local var variable global data self inherited',
+      'local var variable global data self inherited currentcapture givenblock',
     keyword:
       'error_code error_msg error_pop error_push error_reset cache ' +
       'database_names database_schemanames database_tablenames define_tag ' +
@@ -34,7 +34,7 @@ function(hljs) {
       'frozen group handle_failure import in into join let match max ' +
       'min on order parent protected provide public require returnhome ' +
       'skip split_thread sum take thread to trait type where with ' +
-      'yield yieldhome'
+      'yield yieldhome and or not'
   };
   var HTML_COMMENT = hljs.COMMENT(
     '<!--',
@@ -44,21 +44,20 @@ function(hljs) {
     }
   );
   var LASSO_NOPROCESS = {
-    className: 'preprocessor',
+    className: 'meta',
     begin: '\\[noprocess\\]',
     starts: {
-      className: 'markup',
       end: '\\[/noprocess\\]',
       returnEnd: true,
       contains: [HTML_COMMENT]
     }
   };
   var LASSO_START = {
-    className: 'preprocessor',
+    className: 'meta',
     begin: '\\[/noprocess|' + LASSO_ANGLE_RE
   };
   var LASSO_DATAMEMBER = {
-    className: 'variable',
+    className: 'symbol',
     begin: '\'' + LASSO_IDENT_RE + '\''
   };
   var LASSO_CODE = [
@@ -68,15 +67,14 @@ function(hljs) {
     ),
     hljs.C_LINE_COMMENT_MODE,
     hljs.C_BLOCK_COMMENT_MODE,
-    hljs.inherit(hljs.C_NUMBER_MODE, {begin: hljs.C_NUMBER_RE + '|(-?infinity|nan)\\b'}),
+    hljs.inherit(hljs.C_NUMBER_MODE, {begin: hljs.C_NUMBER_RE + '|(infinity|nan)\\b'}),
     hljs.inherit(hljs.APOS_STRING_MODE, {illegal: null}),
     hljs.inherit(hljs.QUOTE_STRING_MODE, {illegal: null}),
     {
       className: 'string',
       begin: '`', end: '`'
     },
-    {
-      className: 'variable',
+    { // variables
       variants: [
         {
           begin: '[#$]' + LASSO_IDENT_RE
@@ -88,15 +86,15 @@ function(hljs) {
       ]
     },
     {
-      className: 'tag',
+      className: 'type',
       begin: '::\\s*', end: LASSO_IDENT_RE,
       illegal: '\\W'
     },
     {
-      className: 'attribute',
+      className: 'attr',
       variants: [
         {
-          begin: '-' + hljs.UNDERSCORE_IDENT_RE,
+          begin: '-(?!infinity)' + hljs.UNDERSCORE_IDENT_RE,
           relevance: 0
         },
         {
@@ -105,21 +103,7 @@ function(hljs) {
       ]
     },
     {
-      className: 'subst',
-      variants: [
-        {
-          begin: '->\\s*',
-          contains: [LASSO_DATAMEMBER]
-        },
-        {
-          begin: ':=|/(?!\\w)=?|[-+*%=<>&|!?\\\\]+',
-          relevance: 0
-        }
-      ]
-    },
-    {
-      className: 'built_in',
-      begin: '\\.\\.?\\s*',
+      begin: /(->|\.\.?)\s*/,
       relevance: 0,
       contains: [LASSO_DATAMEMBER]
     },
@@ -139,11 +123,10 @@ function(hljs) {
     keywords: LASSO_KEYWORDS,
     contains: [
       {
-        className: 'preprocessor',
+        className: 'meta',
         begin: LASSO_CLOSE_RE,
         relevance: 0,
-        starts: {
-          className: 'markup',
+        starts: { // markup
           end: '\\[|' + LASSO_ANGLE_RE,
           returnEnd: true,
           relevance: 0,
@@ -153,7 +136,7 @@ function(hljs) {
       LASSO_NOPROCESS,
       LASSO_START,
       {
-        className: 'preprocessor',
+        className: 'meta',
         begin: '\\[no_square_brackets',
         starts: {
           end: '\\[/no_square_brackets\\]', // not implemented in the language
@@ -161,11 +144,10 @@ function(hljs) {
           keywords: LASSO_KEYWORDS,
           contains: [
             {
-              className: 'preprocessor',
+              className: 'meta',
               begin: LASSO_CLOSE_RE,
               relevance: 0,
               starts: {
-                className: 'markup',
                 end: '\\[noprocess\\]|' + LASSO_ANGLE_RE,
                 returnEnd: true,
                 contains: [HTML_COMMENT]
@@ -177,12 +159,12 @@ function(hljs) {
         }
       },
       {
-        className: 'preprocessor',
+        className: 'meta',
         begin: '\\[',
         relevance: 0
       },
       {
-        className: 'shebang',
+        className: 'meta',
         begin: '^#!.+lasso9\\b',
         relevance: 10
       }

@@ -41,7 +41,7 @@ function(hljs) {
       'true false ANY ARGS CPU_CORES C_NULL DL_LOAD_PATH DevNull ENDIAN_BOM ENV I|0 Inf Inf16 Inf32 ' +
       'InsertionSort JULIA_HOME LOAD_PATH MS_ASYNC MS_INVALIDATE MS_SYNC MergeSort NaN NaN16 NaN32 OS_NAME QuickSort ' +
       'RTLD_DEEPBIND RTLD_FIRST RTLD_GLOBAL RTLD_LAZY RTLD_LOCAL RTLD_NODELETE RTLD_NOLOAD RTLD_NOW RoundDown ' +
-      'RoundFromZero RoundNearest RoundToZero RoundUp STDERR STDIN STDOUT VERSION WORD_SIZE catalan cglobal e eu ' +
+      'RoundFromZero RoundNearest RoundToZero RoundUp STDERR STDIN STDOUT VERSION WORD_SIZE catalan cglobal e|0 eu|0 ' +
       'eulergamma golden im nothing pi γ π φ',
 
     // # built_in generator:
@@ -74,24 +74,24 @@ function(hljs) {
   };
 
   // ref: http://julia.readthedocs.org/en/latest/manual/variables/#allowed-variable-names
-  var VARIABLE_NAME_RE = "[A-Za-z_\\u00A1-\\uFFFF][A-Za-z_0-9\\u00A1-\\uFFFF]*";
+  var VARIABLE_NAME_RE = '[A-Za-z_\\u00A1-\\uFFFF][A-Za-z_0-9\\u00A1-\\uFFFF]*';
 
   // placeholder for recursive self-reference
   var DEFAULT = { lexemes: VARIABLE_NAME_RE, keywords: KEYWORDS };
 
   var TYPE_ANNOTATION = {
-    className: "type-annotation",
+    className: 'type',
     begin: /::/
   };
 
   var SUBTYPE = {
-    className: "subtype",
+    className: 'type',
     begin: /<:/
   };
 
   // ref: http://julia.readthedocs.org/en/latest/manual/integers-and-floating-point-numbers/
   var NUMBER = {
-    className: "number",
+    className: 'number',
     // supported numeric literals:
     //  * binary literal (e.g. 0x10)
     //  * octal literal (e.g. 0o76543210)
@@ -104,7 +104,7 @@ function(hljs) {
   };
 
   var CHAR = {
-    className: "char",
+    className: 'string',
     begin: /'(.|\\[xXuU][a-zA-Z0-9]+)'/
   };
 
@@ -116,12 +116,12 @@ function(hljs) {
 
   var INTERPOLATED_VARIABLE = {
     className: 'variable',
-    begin: "\\$" + VARIABLE_NAME_RE
+    begin: '\\$' + VARIABLE_NAME_RE
   };
 
   // TODO: neatly escape normal code in string literal
   var STRING = {
-    className: "string",
+    className: 'string',
     contains: [hljs.BACKSLASH_ESCAPE, INTERPOLATION, INTERPOLATED_VARIABLE],
     variants: [
       { begin: /\w*"/, end: /"\w*/ },
@@ -130,20 +130,20 @@ function(hljs) {
   };
 
   var COMMAND = {
-    className: "string",
+    className: 'string',
     contains: [hljs.BACKSLASH_ESCAPE, INTERPOLATION, INTERPOLATED_VARIABLE],
     begin: '`', end: '`'
   };
 
   var MACROCALL = {
-    className: "macrocall",
-    begin: "@" + VARIABLE_NAME_RE
+    className: 'meta',
+    begin: '@' + VARIABLE_NAME_RE
   };
 
   var COMMENT = {
-    className: "comment",
+    className: 'comment',
     variants: [
-      { begin: "#=", end: "=#", relevance: 10 },
+      { begin: '#=', end: '=#', relevance: 10 },
       { begin: '#', end: '$' }
     ]
   };

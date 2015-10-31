@@ -1,25 +1,24 @@
 'use strict';
 
-var _       = require('lodash');
-var del     = require('del');
-var gear    = require('gear');
-var path    = require('path');
-var fs      = require('fs');
-var utility = require('./utility');
+var _        = require('lodash');
+var del      = require('del');
+var gear     = require('gear');
+var path     = require('path');
+var utility  = require('./utility');
 
-var parseHeader   = utility.parseHeader;
-var getStyleNames = utility.getStyleNames;
-var tasks         = require('gear-lib');
+var parseHeader = utility.parseHeader;
+var tasks       = require('gear-lib');
 
 tasks.clean = function(directories, blobs, done) {
   directories = _.isString(directories) ? [directories] : directories;
 
-  del(directories, function(err) {
-    return done(err, blobs);
-  });
+  return del(directories).then(() => done(null, blobs));
 };
 tasks.clean.type = 'collect';
 
+// Depending on the languages required for the current language being
+// processed, this task reorders it's dependencies first then include the
+// language.
 tasks.reorderDeps = function(options, blobs, done) {
   var buffer       = {},
       newBlobOrder = [];
@@ -27,7 +26,7 @@ tasks.reorderDeps = function(options, blobs, done) {
   _.each(blobs, function(blob) {
     var basename = path.basename(blob.name),
         fileInfo = parseHeader(blob.result),
-        extra = {blob: blob, processed: false};
+        extra = { blob: blob, processed: false };
 
     buffer[basename] = _.merge(extra, fileInfo || {});
   });
@@ -70,16 +69,15 @@ tasks.template = function(template, blob, done) {
   return done(null, new gear.Blob(content, blob));
 };
 
-tasks.templateAll = function(template, blobs, done) {
-  var names, content;
+tasks.templateAll = function(options, blobs, done) {
+  return options.callback(blobs)
+    .then(function(data) {
+      var template = options.template || data.template,
+          content  = _.template(template)(data);
 
-  names = _.map(blobs, function(blob) {
-    return path.basename(blob.name, '.js');
-  });
-
-  content = _.template(template)({ names: names });
-
-  return done(null, [new blobs[0].constructor(content, blobs)]);
+      return done(null, [new gear.Blob(content)]);
+    })
+    .catch(done);
 };
 tasks.templateAll.type = 'collect';
 
@@ -91,9 +89,11 @@ tasks.rename = function(options, blob, done) {
 
   name = name.replace(ext, options.extname);
 
-  return done(null, new gear.Blob(blob.result, {name: name}));
+  return done(null, new gear.Blob(blob.result, { name: name }));
 };
 
+// Adds the contributors from `AUTHORS.en.txt` onto the `package.json` file
+// and moves the result into the `build` directory.
 tasks.buildPackage = function(json, blob, done) {
   var result,
       lines = blob.result.split(/\r?\n/),
@@ -115,6 +115,10 @@ tasks.buildPackage = function(json, blob, done) {
   return done(null, new gear.Blob(result, blob));
 };
 
+// Mainly for replacing the keys of `utility.REPLACES` for it's values while
+// skipping over strings, regular expressions, or comments. However, this is
+// pretty generic so long as you use the `utility.replace` function, you can
+// replace a regular expression with a string.
 tasks.replaceSkippingStrings = function(params, blob, done) {
   var content = blob.result,
       length  = content.length,
@@ -141,7 +145,8 @@ tasks.replaceSkippingStrings = function(params, blob, done) {
       // We found a starter sequence: either a `//` or a "quote"
       // In the case of `//` our terminator is the end of line.
       // Otherwise it's either a matching quote or an escape symbol.
-      terminator = match[0] !== '//' ? new RegExp('[' + match[0] + '\\\\]') : /$/m;
+      terminator = match[0] !== '//' ? new RegExp('[' + match[0] + '\\\\]')
+                                     : /$/m;
       start      = offset;
       offset    += 1;
 
@@ -199,34 +204,26 @@ tasks.readSnippet = function(options, blob, done) {
       snippetName = path.join('test', 'detect', name, 'default.txt');
 
   function onRead(error, blob) {
-    if (error !== null) return done(null, null); // ignore missing snippets
-    var meta = {name: name + '.js', fileInfo: fileInfo};
-    blob = new gear.Blob(blob.result, meta);
-    return done(error, blob);
+    if(error) return done(error); // ignore missing snippets
+
+    var meta = { name: name + '.js', fileInfo: fileInfo };
+
+    return done(null, new gear.Blob(blob.result, meta));
   }
 
   gear.Blob.readFile(snippetName, 'utf8', onRead, false);
 };
 
-tasks.templateDemo = function(options, blobs, done) {
-  var name = path.join('demo', 'index.html');
+tasks.insertLicenseTag = function(options, blob, done) {
+  var hljsVersion = require('../package').version,
+      licenseTag  = '/*! highlight.js v' + hljsVersion + ' | ' +
+                    'BSD3 License | git.io/hljslicense */\n';
 
-  fs.readFile(name, function(err, template) {
-    if(err) return done(err, null);
-
-    getStyleNames(function(err, styles) {
-      var content = _.template(template)({
-                      path: path,
-                      blobs: _.compact(blobs),
-                      styles: styles
-                    });
-
-      return done(err, [new gear.Blob(content)]);
-    });
-  });
+  return done(null, new gear.Blob(licenseTag + blob.result, blob));
 };
-tasks.templateDemo.type = 'collect';
 
+// Packages up included languages into the core `highlight.js` and moves the
+// result into the `build` directory.
 tasks.packageFiles = function(options, blobs, done) {
   var content,
       coreFile  = _.head(blobs),

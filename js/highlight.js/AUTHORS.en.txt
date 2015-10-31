@@ -59,7 +59,7 @@ Contributors:
 - Joe Cheng <joe@rstudio.org>
 - Angel G. Olloqui <angelgarcia.mail@gmail.com>
 - Jason Tate <adminz@web-cms-designs.com>
-- Sergey Tikhomirov <me@stikhomirov.com>
+- Sergey Tikhomirov <sergey@tikhomirov.io>
 - Marc Fornos <marc.fornos@gmail.com>
 - Yoshihide Jimbo <yjimbo@gmail.com>
 - Casey Duncan <casey.duncan@gmail.com>
@@ -165,7 +165,6 @@ Contributors:
 - Sergey Mashkov <cy6erGn0m@gmail.com>
 - Raivo Laanemets <raivo@infdot.com>
 - Kenneth Fuglsang <kfuglsang@gmail.com>
-- Raivo Laanemets <raivo@infdot.com>
 - David Anson <david@dlaa.me>
 - Louis Barranqueiro <louis.barranqueiro@gmail.com>
 - Tim Schumacher <tim@datenknoten.me>
@@ -173,3 +172,22 @@ Contributors:
 - Dan Panzarella <alsoelp@gmail.com>
 - Bruno Dias <bruno.r.dias@gmail.com>
 - Jay Strybis <jay.strybis@gmail.com>
+- Guillaume Gomez <guillaume1.gomez@gmail.com>
+- Janis Voigtländer <janis.voigtlaender@gmail.com>
+- Dirk Kirsten <dk@basex.org>
+- MY Sun <simonmysun@gmail.com>
+- Vadimtro <vadimtro@yahoo.com>
+- Benjamin Auder <benjamin.auder@gmail.com>
+- Dotan Dimet <dotan@corky.net>
+- Manh Tuan <junookyo@gmail.com>
+- Philippe Charrière <ph.charriere@gmail.com>
+- Stefan Bechert <stefan.bechert@gmx.net>
+- Samuel Reed <sam@bitmex.com>
+- Yury Selivanov <yselivanov@gmail.com>
+- Tsuyusato Kitsune <make.just.on@gmail.com>
+- Mick MacCallum <micksmaccallum@gmail.com>
+- Kristoffer Gronlund <kgronlund@suse.com>
+- Søren Enevoldsen <senevoldsen90@gmail.com>
+- Daniel Rosenwasser <DanielRosenwasser@users.noreply.github.com>
+- Ladislav Prskavec <ladislav@prskavec.net>
+- Jan Kühle <jkuehle90@gmail.com>
