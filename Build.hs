@@ -152,7 +152,13 @@ buildScripts = do
         content <- concatResources ["js/d3/d3.min.js", "js/polyhedron.js", "js/topojson/topojson.min.js"]
         writeFile' out content
 
-    "js/highlight.js/build/highlight.pack.js" %> \out ->
+    phony "npm install highlight.js" $ do
+        need ["js/highlight.js/package.json"]
+        cmd (Cwd "js/highlight.js") "npm" "install"
+
+    "js/highlight.js/build/highlight.pack.js" %> \out -> do
+        files <- getDirectoryFiles "." ["js/highlight.js/src//*.js", "js/highlight.js/tools//*.js"]
+        need ("npm install highlight.js" : files)
         cmd (Cwd "js/highlight.js") "node" "tools/build.js" highlightLanguages
 
     buildDart "dart/script.dart.js" "dart/web/main.dart"
