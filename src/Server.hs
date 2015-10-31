@@ -23,7 +23,7 @@ site =
     dir "js" (serveDirectory "js") <|>
 #endif
 
-    serveDirectory "_site" <|>
+    serveDirectory "_result" <|>
     notFoundHandler
 
 

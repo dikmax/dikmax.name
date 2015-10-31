@@ -6,7 +6,7 @@ import Development.Shake.FilePath
 import Development.Shake.Util
 import System.Directory (createDirectoryIfMissing)
 
-buildDir = "_build"
+buildDir = "_result"
 tempDir = "_temp"
 hakyllDir = "_site"
 hakyllCacheDir = "_cache"
@@ -19,6 +19,8 @@ highlightLanguages = ["bash", "css", "haskell", "javascript", "markdown", "sql",
 main :: IO ()
 main = shakeArgs shakeOptions{shakeFiles="_build", shakeThreads=0} $ do
     phony "clean" $ do
+        putNormal $ "Cleaning files in _build"
+        removeFilesAfter "_build" ["//*"]
         putNormal $ "Cleaning files in " ++ buildDir
         removeFilesAfter buildDir ["//*"]
         putNormal $ "Cleaning files in " ++ tempDir
@@ -28,7 +30,15 @@ main = shakeArgs shakeOptions{shakeFiles="_build", shakeThreads=0} $ do
         putNormal $ "Cleaning files in " ++ hakyllCacheDir
         removeFilesAfter hakyllCacheDir ["//*"]
 
+    phony "init submodules" $ do
+        () <- cmd "git" "submodule" "init"
+        cmd "git" "submodule" "update"
+
     phony "build" $ do
+        -- Test demos folder
+        demosExists <- doesDirectoryExist "demos"
+        when (not demosExists) $ need ["init submodules"]
+
         staticFiles <- getDirectoryFiles "." statics
         demosFiles <- getDirectoryFiles "." ["demos//*"]
         faviconsFiles <- getDirectoryFiles "." ["favicons//*"]
@@ -178,6 +188,7 @@ buildScripts = do
 
     where
         concatResources resources = do
+            need resources
             content <- mapM readFile' resources
             return $ concat content
 
@@ -209,3 +220,4 @@ buildSite =
             let out = buildDir </> dropDirectory1 file
             liftIO $ createDirectoryIfMissing True (takeDirectory out)
             copyFileChanged file out)
+        putNormal $ "Hakyll build completed"
