@@ -1,15 +1,20 @@
+{-# LANGUAGE PackageImports #-}
 import Control.Monad
+import "cryptohash" Crypto.Hash
 import Data.List
+import qualified Data.ByteString.Lazy as BS
 import Development.Shake
 import Development.Shake.Command
 import Development.Shake.FilePath
 import Development.Shake.Util
 import System.Directory (createDirectoryIfMissing)
+import qualified System.Directory as D
 
 buildDir = "_result"
 tempDir = "_temp"
 hakyllDir = "_site"
 hakyllCacheDir = "_cache"
+compressCacheDir = "_compress_cache"
 nodeModulesDir = "node_modules"
 nodeModulesBinDir = nodeModulesDir </> ".bin"
 
@@ -30,6 +35,15 @@ main = shakeArgs shakeOptions{shakeFiles="_build", shakeThreads=0} $ do
         putNormal $ "Cleaning files in " ++ hakyllCacheDir
         removeFilesAfter hakyllCacheDir ["//*"]
 
+    phony "complete-clean" $ do
+        need ["clean"]
+        putNormal $ "Cleaning files in " ++ compressCacheDir
+        removeFilesAfter compressCacheDir ["//*"]
+        putNormal $ "Cleaning node_modules"
+        removeFilesAfter "." ["node_modules//*", "js/highlight.js/node_modules//*"]
+        putNormal $ "Cleaning dart packages"
+        removeFilesAfter "." ["dart//packages//*"]
+
     phony "init submodules" $ do
         () <- cmd "git" "submodule" "init"
         cmd "git" "submodule" "update"
@@ -41,12 +55,9 @@ main = shakeArgs shakeOptions{shakeFiles="_build", shakeThreads=0} $ do
 
         staticFiles <- getDirectoryFiles "." statics
         demosFiles <- getDirectoryFiles "." ["demos//*"]
-        faviconsFiles <- getDirectoryFiles "." ["favicons//*"]
         need $ [buildDir </> x | x <- staticFiles]                                            -- Statics
 
             ++ [buildDir </> x | x <- demosFiles, not $ ".git" `isPrefixOf` dropDirectory1 x] -- Demos
-
-            ++ [buildDir </> dropDirectory1 x | x <- faviconsFiles]                           -- Favicons
 
             ++ [ buildDir </> "css/style.css"                                                 -- Styles
                , buildDir </> "css/print.css"
@@ -59,8 +70,22 @@ main = shakeArgs shakeOptions{shakeFiles="_build", shakeThreads=0} $ do
                , buildDir </> "dart/script-route-planner.dart.js"
                , buildDir </> "dart/script-map.dart.js"
 
+               , "favicons"
                , "site"
                ]
+
+        liftIO $ createDirectoryIfMissing True compressCacheDir
+        webpFiles <- getDirectoryFiles "." [buildDir <//> "*.jpg", buildDir <//> "*.png"]
+        gzFiles <- getDirectoryFiles "."
+            [ buildDir <//> "*.css"
+            , buildDir <//> "*.js"
+            , buildDir <//> "*.json"
+            , buildDir <//> "*.html"
+            , buildDir <//> "*.rss"
+            , buildDir <//> "*.txt"
+            , buildDir <//> "*.xml"
+            ]
+        need $ (map (++ ".webp") webpFiles) ++ (map (++ ".gz") gzFiles)
 
 
     -- haskell
@@ -84,6 +109,8 @@ main = shakeArgs shakeOptions{shakeFiles="_build", shakeThreads=0} $ do
 
     buildSite
 
+    buildCompressed
+
     where
         statics =
             [ "fonts/*"
@@ -92,7 +119,7 @@ main = shakeArgs shakeOptions{shakeFiles="_build", shakeThreads=0} $ do
             ]
 
 buildStatic pattern =
-    buildDir </> pattern %> \out -> do
+    priority 0 $ buildDir </> pattern %> \out -> do
         let src = dropDirectory1 out
         copyFileChanged src out
 
@@ -109,11 +136,12 @@ buildDemos =
 
 -- Copy favicons folder to root
 buildFavicons =
-    buildDir </> "*" %> \out -> do
-        let src = "favicons" </> dropDirectory1 out
-        exists <- doesFileExist src
-        when exists $ copyFileChanged src out
-
+    phony "favicons" $ do
+        results <- getDirectoryFiles "" ["favicons//*"]
+        forM_ results (\file -> do
+            let out = buildDir </> dropDirectory1 file
+            liftIO $ createDirectoryIfMissing True (takeDirectory out)
+            copyFileChanged file out)
 
 
 -- Build styles
@@ -196,8 +224,6 @@ buildScripts = do
             buildDir </> res %> \out -> do
                 need [src, "dart/pubspec.lock"]
                 () <- cmd "dart2js" ("--out=" ++ out) "--minify" src
-                -- deps <- readFileLines $ out -<.> "js.deps"
-                -- need $ map (drop 7) deps
                 removeFilesAfter "." [out -<.> "js.deps", out -<.> "js.map"]
 
 buildSite =
@@ -221,3 +247,27 @@ buildSite =
             liftIO $ createDirectoryIfMissing True (takeDirectory out)
             copyFileChanged file out)
         putNormal $ "Hakyll build completed"
+
+buildCompressed = do
+    priority 5 $ buildDir </> "//*.jpg.webp" %> \out -> do
+        let src = take (length out - 5) out
+        process src out $ cmd (EchoStdout False) (EchoStderr False) "cwebp" [src] "-jpeg_like" "-mt" "-m" "6" "-o" [out]
+    priority 5 $ buildDir </> "//*.png.webp" %> \out -> do
+        let src = take (length out - 5) out
+        process src out $ cmd (EchoStdout False) (EchoStderr False) "cwebp" [src] "-mt" "-lossless" "-q" "100" "-m" "6" "-o" [out]
+    priority 5 $ buildDir </> "//*.gz" %> \out -> do
+        let src = take (length out - 3) out
+        process src out $ cmd "zopfli" "--i100" "--gzip" [src]
+    where
+        process src out exec = do
+            need [src]
+            file <- liftIO $ BS.readFile src
+            let hash = show (hashlazy file :: Digest SHA256)
+            exists <- liftIO $ D.doesFileExist $ compressCacheDir </> hash
+            if (exists)
+                then do
+                    liftIO $ D.copyFile (compressCacheDir </> hash) out
+                else do
+                    () <- exec
+                    liftIO $ D.copyFile out (compressCacheDir </> hash)
+
