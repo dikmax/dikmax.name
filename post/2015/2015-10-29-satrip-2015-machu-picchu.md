@@ -3,7 +3,7 @@ title: "SATrip 2015: Мачу-Пикчу"
 date: "2015-10-29T11:00:00+03:00"
 collection: "latest-travel"
 published: true
-tags: "satrip, satrip-2015, перу, отпуск, путешествие, фотки"
+tags: "satrip, satrip-2015, отпуск, перу, путешествие, фотки"
 ---
 
 ![](/images/travel/2015-09-satrip/machu-picchu-2-cover.jpg "Прыжок на фоне Мачу-Пикчу")
@@ -201,7 +201,7 @@ Montaña и\ Wayna Picchu. Первая\ --- это гора слева от\ г
 
 ![](/images/travel/2015-09-satrip/machu-picchu-2-last.jpg "Цветок на фоне горы")
 
-Продолжение следует...
+Читать далее: [Едем в\ Боливию](/post/satrip-2015-to-bolivia/).
 
 SATrip 2015:
 [Начало](/post/satrip-2015-paris/),
@@ -211,4 +211,5 @@ SATrip 2015:
 [Рио-де-Жанейро, часть\ 3](/post/satrip-2015-rio-3/),
 [Из\ Рио в\ Куско](/post/satrip-2015-rio-to-cusco/),
 [Дорога в\ Мачу-Пикчу](/post/satrip-2015-road-to-machu-picchu/),
-**Мачу-Пикчу**...
+**Мачу-Пикчу**,
+[Едем в\ Боливию](/post/satrip-2015-to-bolivia/)...

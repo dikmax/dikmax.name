@@ -3,7 +3,7 @@ title: "SATrip 2015: Из Рио в Куско"
 date: "2015-10-19T11:20:00+03:00"
 collection: "latest-travel"
 published: true
-tags: "satrip, satrip-2015, перу, отпуск, путешествие, фотки"
+tags: "satrip, satrip-2015, отпуск, перу, путешествие, фотки"
 ---
 
 ![](/images/travel/2015-09-satrip/cusco-1-cover.jpg)
@@ -240,6 +240,7 @@ SATrip 2015:
 [Рио-де-Жанейро, часть\ 3](/post/satrip-2015-rio-3/),
 **Из\ Рио в\ Куско**,
 [Дорога в\ Мачу-Пикчу](/post/satrip-2015-road-to-machu-picchu/),
-[Мачу-Пикчу](/post/satrip-2015-machu-picchu/)...
+[Мачу-Пикчу](/post/satrip-2015-machu-picchu/),
+[Едем в\ Боливию](/post/satrip-2015-to-bolivia/)...
 
 [machu-picchu]: http://www.machupicchu.gob.pe
