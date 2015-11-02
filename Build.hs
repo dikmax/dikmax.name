@@ -18,11 +18,14 @@ compressCacheDir = "_compress_cache"
 nodeModulesDir = "node_modules"
 nodeModulesBinDir = nodeModulesDir </> ".bin"
 
+lessc = nodeModulesBinDir </> "lessc"
+mdast = nodeModulesBinDir </> "mdast"
+
 highlightLanguages :: [String]
 highlightLanguages = ["bash", "css", "haskell", "javascript", "markdown", "sql", "xml", "dart"]
 
 main :: IO ()
-main = shakeArgs shakeOptions{shakeFiles="_build", shakeThreads=0} $ do
+main = shakeArgs shakeOptions{shakeFiles="_build", shakeThreads=0, shakeProgress=progressSimple} $ do
     phony "clean" $ do
         putNormal $ "Cleaning files in _build"
         removeFilesAfter "_build" ["//*"]
@@ -88,13 +91,19 @@ main = shakeArgs shakeOptions{shakeFiles="_build", shakeThreads=0} $ do
         need $ (map (++ ".webp") webpFiles) ++ (map (++ ".gz") gzFiles)
 
 
+    phony "lint" $ do
+        files <- getDirectoryFiles "." ["//*.md"]
+        need $ mdast : files
+        cmd mdast "--no-stdout" files
+
+
     -- haskell
     ["dikmax-name", "server"] &%> \_ -> do
         src <- getDirectoryFiles "." ["src//*.hs", "dikmax-name.cabal"]
         cmd "stack" "install"
 
     -- npm packages
-    phony "npm install" $ do
+    [lessc, mdast] &%> \_ -> do
         need ["package.json"]
         cmd "npm" "install"
 
@@ -119,7 +128,7 @@ main = shakeArgs shakeOptions{shakeFiles="_build", shakeThreads=0} $ do
             ]
 
 buildStatic pattern =
-    priority 0 $ buildDir </> pattern %> \out -> do
+    buildDir </> pattern %> \out -> do
         let src = dropDirectory1 out
         copyFileChanged src out
 
@@ -146,9 +155,6 @@ buildFavicons =
 
 -- Build styles
 buildStyles = do
-    let lessc = nodeModulesBinDir </> "lessc"
-    lessc %> (\_ -> need ["npm install"])
-
     buildDir </> "css/*.css" %> \out -> do
         let src = "less" </> dropDirectory1 (dropDirectory1 out -<.> "less")
         files <- getDirectoryFiles "." ["less//*"]

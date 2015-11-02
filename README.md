@@ -14,6 +14,6 @@ Available commands:
 
 - `build` builds application
 - `clean` removes all built files
-- TODO `lint`
+- `lint` lint .md files using mdast
 - TODO `comments` updates comments
 - TODO `deploy`
