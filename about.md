@@ -6,7 +6,7 @@ published: true
 
 ![](/images/photos/me.jpg "Это я")
 
-[JavaScript]&#8209;разработчик из\ Минска. Личное время трачу на\ [Dart], [Haskell] и\ немецкий. Люблю
+[JavaScript][js]-разработчик из\ Минска. Личное время трачу на\ [Dart][dart], [Haskell][haskell] и\ немецкий. Люблю
 [путешествовать][map] и\ делиться впечатлениями.
 
 Я\ в\ социальных сетях и\ различных сервисах
@@ -26,14 +26,14 @@ published: true
 <a href="https://www.youtube.com/user/zabeydikmax" title="YouTube" class="btn btn-youtube"><i class="fa fa-youtube fa-2x fa-fw"></i></a>
 </div>
 
-Как&#8209;то много получилось. Не\ скажу, что я\ всё это читаю и\ смотрю, но\ на\ личные сообщения стараюсь реагировать.
+Как-то много получилось. Не\ скажу, что я\ всё это читаю и\ смотрю, но\ на\ личные сообщения стараюсь реагировать.
 
 Контакты
 ========
 
 Письма слать сюда: [me@dikmax.name](mailto:me@dikmax.name).
 
-[Dart]: /tag/dart/
-[Haskell]: /tag/haskell/
-[JavaScript]: /tag/javascript/
+[dart]: /tag/dart/
+[haskell]: /tag/haskell/
+[js]: /tag/javascript/
 [map]: /map/
