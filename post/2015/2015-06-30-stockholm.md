@@ -6,7 +6,7 @@ published: true
 tags: "швеция, путешествие, фотки"
 ---
 
-![](/images/travel/2015-05-stockholm/cover.jpg)
+![](/images/travel/2015-05-stockholm/cover.jpg "Разноцветные здания")
 
 Вот мы\ и\ добрались до\ столицы Швеции. Как обычно, были обнаружены недорогие билеты на\ самолёт из\ Вильнюса (спасибо
 [vandrouki.by][]), выбрана дата и\ забронирована гостиница. Оставалось только дождаться вылета. В\ общем-то я\ знал, что
@@ -24,72 +24,72 @@ tags: "швеция, путешествие, фотки"
 
 С\ него и\ можно начать наш обзор, тем более что отель, в\ котором мы\ поселились, располагался совсем неподалёку.
 
-![](/images/travel/2015-05-stockholm/gamla-stan-1.jpg)
+![](/images/travel/2015-05-stockholm/gamla-stan-1.jpg "Gamla Stan")
 
-![](/images/travel/2015-05-stockholm/gamla-stan-2.jpg)
+![](/images/travel/2015-05-stockholm/gamla-stan-2.jpg "Gamla Stan крупным планом")
 
 Тут есть всё то, чему полагается быть в\ старом европейском городе: старые дома, узкие извилистые мощёные улочки
 и\ туристы.
 
-![](/images/travel/2015-05-stockholm/gamla-stan-street.jpg)
+![](/images/travel/2015-05-stockholm/gamla-stan-street.jpg "Узкая улица")
 
 Storkyrkan, она\ же церковь Св. Николая\ --- одна из\ старейших церквей Швеции. Была основана практически одновременно
 с\ самим Стокгольмом в\ XIII\ веке.
 
-![](/images/travel/2015-05-stockholm/storkyrkan-1.jpg)
+![](/images/travel/2015-05-stockholm/storkyrkan-1.jpg "Storkyrkan")
 
 Внутри тоже всё так и\ дышит стариной.
 
-![](/images/travel/2015-05-stockholm/storkyrkan-2.jpg)
+![](/images/travel/2015-05-stockholm/storkyrkan-2.jpg "Лавки")
 
-![](/images/travel/2015-05-stockholm/storkyrkan-3.jpg)
+![](/images/travel/2015-05-stockholm/storkyrkan-3.jpg "Орган в Storkyrkan")
 
 Огромный подсвечник, местная достопримечательность.
 
-![](/images/travel/2015-05-stockholm/storkyrkan-4.jpg)
+![](/images/travel/2015-05-stockholm/storkyrkan-4.jpg "Огромный подсвечник")
 
 Мне\ же больше понравился этот корабль, подвешенный на\ столь тонкой нити, что создаётся впечатление, будто корабль
 просто парит в\ воздухе.
 
-![](/images/travel/2015-05-stockholm/storkyrkan-5.jpg)
+![](/images/travel/2015-05-stockholm/storkyrkan-5.jpg "Модель корабля")
 
 Рядом с\ Storkyrkan располагается королевский дворец. Мы\ собирались сначала заглянуть сюда с\ экскурсией и\ посмотреть
 смену караула. Но\ как-то не\ сложилось. По-видимому, придётся вернуться сюда ещё раз.
 
-![](/images/travel/2015-05-stockholm/royal-palace-1.jpg)
+![](/images/travel/2015-05-stockholm/royal-palace-1.jpg "Королевский дворец")
 
-![](/images/travel/2015-05-stockholm/royal-palace-2.jpg)
+![](/images/travel/2015-05-stockholm/royal-palace-2.jpg "Почётный караул на входе в королевский дворец")
 
 Напротив королевского дворца можно обнаружить Grand Hôtel\ --- один из\ самых известных и\ дорогих отелей Стокгольма.
 Здесь, например, останавливаются лауреаты нобелевской премии, когда приезжают на\ награждение.
 
-![](/images/travel/2015-05-stockholm/grand-hotel.jpg)
+![](/images/travel/2015-05-stockholm/grand-hotel.jpg "Grand Hôtel")
 
 А\ прямо под отелем находится пристань, с\ которой уходит большинство водных экскурсий по\ каналам. Мы\ не\ преминули
 воспользоваться услугами одной из\ подобных фирм, чтобы послушать интересные истории аудиогида и, вооружившись
 телевиком, запечатлеть немного окружающих пейзажей.
 
-![](/images/travel/2015-05-stockholm/boat-tour-1.jpg)
+![](/images/travel/2015-05-stockholm/boat-tour-1.jpg "Чайка")
 
-![](/images/travel/2015-05-stockholm/boat-tour-2.jpg)
+![](/images/travel/2015-05-stockholm/boat-tour-2.jpg "Мост и лодка")
 
-![](/images/travel/2015-05-stockholm/boat-tour-3.jpg)
+![](/images/travel/2015-05-stockholm/boat-tour-3.jpg "Мужчина на скамейке")
 
-![](/images/travel/2015-05-stockholm/boat-tour-4.jpg)
+![](/images/travel/2015-05-stockholm/boat-tour-4.jpg "Яхты")
 
 ![Ещё один королевский дворец? Не-а, дом престарелых.](/images/travel/2015-05-stockholm/boat-tour-5.jpg "Дом престарелых")
 
-![](/images/travel/2015-05-stockholm/boat-tour-6.jpg)
+![](/images/travel/2015-05-stockholm/boat-tour-6.jpg "Разноцветный район")
 
-![](/images/travel/2015-05-stockholm/boat-tour-7.jpg)
+![](/images/travel/2015-05-stockholm/boat-tour-7.jpg "Красное здание")
 
-![](/images/travel/2015-05-stockholm/boat-tour-8.jpg)
+![](/images/travel/2015-05-stockholm/boat-tour-8.jpg "Кран в виде жирафа")
 
 ![Парк развлечений Gröna Lund](/images/travel/2015-05-stockholm/boat-tour-9.jpg "Парк развлечений Gröna Lund")
 
 Типичная стокгольмская набережная.
 
-![](/images/travel/2015-05-stockholm/quay.jpg)
+![](/images/travel/2015-05-stockholm/quay.jpg "Набережная")
 
 Следующий пункт\ --- Skansen. Это музей народного хозяйства под открытым небом. Подобные мы\ уже посещали
 в\ [Хельсинки][helsinki], [Бухаресте][bucharest] и\ даже под Минском. Обычно такие музеи представляют собой различные
@@ -97,42 +97,42 @@ Storkyrkan, она\ же церковь Св. Николая\ --- одна из\
 знаете, чего ожидать в\ другом: быт европейских народов, конечно, отличался, но\ и\ общих черт было предостаточно. Хотя
 Skansen всё-таки найдёт, чем удивить.
 
-![](/images/travel/2015-05-stockholm/skansen-1.jpg)
+![](/images/travel/2015-05-stockholm/skansen-1.jpg "Вход в Skansen")
 
-![](/images/travel/2015-05-stockholm/skansen-2.jpg)
+![](/images/travel/2015-05-stockholm/skansen-2.jpg "Лавка")
 
-![](/images/travel/2015-05-stockholm/skansen-3.jpg)
+![](/images/travel/2015-05-stockholm/skansen-3.jpg "Деревянные дома")
 
-![](/images/travel/2015-05-stockholm/skansen-4.jpg)
+![](/images/travel/2015-05-stockholm/skansen-4.jpg "Дом у воды")
 
-![Избушка, избушка, повернись ко\ мне передом, к\ лесу\ --- задом](/images/travel/2015-05-stockholm/skansen-5.jpg "Избушка")
+![Избушка, избушка, повернись ко\ мне передом, к\ лесу\ --- задом](/images/travel/2015-05-stockholm/skansen-5.jpg "Избушка на ножках")
 
-![](/images/travel/2015-05-stockholm/skansen-6.jpg)
+![](/images/travel/2015-05-stockholm/skansen-6.jpg "Красная башня")
 
-![](/images/travel/2015-05-stockholm/skansen-7.jpg)
+![](/images/travel/2015-05-stockholm/skansen-7.jpg "Пруд")
 
-![](/images/travel/2015-05-stockholm/skansen-8.jpg)
+![](/images/travel/2015-05-stockholm/skansen-8.jpg "Два окна")
 
-![](/images/travel/2015-05-stockholm/skansen-9.jpg)
+![](/images/travel/2015-05-stockholm/skansen-9.jpg "Внутри старого дома")
 
 Кроме всего прочего, тут можно обнаружить небольшой зоопарк\ --- особо излюбленное детишками и\ их\ мамами место.
 
-![](/images/travel/2015-05-stockholm/skansen-peacock.jpg)
+![](/images/travel/2015-05-stockholm/skansen-peacock.jpg "Павлин")
 
 Особое место занимает "Наша Африка"\ --- зоопарк с\ экзотическими животными, змеями, рыбами и\ прочей живностью.
 
-![О\ боже, опять эти припёрлись](/images/travel/2015-05-stockholm/skansen-zoo-1.jpg)
+![О\ боже, опять эти припёрлись](/images/travel/2015-05-stockholm/skansen-zoo-1.jpg "Взгляд")
 
-![](/images/travel/2015-05-stockholm/skansen-zoo-2.jpg)
+![](/images/travel/2015-05-stockholm/skansen-zoo-2.jpg "Змея")
 
 Где-то неподалёку от\ Skansen был обнаружен музей лодок, оказавшийся к\ тому\ же бесплатным. Тут можно даже увидеть, как
 выглядит королевская лодка.
 
-![](/images/travel/2015-05-stockholm/boat-museum.jpg)
+![](/images/travel/2015-05-stockholm/boat-museum.jpg "Королевская лодка")
 
 Ещё один музей. На\ этот раз это ледокол.
 
-![](/images/travel/2015-05-stockholm/icebraker.jpg)
+![](/images/travel/2015-05-stockholm/icebraker.jpg "Музей-ледокол")
 
 Но, пожалуй, самый интересный и\ прямо-таки обязательный к\ посещению музей\ --- Vasamuseet. Vasa\ --- это самый большой
 военный парусник, построенный шведской короной ещё в\ XVII\ веке. Так получилось, что из-за конструктивных особенностей
@@ -140,28 +140,28 @@ Skansen всё-таки найдёт, чем удивить.
 века его подняли и\ сделали музей. Из-за того, что корабль проплавал так недолго, он\ прекрасно сохранился. И\ теперь
 каждый может посмотреть, что такое по-настоящему большое парусное судно.
 
-![Я\ честно попытался собрать панораму](/images/travel/2015-05-stockholm/vasa-1.jpg)
+![Я\ честно попытался собрать панораму](/images/travel/2015-05-stockholm/vasa-1.jpg "Vasa целиком")
 
-![](/images/travel/2015-05-stockholm/vasa-2.jpg)
+![](/images/travel/2015-05-stockholm/vasa-2.jpg "Иллюминаторы")
 
-![](/images/travel/2015-05-stockholm/vasa-3.jpg)
+![](/images/travel/2015-05-stockholm/vasa-3.jpg "Корма Vasa")
 
-![](/images/travel/2015-05-stockholm/vasa-4.jpg)
+![](/images/travel/2015-05-stockholm/vasa-4.jpg "Бок Vasa")
 
 Drottninggatan\ --- главная пешеходная улица, напичканная всевозможными магазинами и\ ресторанами.
 
-![](/images/travel/2015-05-stockholm/drottninggatan.jpg)
+![](/images/travel/2015-05-stockholm/drottninggatan.jpg "Пешеходная улица")
 
 И\ практически последняя точка этого дня\ --- набережная на\ острове Riddarholmen. Отсюда открываются отличные виды
 на\ ратушу.
 
-![](/images/travel/2015-05-stockholm/city-hall-view.jpg)
+![](/images/travel/2015-05-stockholm/city-hall-view.jpg "Ратуша")
 
 Второй день выдался попроще, в\ первую очередь из-за того, что половину времени лил дождь.
 
 Обычная стокгольмская улица.
 
-![](/images/travel/2015-05-stockholm/street.jpg)
+![](/images/travel/2015-05-stockholm/street.jpg "Стокгольмская улица")
 
 Прогулялись к\ старой ратуше, той самой, что наблюдали вчера с\ набережной Riddarholmen. На\ башню, с\ которой
 открываются замечательные виды на\ старый город, несколько раз в\ день водят экскурсии. К\ сожалению, когда
@@ -169,56 +169,56 @@ Drottninggatan\ --- главная пешеходная улица, напичк
 
 Внутренний двор.
 
-![](/images/travel/2015-05-stockholm/city-hall-court-1.jpg)
+![](/images/travel/2015-05-stockholm/city-hall-court-1.jpg "Внутренний двор ратуши")
 
-![](/images/travel/2015-05-stockholm/city-hall-court-2.jpg)
+![](/images/travel/2015-05-stockholm/city-hall-court-2.jpg "Множество арок")
 
-![](/images/travel/2015-05-stockholm/city-hall-court-3.jpg)
+![](/images/travel/2015-05-stockholm/city-hall-court-3.jpg "Зеленая стена")
 
 Вид на\ Riddarholmen.
 
-![](/images/travel/2015-05-stockholm/riddarholmen-view.jpg)
+![](/images/travel/2015-05-stockholm/riddarholmen-view.jpg "Вид на Riddarholmen")
 
 Набережная Южного острова.
 
-![](/images/travel/2015-05-stockholm/city-hall-other-side.jpg)
+![](/images/travel/2015-05-stockholm/city-hall-other-side.jpg "Набережная Южного острова")
 
 Если есть возможность взглянуть на\ город сверху, то\ нужно ей\ воспользоваться. В\ общем, мы отправились на\ телевышку.
 
-![](/images/travel/2015-05-stockholm/teletower.jpg)
+![](/images/travel/2015-05-stockholm/teletower.jpg "Телевышка")
 
 Отличные виды сверху вполне может дополнить чашка кофе.
 
-![](/images/travel/2015-05-stockholm/teletower-view-1.jpg)
+![](/images/travel/2015-05-stockholm/teletower-view-1.jpg "Стокгольм сверху")
 
-![](/images/travel/2015-05-stockholm/teletower-view-2.jpg)
+![](/images/travel/2015-05-stockholm/teletower-view-2.jpg "Стокгольм сверху")
 
-![](/images/travel/2015-05-stockholm/teletower-view-3.jpg)
+![](/images/travel/2015-05-stockholm/teletower-view-3.jpg "Стокгольм сверху")
 
 Телевышка располагается неподалёку от\ музейного комплекса. Мы\ заглянули в\ музей науки и\ техники, который также
 входит в\ этот комплекс. Тут можно посмотреть, например, сто величайших изобретений человечества по\ версии шведов.
 
-![Двигатель Ford Model T](/images/travel/2015-05-stockholm/science-1.jpg)
+![Двигатель Ford Model T](/images/travel/2015-05-stockholm/science-1.jpg "Двигатель Ford Model T")
 
-![Сахар-рафинад, чем не изобретение](/images/travel/2015-05-stockholm/science-2.jpg)
+![Сахар-рафинад, чем не изобретение](/images/travel/2015-05-stockholm/science-2.jpg "Сахар-рафинад")
 
-![Угадайте, что это](/images/travel/2015-05-stockholm/science-3.jpg)
+![Угадайте, что это](/images/travel/2015-05-stockholm/science-3.jpg "Угадайте, что это")
 
 А\ ещё можно поиграть в\ кучу различных игр, как старых, так и\ более современных. Лично я\ с\ удовольствием сыграл
 в\ Pong (да-да, тот самый 1972\ года), милая попробовала свои силы в\ Pac-Man.
 
-![](/images/travel/2015-05-stockholm/science-pacman.jpg)
+![](/images/travel/2015-05-stockholm/science-pacman.jpg "Игровой автомат Pac-Man")
 
-![](/images/travel/2015-05-stockholm/science-pong.jpg)
+![](/images/travel/2015-05-stockholm/science-pong.jpg "Игровой автомат Pong")
 
 Вот ещё интересный экспонат:
 
-![](/images/travel/2015-05-stockholm/science-imac.jpg)
+![](/images/travel/2015-05-stockholm/science-imac.jpg "Старый iMac")
 
 Или вот невероятно крутой синтезатор\ --- Fairlight\ C.M.I. С\ помощью такого устройства творил, например, Питер Гэбриэл
 ([Rhythm of the Heat][youtube]).  
 
-![](/images/travel/2015-05-stockholm/science-fairlight-cmi.jpg)
+![](/images/travel/2015-05-stockholm/science-fairlight-cmi.jpg "Fairlight C.M.I.")
 
 В\ общем, очень интересный и\ интерактивный музей, рекомендую.
 
@@ -226,25 +226,25 @@ Drottninggatan\ --- главная пешеходная улица, напичк
 ежегодный марафон. Один из\ участков трассы пролегал как раз рядом с\ музейным комплексом. Такого количества бегунов
 я\ никогда в\ жизни не\ видел\ --- довольно плотная толпа растянулась на\ несколько километров.
 
-![](/images/travel/2015-05-stockholm/marathon.jpg)
+![](/images/travel/2015-05-stockholm/marathon.jpg "Марафон")
 
 Дождь не\ прекращался, поэтому мы\ отправились обедать, а\ затем осматривать те\ самые знаменитые станции метро.
 И\ правда красиво. Правда, вся впечатляющая отделка касается только одной линии, остальные\ же станции более-менее
 обычные.
 
-![](/images/travel/2015-05-stockholm/subway-1.jpg)
+![](/images/travel/2015-05-stockholm/subway-1.jpg "Станция метро")
 
-![](/images/travel/2015-05-stockholm/subway-2.jpg)
+![](/images/travel/2015-05-stockholm/subway-2.jpg "Станция метро")
 
-![](/images/travel/2015-05-stockholm/subway-3.jpg)
+![](/images/travel/2015-05-stockholm/subway-3.jpg "Станция метро")
 
-![Видимо, чтобы не\ заблудиться](/images/travel/2015-05-stockholm/subway-4.jpg)
+![Видимо, чтобы не\ заблудиться](/images/travel/2015-05-stockholm/subway-4.jpg "Указатель сторон света")
 
-![](/images/travel/2015-05-stockholm/subway-5.jpg)
+![](/images/travel/2015-05-stockholm/subway-5.jpg "Станция метро")
 
 Оформление наземной станции в\ виде различных старых игр.
 
-![](/images/travel/2015-05-stockholm/subway-games.jpg)
+![](/images/travel/2015-05-stockholm/subway-games.jpg "Станция метро")
 
 Практически последним пунктом нашей программы оказался музей Fotografiska. Немаловажной причиной заглянуть сюда
 оказались часы работы. Это практически единственный музей, который закрывался не\ в\ 4--5, а\ в\ 11 вечера.
@@ -253,15 +253,15 @@ Fotografiska\ - это такое место, куда люди приходят
 
 Рядом с\ музеем располагается гора, с\ которой открываются отличные виды.
 
-![](/images/travel/2015-05-stockholm/fotografiska-view.jpg)
+![](/images/travel/2015-05-stockholm/fotografiska-view.jpg "Gamla Stan")
 
 Сам музей.
 
-![](/images/travel/2015-05-stockholm/fotografiska.jpg)
+![](/images/travel/2015-05-stockholm/fotografiska.jpg "Музей Fotografiska")
 
 Ну\ и\ селфи с\ Gamla Stan на\ фоне, куда\ же без этого.
 
-![](/images/travel/2015-05-stockholm/fotografiska-selfie.jpg)
+![](/images/travel/2015-05-stockholm/fotografiska-selfie.jpg "Селфи на фоне Fotografiska")
 
 Расскажу ещё немного про цены, чтобы вы\ могли знать, на\ что рассчитывать.
 
@@ -270,12 +270,12 @@ Fotografiska\ - это такое место, куда люди приходят
 по\ воскресенье действует специальный тариф: можно купить билет на\ двоих за\ 300 крон (33\ €) в\ одну сторону, то\ есть
 практически вдвое дешевле.
 
-![Arlanda Express](/images/travel/2015-05-stockholm/arlanda-express.jpg)
+![Arlanda Express](/images/travel/2015-05-stockholm/arlanda-express.jpg "Arlanda Express внутри")
 
 Довольно бюджетный B&B без завтрака обошёлся в\ 270\ € за\ 3\ ночи. Думаете дорого? Тогда я\ отправляю вас на\ сайт
 [booking.com][] для поиска варианта получше, вдруг вам повезёт больше.
 
-![Вид из\ окна](/images/travel/2015-05-stockholm/bnb-window.jpg)
+![Вид из\ окна](/images/travel/2015-05-stockholm/bnb-window.jpg "Вид из окна")
 
 Следующий большой пункт расходов\ --- Stockholm Card, куда входит проезд на\ общественном транспорте, вход
 в\ большинство музеев и\ десятка полтора-два других туристических аттракционов. Стоит 765\ крон (83\ €) за\ минимальный
@@ -286,7 +286,7 @@ Fotografiska\ - это такое место, куда люди приходят
 Большой хот-дог на\ набережной обошёлся, например, в\ 6\ €. Ну\ и, конечно, никто не\ отменял магазины (в\ таком случае
 стоит искать жилье с\ собственной кухней).
 
-![](/images/travel/2015-05-stockholm/food.jpg)
+![](/images/travel/2015-05-stockholm/food.jpg "Шведская еда")
 
 В\ целом, Стокгольм понравился. Но\ поездку никак не\ получится назвать бюджетной. Хотя это, пожалуй, касается всех
 скандинавских стран. В\ любом случае, нужно будет сюда вернуться, чтобы досмотреть то, что ещё не\ досмотрелось.
