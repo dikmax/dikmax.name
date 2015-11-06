@@ -125,6 +125,7 @@ SATrip 2015:
 [Из\ Рио в\ Куско](/post/satrip-2015-rio-to-cusco/),
 **Дорога в\ Мачу-Пикчу**,
 [Мачу-Пикчу](/post/satrip-2015-machu-picchu/),
-[Едем в\ Боливию](/post/satrip-2015-to-bolivia/)...
+[Едем в\ Боливию](/post/satrip-2015-to-bolivia/),
+[Ла-Пас](/post/satrip-2015-la-paz/)...
 
 [cusco]: /post/satrip-2015-rio-to-cusco/

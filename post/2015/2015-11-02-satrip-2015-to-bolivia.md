@@ -130,7 +130,7 @@ tags: "satrip, satrip-2015, боливия, отпуск, перу, путеше
 
 Уже скоро\ --- в\ следующей части\ --- вас ждёт рассказ о\ Ла-Пасе, самой высокогорной столице мира. Не\ уходите далеко.
 
-Продолжение следует...
+Читать далее: [Ла-Пас](/post/satrip-2015-la-paz/).
 
 SATrip 2015:
 [Начало](/post/satrip-2015-paris/),
@@ -141,6 +141,7 @@ SATrip 2015:
 [Из\ Рио в\ Куско](/post/satrip-2015-rio-to-cusco/),
 [Дорога в\ Мачу-Пикчу](/post/satrip-2015-road-to-machu-picchu/),
 [Мачу-Пикчу](/post/satrip-2015-machu-picchu/),
-**Едем в\ Боливию**...
+**Едем в\ Боливию**,
+[Ла-Пас](/post/satrip-2015-la-paz/)...
 
 [backpack]: /post/satrip-2015-road-to-machu-picchu/#cusco-2-women
