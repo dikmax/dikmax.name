@@ -1,6 +1,6 @@
 ---
 title: "Осень в Минске"
-date: "2015-11-09T9:40:00+03:00"
+date: "2015-11-09T09:40:00+03:00"
 collection: "proofreaders-stories"
 published: true
 tags: "беларусь, гостевой пост, фотки"
