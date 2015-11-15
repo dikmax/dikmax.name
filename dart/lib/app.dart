@@ -341,7 +341,7 @@ class App {
       document.body.append(
           new ScriptElement()
             ..type = 'text/javascript'
-            ..src = 'http://ajaxhttpheaders2.appspot.com/?callback=_setHttpHeaders');
+            ..src = '//ajaxhttpheaders2.appspot.com/?callback=_setHttpHeaders');
     } else {
       languages = window.navigator.languages;
       _addGoogleTranslateWidget();
