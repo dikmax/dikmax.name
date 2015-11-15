@@ -7,6 +7,7 @@ import 'dart:math';
 
 class App {
   void init() {
+    _setupTranslation();
     _setupMaxImageHeight();
     _setupTopNavBar();
     _fixTimeZones();
@@ -146,6 +147,207 @@ class App {
     window.animationFrame.then(animationFrame);
   }
 
+  void _setupTranslation() {
+    List<String> languages = [];
+
+
+    bool _forEachLanguage(bool handler(JsObject)) {
+      // Hack
+      IFrameElement iframe = document.querySelector('iframe.goog-te-menu-frame');
+      if (iframe == null) {
+        return false;
+      }
+      JsObject iframeProxy = new JsObject.fromBrowserObject(iframe);
+      JsObject contentDocumentProxy = iframeProxy['contentDocument'];
+      JsObject items = contentDocumentProxy.callMethod('querySelectorAll',
+          ['.goog-te-menu2-item span.text']);
+      var length = items['length'];
+      if (length == 0) {
+        return false;
+      }
+      for (var i = 0; i < length; ++i) {
+        if (handler(items[i]) == false) {
+          return true;
+        }
+      }
+
+      return true;
+    }
+
+    void _clickElement(JsObject item) {
+      if (item['fireEvent'] != null) {
+        item.callMethod('fireEvent', ['onclick']);
+      } else {
+        var clickEvent = new Event.eventType('MouseEvent', 'click');
+        item.callMethod('dispatchEvent', [clickEvent]);
+      }
+    }
+
+    void _googleTranslateElementInit() {
+      context.deleteProperty('googleTranslateElementInit');
+      var languages = window.navigator.languages;
+      if (languages == null) {
+        languages = [window.navigator.language];
+      }
+      if (!languages.contains('en')) {
+        languages.add('en');
+      }
+      new JsObject(context['google']['translate']['TranslateElement'],
+          [new JsObject.jsify({
+            'pageLanguage': 'ru',
+            'layout': context['google']['translate']['TranslateElement']['InlineLayout']['SIMPLE'],
+            'includedLanguages': languages.join(','),
+            'gaTrack': true,
+            'gaId': 'UA-32213724-1',
+            'autoDisplay': false
+          }), 'google_translate_element']);
+      //
+
+      Element translationSelector = document.querySelector('.translation-selector');
+      translationSelector.querySelector('.translate-text').text =
+          context['google']['translate']['m'][0]; // Here google puts localized "Translate" string
+      translationSelector.classes.remove('hidden');
+
+      // Show/hide dropdown
+      Element dropdown = translationSelector.querySelector('.dropdown');
+      translationSelector.querySelector('.dropdown-toggle').onClick.listen((ev) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        dropdown.classes.toggle('open');
+      });
+
+      Element dropdownMenu = translationSelector.querySelector('.dropdown-menu');
+
+      List<Element> menuItems = [
+        new LIElement()
+          ..attributes['role'] = 'separator'
+          ..classes.add('divider')
+      ];
+
+      new Timer.periodic(new Duration(milliseconds: 100), (Timer timer) {
+        bool res = _forEachLanguage((item) {
+          String text = item['textContent'];
+          menuItems.add(
+              new LIElement()
+                ..append(
+                    new AnchorElement(href: '#')
+                      ..dataset['language'] = text
+                      ..text = text
+                )
+          );
+        });
+        if (!res) {
+          return;
+        }
+        timer.cancel();
+
+        var count = 0;
+        new Timer.periodic(new Duration(milliseconds: 100), (Timer timer) {
+          if (document.body.style.top != '0px') {
+            document.body.style.top = '0';
+            timer.cancel();
+            return;
+          }
+
+          ++count;
+          if (count > 600) { // Wait 1 minute if body going to be adjusted by translation
+            timer.cancel();
+          }
+        });
+
+        dropdownMenu.insertAllBefore(menuItems,
+            dropdownMenu.querySelector('.divider'));
+
+
+        dropdownMenu.onClick.matches('li>a')
+            .listen((MouseEvent ev) {
+          String language = ev.matchingTarget.dataset['language'];
+          if (language == null) {
+            return;
+          }
+
+          ev.preventDefault();
+          ev.stopPropagation();
+
+          if (language == "") {
+            // Restoring default (russian)
+
+            IFrameElement iframe = document.querySelector('iframe.goog-te-banner-frame');
+            if (iframe == null) {
+              dropdown.classes.remove('open');
+              return;
+            }
+            JsObject iframeProxy = new JsObject.fromBrowserObject(iframe);
+            JsObject contentDocumentProxy = iframeProxy['contentDocument'];
+            JsObject items = contentDocumentProxy.callMethod('querySelectorAll',
+                ['.goog-te-button button']);
+            var length = items['length'];
+            for (var i = 0; i < length; ++i) {
+              var item = items[i];
+              if (item['id'].contains('.restore')) {
+                _clickElement(item);
+                break;
+              }
+            }
+          } else {
+            // Changing language
+
+            _forEachLanguage((item) {
+              String text = item['textContent'];
+              if (text == language) {
+                _clickElement(item);
+
+                return false;
+              }
+
+              return true;
+            });
+          }
+
+          dropdown.classes.remove('open');
+        });
+      });
+    }
+
+    void _addGoogleTranslateWidget() {
+      if (languages.firstWhere((String s) => s.startsWith('ru'), orElse: () => null) == null) {
+        if (!languages.contains('en')) {
+          languages.add('en');
+        }
+
+        // Russian not supported. Translation required.
+        context['googleTranslateElementInit'] = _googleTranslateElementInit;
+        document.body.append(new DivElement()..id = 'google_translate_element');
+        document.body.append(
+            new ScriptElement()
+              ..type = 'text/javascript'
+              ..src = '//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit');
+      }
+    }
+
+    void _setHeaders(data) {
+      context.deleteProperty('_setHttpHeaders');
+      String accepts = data['Accept-Language'];
+      if (accepts != null) {
+        languages = new List.from(accepts.split(',').map((String s) => s.split(';')[0]));
+      }
+
+      _addGoogleTranslateWidget();
+    }
+
+    if (window.navigator.languages == null) {
+      // If window.navigator.languages do not exists use external service
+      context['_setHttpHeaders'] = _setHeaders;
+      document.body.append(
+          new ScriptElement()
+            ..type = 'text/javascript'
+            ..src = 'http://ajaxhttpheaders2.appspot.com/?callback=_setHttpHeaders');
+    } else {
+      languages = window.navigator.languages;
+      _addGoogleTranslateWidget();
+    }
+  }
+
   void _fixTimeZones() {
     List<Node> spans = document.getElementsByTagName('span');
 
@@ -179,7 +381,7 @@ class App {
       return;
     }
 
-    new Timer.periodic(new Duration(microseconds: 100), (timer) {
+    new Timer.periodic(new Duration(milliseconds: 100), (timer) {
       if (elements[0].text.startsWith('Считаем')) {
         return;
       }

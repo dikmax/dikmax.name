@@ -1,5 +1,5 @@
-import '../lib/app.dart';
-import '../lib/map.dart';
+import 'package:dikmax.name/app.dart';
+import 'package:dikmax.name/map.dart';
 
 
 void main() {

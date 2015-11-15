@@ -1,7 +1,7 @@
 import 'dart:js';
 
-import '../lib/app.dart';
-import '../lib/route-planner.dart';
+import 'package:dikmax.name/app.dart';
+import 'package:dikmax.name/route-planner.dart';
 
 void main() {
   // Initializing site function
