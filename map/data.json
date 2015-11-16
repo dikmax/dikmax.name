@@ -455,7 +455,8 @@
                 "lon": -66.833333,
                 "visits": [
                     {
-                        "date": "2015-09-07"
+                        "date": "2015-09-07",
+                        "link": "/post/satrip-2015-uyuni-salt-flats/"
                     }
                 ]
             }

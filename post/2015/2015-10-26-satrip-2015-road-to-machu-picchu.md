@@ -126,6 +126,7 @@ SATrip 2015:
 **Дорога в\ Мачу-Пикчу**,
 [Мачу-Пикчу](/post/satrip-2015-machu-picchu/),
 [Едем в\ Боливию](/post/satrip-2015-to-bolivia/),
-[Ла-Пас](/post/satrip-2015-la-paz/)...
+[Ла-Пас](/post/satrip-2015-la-paz/),
+[Солончак Уюни](/post/satrip-2015-uyuni-salt-flats/)...
 
 [cusco]: /post/satrip-2015-rio-to-cusco/
