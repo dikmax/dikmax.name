@@ -143,6 +143,7 @@ SATrip 2015:
 [Мачу-Пикчу](/post/satrip-2015-machu-picchu/),
 **Едем в\ Боливию**,
 [Ла-Пас](/post/satrip-2015-la-paz/),
-[Солончак Уюни](/post/satrip-2015-uyuni-salt-flats/)...
+[Солончак Уюни](/post/satrip-2015-uyuni-salt-flats/),
+[юг Боливии](/post/satrip-2015-south-of-bolivia/)...
 
 [backpack]: /post/satrip-2015-road-to-machu-picchu/#cusco-2-women
