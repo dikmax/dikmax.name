@@ -193,7 +193,7 @@ tags: "satrip, satrip-2015, боливия, отпуск, путешествие
 
 ![](/images/travel/2015-09-satrip/uyuni-2-last.jpg)
 
-Продолжение следует...
+Читать далее: [национальный парк Эдуардо Авароа](/post/satrip-2015-bolivia-national-park/).
 
 SATrip 2015:
 [Начало](/post/satrip-2015-paris/),
@@ -207,6 +207,7 @@ SATrip 2015:
 [Едем в\ Боливию](/post/satrip-2015-to-bolivia/),
 [Ла-Пас](/post/satrip-2015-la-paz/),
 [Солончак Уюни](/post/satrip-2015-uyuni-salt-flats/),
-**юг Боливии**...
+**юг Боливии**,
+[национальный парк Эдуардо Авароа](/post/satrip-2015-bolivia-national-park/)...
 
 [slovenia]: /post/eurotrip-2014-bled-bohinj/

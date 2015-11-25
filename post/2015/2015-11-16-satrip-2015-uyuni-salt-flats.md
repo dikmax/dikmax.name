@@ -207,7 +207,8 @@ SATrip 2015:
 [Едем в\ Боливию](/post/satrip-2015-to-bolivia/),
 [Ла-Пас](/post/satrip-2015-la-paz/),
 **Солончак Уюни**,
-[юг Боливии](/post/satrip-2015-south-of-bolivia/)...
+[юг Боливии](/post/satrip-2015-south-of-bolivia/),
+[национальный парк Эдуардо Авароа](/post/satrip-2015-bolivia-national-park/)...
 
 
 [2014]: https://en.wikipedia.org/wiki/2014_Dakar_Rally
