@@ -48,13 +48,13 @@ tags: "satrip, satrip-2015, боливия, отпуск, путешествие
 
 ![](/images/travel/2015-09-satrip/uyuni-3-geyser-mud-1.jpg)
 
-![](/images/travel/2015-09-satrip/uyuni-3-geyser-mud-1.jpg)
+![](/images/travel/2015-09-satrip/uyuni-3-geyser-mud-2.jpg)
 
 Земля под ногами выглядит так, будто мы\ находимся на\ другой планете.
 
 ![](/images/travel/2015-09-satrip/uyuni-3-geyser-soil-1.jpg)
 
-![](/images/travel/2015-09-satrip/uyuni-3-geyser-soil-1.jpg)
+![](/images/travel/2015-09-satrip/uyuni-3-geyser-soil-2.jpg)
 
 Из-за жуткого холода разбирают противоречивые чувства: с\ одной стороны, всё так красиво и\ необычно, что хочется ещё
 походить и\ посмотреть, а\ с\ другой, мечтаешь вернуться в\ машину, где хотя\ бы нет ветра и\ есть тёплый спальник.
