@@ -276,14 +276,14 @@ lessCompilerRules = do
         compile $ loadBody "less/style.less"
             >>= makeItem
             >>= withItemBody
-              (unixFilter "lessc" ["--clean-css=advanced", "--include-path=less", "-"])
+              (unixFilter "lessc" ["--clean-css=advanced", "--autoprefix", "--include-path=less", "-"])
 
     rulesExtraDependencies [d] $ create ["css/print.css"] $ do
         route idRoute
         compile $ loadBody "less/print.less"
             >>= makeItem
             >>= withItemBody
-              (unixFilter "lessc" ["--clean-css=advanced", "--include-path=less", "-"])
+              (unixFilter "lessc" ["--clean-css=advanced", "--autoprefix", "--include-path=less", "-"])
 
 
 --------------------------------------------------------------------------------
