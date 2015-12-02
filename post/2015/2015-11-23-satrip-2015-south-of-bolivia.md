@@ -208,6 +208,7 @@ SATrip 2015:
 [Ла-Пас](/post/satrip-2015-la-paz/),
 [Солончак Уюни](/post/satrip-2015-uyuni-salt-flats/),
 **юг Боливии**,
-[национальный парк Эдуардо Авароа](/post/satrip-2015-bolivia-national-park/)...
+[национальный парк Эдуардо Авароа](/post/satrip-2015-bolivia-national-park/),
+[Копакабана](/post/satrip-2015-copacabana/)...
 
 [slovenia]: /post/eurotrip-2014-bled-bohinj/

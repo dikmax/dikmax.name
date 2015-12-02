@@ -245,6 +245,7 @@ SATrip 2015:
 [Ла-Пас](/post/satrip-2015-la-paz/),
 [Солончак Уюни](/post/satrip-2015-uyuni-salt-flats/),
 [юг Боливии](/post/satrip-2015-south-of-bolivia/),
-[национальный парк Эдуардо Авароа](/post/satrip-2015-bolivia-national-park/)...
+[национальный парк Эдуардо Авароа](/post/satrip-2015-bolivia-national-park/),
+[Копакабана](/post/satrip-2015-copacabana/)...
 
 [machu-picchu]: http://www.machupicchu.gob.pe
