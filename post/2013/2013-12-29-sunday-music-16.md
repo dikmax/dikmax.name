@@ -23,8 +23,8 @@ tags: "youtube, видео, музыка, музыка по воскресень
 
 ![Anthem Lights --- All I Want For Christmas Is You](http://www.youtube.com/watch?v=mos2IEvSCck)
 
-На\ YouTube новогодне-рождественских песен столько, что выбрать среди них что&#8209;то очень сложно. Поэтому остановлюсь
-ещё на\ одной песне, о\ которой я\ уже как&#8209;то [писал][bells]. На\ этот раз в\ бодром исполнении Trans-Siberian
+На\ YouTube новогодне-рождественских песен столько, что выбрать среди них что-то очень сложно. Поэтому остановлюсь
+ещё на\ одной песне, о\ которой я\ уже как-то [писал][bells]. На\ этот раз в\ бодром исполнении Trans-Siberian
 Orchestra.
 
 ![Trans-Siberian Orchestra --- Saraevo 12-24 (Carol of the Bells)](http://www.youtube.com/watch?v=sCabI3MdV9g)
