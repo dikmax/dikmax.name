@@ -395,25 +395,34 @@ class MapApplication {
 
     List<num> translate = [-(minX + maxX) / 2 * scale + width / 2, -(minY + maxY) / 2 * scale + height / 2];
 
-    path = path.callMethod("pointRadius", [math.max(1/4, 1/scale)]);
-
     zoom.callMethod("scale", [scale]);
     updateZoom(translate, scale);
   }
+
+  num _pointRadius = null;
+  num _scaleInv = null;
 
   void updateZoom(translate, scale) {
     translate[0] = math.max(math.min(translate[0], 0), width * (1 - scale));
     translate[1] = math.max(math.min(translate[1], 0), height * (1 - scale));
 
-    path = path.callMethod("pointRadius", [math.max(1/4, 1/scale)]);
+    var scaleInv = (100/scale).round()/100;
+    var pointRadius = math.max(0.1, scaleInv);
+    if (pointRadius != _pointRadius) {
+      _pointRadius = pointRadius;
+      path = path.callMethod("pointRadius", [pointRadius]);
+      g.callMethod("selectAll", ['.city'])
+          .callMethod("attr", ["d", (d, i, [_]) => path.apply([new JsObject.jsify({
+        "type": "Point",
+        "coordinates": [d['lon'], d['lat']]
+      })])]);
+    }
     zoom.callMethod("translate", [new JsObject.jsify(translate)]);
-    g.callMethod("style", ["stroke-width", 1 / scale])
-      .callMethod("attr", ["transform", "translate(${translate.join(',')})scale($scale)"]);
-    g.callMethod("selectAll", ['.city']).
-    callMethod("attr", ["d", (d, i, [_]) => path.apply([new JsObject.jsify({
-      "type": "Point",
-      "coordinates": [d['lon'], d['lat']]
-    })])]);
+    if (scaleInv != _scaleInv) {
+      _scaleInv = scaleInv;
+      g.callMethod("style", ["stroke-width", scaleInv]);
+    }
+    g.callMethod("attr", ["transform", "translate(${translate.join(',')})scale($scale)"]);
   }
 
   void onZoom([_a, _b, _c]) {
