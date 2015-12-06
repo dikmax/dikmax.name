@@ -400,7 +400,7 @@ class MapApplication {
   }
 
   num _pointRadius = null;
-  num _scaleInv = null;
+  num _strokeWidth = null;
 
   void updateZoom(translate, scale) {
     translate[0] = math.max(math.min(translate[0], 0), width * (1 - scale));
@@ -418,9 +418,11 @@ class MapApplication {
       })])]);
     }
     zoom.callMethod("translate", [new JsObject.jsify(translate)]);
-    if (scaleInv != _scaleInv) {
-      _scaleInv = scaleInv;
-      g.callMethod("style", ["stroke-width", scaleInv]);
+
+    var strokeWidth = math.min(0.2, scaleInv);
+    if (strokeWidth != _strokeWidth) {
+      _strokeWidth = strokeWidth;
+      g.callMethod("style", ["stroke-width", strokeWidth]);
     }
     g.callMethod("attr", ["transform", "translate(${translate.join(',')})scale($scale)"]);
   }
