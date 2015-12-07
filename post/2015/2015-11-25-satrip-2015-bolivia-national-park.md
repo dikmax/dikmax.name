@@ -186,6 +186,7 @@ SATrip 2015:
 [Солончак Уюни](/post/satrip-2015-uyuni-salt-flats/),
 [юг Боливии](/post/satrip-2015-south-of-bolivia/),
 **национальный парк Эдуардо Авароа**,
-[Копакабана](/post/satrip-2015-copacabana/)...
+[Копакабана](/post/satrip-2015-copacabana/),
+[Исла-дель-Соль](/post/satrip-2015-isla-del-sol/)...
 
 [uyuni-2]: /post/satrip-2015-south-of-bolivia/

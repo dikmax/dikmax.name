@@ -124,7 +124,7 @@ tags: "satrip, satrip-2015, боливия, отпуск, путешествие
 Утром мы\ отправимся в\ небольшой однодневный тур на\ Остров Солнца\ --- Isla del Sol. Будет красиво и\ интересно,
 не\ уходите далеко.
 
-Продолжение следует...
+Читать далее: [Исла-дель-Соль](/post/satrip-2015-isla-del-sol/).
 
 SATrip 2015:
 [Начало](/post/satrip-2015-paris/),
@@ -140,6 +140,7 @@ SATrip 2015:
 [Солончак Уюни](/post/satrip-2015-uyuni-salt-flats/),
 [юг Боливии](/post/satrip-2015-south-of-bolivia/),
 [национальный парк Эдуардо Авароа](/post/satrip-2015-bolivia-national-park/),
-**Копакабана**...
+**Копакабана**,
+[Исла-дель-Соль](/post/satrip-2015-isla-del-sol/)...
 
 [uyuni]: /post/satrip-2015-uyuni-salt-flats/
