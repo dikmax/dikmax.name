@@ -6,7 +6,7 @@ import '../lib/tsp.dart';
 
 // Create a new benchmark by extending BenchmarkBase.
 class AntColonyBenchmark extends BenchmarkBase {
-  const AntColonyBenchmark() : super("Ant Colony Optimization");
+  AntColonyBenchmark() : super("Ant Colony Optimization");
 
   final AntColonyOptimization aco = new AntColonyOptimization();
   final List<List<double>> table = [

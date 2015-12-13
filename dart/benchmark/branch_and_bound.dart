@@ -7,7 +7,7 @@ import '../lib/tsp.dart';
 
 // Create a new benchmark by extending BenchmarkBase.
 class BranchAndBoundBenchmark extends BenchmarkBase {
-  const BranchAndBoundBenchmark() : super("Branch and bound");
+  BranchAndBoundBenchmark() : super("Branch and bound");
 
   final BranchAndBound bnb = new BranchAndBound();
   final List<List<double>> table = [
