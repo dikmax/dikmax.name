@@ -131,6 +131,7 @@ SATrip 2015:
 [юг Боливии](/post/satrip-2015-south-of-bolivia/),
 [национальный парк Эдуардо Авароа](/post/satrip-2015-bolivia-national-park/),
 [Копакабана](/post/satrip-2015-copacabana/),
-[Исла-дель-Соль](/post/satrip-2015-isla-del-sol/)...
+[Исла-дель-Соль](/post/satrip-2015-isla-del-sol/),
+[и снова Куско](/post/satrip-2015-cusco-again/)...
 
 [cusco]: /post/satrip-2015-rio-to-cusco/
