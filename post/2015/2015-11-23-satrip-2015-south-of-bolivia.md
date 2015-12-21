@@ -211,6 +211,7 @@ SATrip 2015:
 [национальный парк Эдуардо Авароа](/post/satrip-2015-bolivia-national-park/),
 [Копакабана](/post/satrip-2015-copacabana/),
 [Исла-дель-Соль](/post/satrip-2015-isla-del-sol/),
-[и снова Куско](/post/satrip-2015-cusco-again/)...
+[и снова Куско](/post/satrip-2015-cusco-again/),
+[Лима](/post/satrip-2015-lima/)...
 
 [slovenia]: /post/eurotrip-2014-bled-bohinj/

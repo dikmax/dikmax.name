@@ -188,6 +188,7 @@ SATrip 2015:
 **национальный парк Эдуардо Авароа**,
 [Копакабана](/post/satrip-2015-copacabana/),
 [Исла-дель-Соль](/post/satrip-2015-isla-del-sol/),
-[и снова Куско](/post/satrip-2015-cusco-again/)...
+[и снова Куско](/post/satrip-2015-cusco-again/),
+[Лима](/post/satrip-2015-lima/)...
 
 [uyuni-2]: /post/satrip-2015-south-of-bolivia/
