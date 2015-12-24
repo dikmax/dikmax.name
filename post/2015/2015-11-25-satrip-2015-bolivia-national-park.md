@@ -189,6 +189,7 @@ SATrip 2015:
 [Копакабана](/post/satrip-2015-copacabana/),
 [Исла-дель-Соль](/post/satrip-2015-isla-del-sol/),
 [и снова Куско](/post/satrip-2015-cusco-again/),
-[Лима](/post/satrip-2015-lima/)...
+[Лима](/post/satrip-2015-lima/),
+[водопады Игуасу](/post/satrip-2015-iguazu-falls)...
 
 [uyuni-2]: /post/satrip-2015-south-of-bolivia/

@@ -149,6 +149,7 @@ SATrip 2015:
 [Копакабана](/post/satrip-2015-copacabana/),
 [Исла-дель-Соль](/post/satrip-2015-isla-del-sol/),
 [и снова Куско](/post/satrip-2015-cusco-again/),
-[Лима](/post/satrip-2015-lima/)...
+[Лима](/post/satrip-2015-lima/),
+[водопады Игуасу](/post/satrip-2015-iguazu-falls)...
 
 [backpack]: /post/satrip-2015-road-to-machu-picchu/#cusco-2-women
