@@ -150,6 +150,7 @@ SATrip 2015:
 [Исла-дель-Соль](/post/satrip-2015-isla-del-sol/),
 [и снова Куско](/post/satrip-2015-cusco-again/),
 [Лима](/post/satrip-2015-lima/),
-[водопады Игуасу](/post/satrip-2015-iguazu-falls)...
+[водопады Игуасу](/post/satrip-2015-iguazu-falls),
+[Рио-де-Жанейро, часть\ 4](/post/satrip-2015-rio-4/)...
 
 [backpack]: /post/satrip-2015-road-to-machu-picchu/#cusco-2-women

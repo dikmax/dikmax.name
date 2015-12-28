@@ -215,6 +215,7 @@ SATrip 2015:
 [Исла-дель-Соль](/post/satrip-2015-isla-del-sol/),
 [и снова Куско](/post/satrip-2015-cusco-again/),
 [Лима](/post/satrip-2015-lima/),
-**водопады Игуасу**...
+**водопады Игуасу**,
+[Рио-де-Жанейро, часть\ 4](/post/satrip-2015-rio-4/)...
 
 [machu-picchu]: /post/satrip-2015-machu-picchu/
