@@ -6,8 +6,8 @@ published: true
 
 ![](/images/photos/me.jpg "Это я")
 
-[JavaScript][js]-разработчик из\ Минска. Личное время трачу на\ [Dart][dart], [Haskell][haskell] и\ немецкий. Люблю
-[путешествовать][map] и\ делиться впечатлениями.
+[JavaScript][js]-разработчик из\ Минска, ныне проживаю в [Эслингeне][esslingen]. Личное время трачу на\ [Dart][dart],
+[Haskell][haskell] и\ немецкий. Люблю [путешествовать][map] и\ делиться впечатлениями.
 
 Я\ в\ социальных сетях и\ различных сервисах
 ============================================
@@ -34,6 +34,7 @@ published: true
 Письма слать сюда: [me@dikmax.name](mailto:me@dikmax.name).
 
 [dart]: /tag/dart/
+[esslingen]: https://en.wikipedia.org/wiki/Esslingen_am_Neckar
 [haskell]: /tag/haskell/
 [js]: /tag/javascript/
 [map]: /map/
