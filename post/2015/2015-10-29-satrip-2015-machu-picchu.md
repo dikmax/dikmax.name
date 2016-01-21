@@ -204,17 +204,17 @@ Montaña и\ Wayna Picchu. Первая\ --- это гора слева от\ г
 Читать далее: [Едем в\ Боливию](/post/satrip-2015-to-bolivia/).
 
 SATrip 2015:
-[Начало](/post/satrip-2015-paris/),
+[начало](/post/satrip-2015-paris/),
 [Париж](/post/satrip-2015-paris/),
 [Рио-де-Жанейро, часть\ 1](/post/satrip-2015-rio-1/),
 [Рио-де-Жанейро, часть\ 2](/post/satrip-2015-rio-2/),
 [Рио-де-Жанейро, часть\ 3](/post/satrip-2015-rio-3/),
-[Из\ Рио в\ Куско](/post/satrip-2015-rio-to-cusco/),
-[Дорога в\ Мачу-Пикчу](/post/satrip-2015-road-to-machu-picchu/),
+[из\ Рио в\ Куско](/post/satrip-2015-rio-to-cusco/),
+[дорога в\ Мачу-Пикчу](/post/satrip-2015-road-to-machu-picchu/),
 **Мачу-Пикчу**,
-[Едем в\ Боливию](/post/satrip-2015-to-bolivia/),
+[едем в\ Боливию](/post/satrip-2015-to-bolivia/),
 [Ла-Пас](/post/satrip-2015-la-paz/),
-[Солончак Уюни](/post/satrip-2015-uyuni-salt-flats/),
+[солончак Уюни](/post/satrip-2015-uyuni-salt-flats/),
 [юг Боливии](/post/satrip-2015-south-of-bolivia/),
 [национальный парк Эдуардо Авароа](/post/satrip-2015-bolivia-national-park/),
 [Копакабана](/post/satrip-2015-copacabana/),
@@ -222,4 +222,5 @@ SATrip 2015:
 [и снова Куско](/post/satrip-2015-cusco-again/),
 [Лима](/post/satrip-2015-lima/),
 [водопады Игуасу](/post/satrip-2015-iguazu-falls),
-[Рио-де-Жанейро, часть\ 4](/post/satrip-2015-rio-4/)...
+[Рио-де-Жанейро, часть\ 4](/post/satrip-2015-rio-4/),
+[итоги](/post/satrip-2015-results/).
