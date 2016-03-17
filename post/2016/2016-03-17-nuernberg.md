@@ -1,6 +1,6 @@
 ---
 title: "Нюрнберг"
-date: "2016-03-17T08:05:00+01:00"
+date: "2016-03-17T08:15:00+01:00"
 collection: "latest-travel"
 published: true
 tags: "путешествие, фотки, германия"
