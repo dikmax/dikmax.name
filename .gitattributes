@@ -1,2 +1,6 @@
 comments/* linguist-documentation
 js/* linguist-vendored
+less/bootstrap/* linguist-vendored
+less/font-awesome/* linguist-vendored
+less/fontello/* linguist-vendored
+less/theme/* linguist-vendored
